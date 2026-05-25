@@ -12,7 +12,9 @@ from django.http import JsonResponse
 import json
 
 from Administradores.forms import EditarUsuarioForm
-from ChibchaWeb.decorators import administrador_required, admin_permission_required
+from django.conf import settings
+
+from ChibchaWeb.core.decorators import administrador_required, admin_permission_required
 from Clientes.forms import RegistroClienteForm
 from .models import Administrador
 from Clientes.models import Cliente
@@ -106,9 +108,8 @@ def gestionar_usuarios(request):
     tipo_usuario = request.GET.get('tipo', 'all')
     busqueda = request.GET.get('q', '')
     
-    # Obtener usuarios según filtros
-    usuarios = User.objects.all()
-    
+    usuarios = User.objects.select_related('cliente', 'empleado', 'administrador').order_by('username')
+
     if busqueda:
         usuarios = usuarios.filter(
             Q(username__icontains=busqueda) |
@@ -116,10 +117,22 @@ def gestionar_usuarios(request):
             Q(first_name__icontains=busqueda) |
             Q(last_name__icontains=busqueda)
         )
-    
-    # Preparar datos con información adicional
+
+    if tipo_usuario != 'all':
+        tipo_lower = tipo_usuario.lower()
+        if tipo_lower == 'cliente':
+            usuarios = usuarios.filter(cliente__isnull=False)
+        elif tipo_lower == 'empleado':
+            usuarios = usuarios.filter(empleado__isnull=False)
+        elif tipo_lower == 'administrador':
+            usuarios = usuarios.filter(administrador__isnull=False)
+
+    paginator = Paginator(usuarios, 20)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     usuarios_data = []
-    for user in usuarios:
+    for user in page_obj.object_list:
         user_info = {
             'user': user,
             'tipo': 'Usuario base',
@@ -141,19 +154,11 @@ def gestionar_usuarios(request):
             user_info['additional_info'] = user.administrador
             user_info['activo'] = user.administrador.activo
         
-        # Filtrar por tipo si se especifica
-        if tipo_usuario != 'all' and user_info['tipo'].lower() != tipo_usuario.lower():
-            continue
-            
         usuarios_data.append(user_info)
-    
-    # Paginación
-    paginator = Paginator(usuarios_data, 20)  # 20 usuarios por página
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    
+
     context = {
         'page_obj': page_obj,
+        'usuarios_data': usuarios_data,
         'tipo_usuario': tipo_usuario,
         'busqueda': busqueda,
     }
@@ -573,10 +578,9 @@ def exportar_pagos_csv(request):
     ])
     
     # Obtener pagos con información del cliente
-    pagos = Pago.objects.all().select_related(
-        'cliente__user'
-    ).order_by('-fecha')
-    
+    max_rows = getattr(settings, 'PAYMENT_EXPORT_MAX_ROWS', 5000)
+    pagos = Pago.objects.select_related('cliente__user').order_by('-fecha')[:max_rows]
+
     for pago in pagos:
         writer.writerow([
             pago.pagoId,
@@ -616,11 +620,9 @@ def exportar_pagos_excel(request):
         cell.fill = header_fill
         cell.alignment = header_alignment
     
-    # Datos
-    pagos = Pago.objects.all().select_related(
-        'cliente__user'
-    ).order_by('-fecha')
-    
+    max_rows = getattr(settings, 'PAYMENT_EXPORT_MAX_ROWS', 5000)
+    pagos = Pago.objects.select_related('cliente__user').order_by('-fecha')[:max_rows]
+
     for row, pago in enumerate(pagos, 2):
         data_row = [
             pago.pagoId,
@@ -689,9 +691,8 @@ def exportar_pagos_pdf(request):
     story.append(Spacer(1, 12))
     
     # Obtener datos
-    pagos = Pago.objects.all().select_related(
-        'cliente__user'
-    ).order_by('-fecha')[:100]  # Limitar a 100 registros más recientes
+    max_rows = getattr(settings, 'PAYMENT_EXPORT_MAX_ROWS', 5000)
+    pagos = Pago.objects.select_related('cliente__user').order_by('-fecha')[:max_rows]
     
     # Estadísticas
     total_pagos = Pago.objects.count()

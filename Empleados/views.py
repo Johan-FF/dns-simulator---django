@@ -5,13 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
-from django.db.models import Q, Max
+from django.db.models import Prefetch, Q, Max
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from django.urls import reverse_lazy
-from ChibchaWeb.decorators import empleado_required, supervisor_required, agente_required
+from ChibchaWeb.core.decorators import agente_required, empleado_required, supervisor_required
 from .models import Empleado
 from Tickets.models import Ticket, Estado, HistoriaTicket
 
@@ -256,7 +256,14 @@ class SupervisorDashboardView(TemplateView):
         # Obtener tickets asignados con información completa
         tickets_asignados_query = Ticket.objects.filter(
             idTicket__in=tickets_asignados_ids
-        ).select_related('cliente')
+        ).select_related('cliente__user').prefetch_related(
+            Prefetch(
+                'historial',
+                queryset=HistoriaTicket.objects.select_related('estado', 'empleado__user').order_by(
+                    '-fecha_modificacion', '-idCambioTicket'
+                ),
+            )
+        )
         
         tickets_asignados_info_list = []
         for ticket in tickets_asignados_query:
@@ -291,11 +298,16 @@ class AgenteDashboardView(TemplateView):
         
         # Obtener tickets asignados a este agente
         tickets_asignados_ids = obtener_tickets_asignados_empleado(agente)
+        historial_qs = HistoriaTicket.objects.select_related(
+            'estado', 'empleado__user'
+        ).order_by('-fecha_modificacion', '-idCambioTicket')
+
         tickets_asignados = Ticket.objects.filter(
             idTicket__in=tickets_asignados_ids
-        ).select_related('cliente')
-        
-        # Procesar tickets con su estado actual
+        ).select_related('cliente__user').prefetch_related(
+            Prefetch('historial', queryset=historial_qs)
+        )
+
         tickets_con_estado = procesar_tickets_con_estado(tickets_asignados)
         
         # Separar tickets por estado
