@@ -25,7 +25,7 @@ def migrate_card_data(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Pagos', '0001_initial'),
+        ('Pagos', '0002_pagodistribuidor'),
     ]
 
     operations = [
