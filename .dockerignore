@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+*.sqlite3
+.env
+.git
+.gitignore
+.venv/
+venv/
+*.md
+.pytest_cache/
+.mypy_cache/
+htmlcov/
+coverage/
+agent-transcripts/
+terminals/

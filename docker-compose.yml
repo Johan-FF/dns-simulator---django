@@ -11,18 +11,25 @@ services:
       test: ["CMD-SHELL", "pg_isready -U chibcha -d chibcha"]
       interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 40s
 
   web:
     build: .
     command: gunicorn ChibchaWeb.wsgi:application --bind 0.0.0.0:8000 --workers 2
     ports:
       - "8000:8000"
+    env_file:
+      - .env
     environment:
       DJANGO_SETTINGS_MODULE: ChibchaWeb.settings.production
       DATABASE_URL: postgres://chibcha:chibcha@db:5432/chibcha
       DEBUG: "False"
       ALLOWED_HOSTS: localhost,127.0.0.1,web
+      CSRF_TRUSTED_ORIGINS: http://localhost:8000,http://127.0.0.1:8000
+      SESSION_COOKIE_SECURE: "False"
+      CSRF_COOKIE_SECURE: "False"
+      SECURE_SSL_REDIRECT: "False"
     depends_on:
       db:
         condition: service_healthy
