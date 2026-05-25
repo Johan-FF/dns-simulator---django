@@ -40,7 +40,7 @@ class AdminClientListTests(TestCase):
 class TarjetaCreditoModelTests(TestCase):
     def test_register_card_does_not_store_pan_or_cvv(self):
         user = User.objects.create_user(username='payuser', password='pass12345')
-        cliente = Cliente.objects.create(user=user)
+        cliente = Cliente.objects.create(user=user, telefono=3001234567)
         tarjeta = PaymentService.register_card(
             cliente,
             '4111111111111111',
