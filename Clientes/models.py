@@ -38,19 +38,23 @@ class Cliente(models.Model):
     
     @property
     def dominios_count(self):
-        """Retorna la cantidad actual de dominios del PLAN de hosting (no incluye dominios de distribuidor)"""
+        """Hosting-plan domain count; uses annotate when available to avoid N+1."""
+        if hasattr(self, 'dominios_plan_count'):
+            return self.dominios_plan_count
         from Dominios.models import Dominios
         return Dominios.objects.filter(clienteId=self, compraDistribuidor=False).count()
-    
+
     @property
     def total_dominios_count(self):
-        """Retorna la cantidad total de dominios (plan + distribuidor)"""
+        if hasattr(self, 'dominios_total_count'):
+            return self.dominios_total_count
         from Dominios.models import Dominios
         return Dominios.objects.filter(clienteId=self).count()
-    
+
     @property
     def dominios_distribuidor_count(self):
-        """Retorna la cantidad de dominios creados por distribuidor"""
+        if hasattr(self, 'dominios_distribuidor_count'):
+            return self.dominios_distribuidor_count
         from Dominios.models import Dominios
         return Dominios.objects.filter(clienteId=self, compraDistribuidor=True).count()
     
