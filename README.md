@@ -1,39 +1,69 @@
 # ChibchaWeb
 
+Django hosting and domain management platform.
 
----
+## Requirements
 
-# Requisitos
-- Python 3.10 o superior
-- Git
-- (Opcional pero recomendado) Visual Studio Code
+- Python 3.11+
+- Conda env `p` (recommended) or virtualenv
+- PostgreSQL (Docker) or SQLite (local dev)
 
-# Crear y activar el entorno virtual:
-- python -m venv venv    #crea el entono virtual(desde terminal)
-- venv\Scripts\activate     #activa el entorno virtual (desde cmd)
+## Local setup
 
-# Instalar dependencias
-- pip install django
-- pip install django-crispy-forms
+```bash
+conda activate p
+pip install -r requirements.txt
+cp .env.example .env
+# Edit .env and set SECRET_KEY
+python manage.py migrate
+python manage.py runserver
+```
 
-# Aplicar migraciones
-- python manage.py makemigrations
-- python manage.py migrate
+Settings are split under `ChibchaWeb/settings/` (`development` by default, `production` for Docker).
 
-# Crear superusuario (opcional para admin)
- -python manage.py createsuperuser
+## Docker
 
-# Ejecutar el servidor
-- python manage.py runserver
+```bash
+cp .env.example .env
+# Set SECRET_KEY and DATABASE_URL in .env
+docker compose build
+docker compose up
+```
 
-# Direcciones hasta ahora
+App: http://localhost:8000/
 
--http://127.0.0.1:8000/admin → panel de administración (requiere superusuario)
--http://127.0.0.1:8000/clientes/register
+PostgreSQL runs as service `db`. Migrations and `collectstatic` run via `docker/entrypoint.sh`.
 
-# Notas adicionales
-La base de datos usada es SQLite (se crea automáticamente).
+## i18n
 
-Para acceder a la página web usar https://chibchaweb.pythonanywhere.com/
+See [docs/i18n.md](docs/i18n.md). Quick workflow:
 
-El entorno virtual y archivos temporales están excluidos vía .gitignore.
+```bash
+python manage.py makemessages -l en -l pt
+python scripts/translate_po.py --all
+python manage.py compilemessages
+```
+
+## Tests
+
+```bash
+conda activate p
+python manage.py test ChibchaWeb.tests
+python manage.py check
+```
+
+## URLs (overview)
+
+- `/` — public home
+- `/login/` — client login
+- `/Clientes/` — registration and client area
+- `/administradores/` — admin panel
+- `/empleados/` — staff portal
+- `/pagos/` — payments and subscriptions
+- `/dominios/` — domain verification (`verificar-url` lives here only)
+
+## Security notes
+
+- Secrets via environment variables (see `.env.example`)
+- Credit cards store `last4` + `payment_token` only (no PAN/CVV)
+- Admin client list: `Clientes/admin/lista/` (not public)
