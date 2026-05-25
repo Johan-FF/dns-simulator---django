@@ -1,5 +1,14 @@
 from django.urls import path
-from .views import registrar_cliente, borrar_cliente, editar_cliente, detalle_cliente, perfil, mis_hosts
+from .views import (
+    borrar_cliente,
+    detalle_cliente,
+    detalle_cliente_admin,
+    editar_cliente,
+    lista_clientes_admin,
+    perfil,
+    mis_hosts,
+    registrar_cliente,
+)
 from django.shortcuts import render
 from . import views
 
@@ -20,5 +29,6 @@ urlpatterns = [
     path('distribuidor-exito/', views.distribuidor_exito, name='distribuidor_exito'),
     path('activar/<uidb64>/<token>/', views.activar_cuenta, name='activar_cuenta'),
     path('registro-exitoso/', views.registro_exitoso, name='registro_exitoso'),
-
+    path('admin/lista/', lista_clientes_admin, name='lista_clientes_admin'),
+    path('admin/<int:cliente_id>/', detalle_cliente_admin, name='detalle_cliente_admin'),
 ]

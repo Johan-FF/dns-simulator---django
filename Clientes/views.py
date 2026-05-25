@@ -8,7 +8,8 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from .forms import ClienteForm
 from django.views.decorators.http import require_POST
-from ChibchaWeb.decorators import cliente_required
+from ChibchaWeb.core.decorators import admin_permission_required, cliente_required
+from Clientes.querysets import attach_domain_counts, clientes_with_domain_counts
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -72,8 +73,22 @@ def registro_exitoso(request):
 
 @cliente_required
 def detalle_cliente(request):
-    # request.cliente ya está disponible automáticamente
-    cliente = request.cliente
+    cliente = attach_domain_counts(request.cliente)
+    return render(request, 'detalle_cliente.html', {'cliente': cliente})
+
+
+@admin_permission_required('puede_gestionar_usuarios')
+def lista_clientes_admin(request):
+    """Admin-only client listing (replaces former public /clientes/ route)."""
+    clientes = clientes_with_domain_counts().order_by('user__username')
+    return render(request, 'lista_clientes.html', {'clientes': clientes})
+
+
+@admin_permission_required('puede_gestionar_usuarios')
+def detalle_cliente_admin(request, cliente_id):
+    cliente = attach_domain_counts(
+        get_object_or_404(clientes_with_domain_counts(), pk=cliente_id)
+    )
     return render(request, 'detalle_cliente.html', {'cliente': cliente})
 
 @login_required

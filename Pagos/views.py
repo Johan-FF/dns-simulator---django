@@ -6,13 +6,11 @@ from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import gettext as _
 import re
-from .models import Direccion, TarjetaCredito, Pais, Pago, PagoDistribuidor
-from Clientes.models import Cliente
-from .validators import validar_tarjeta, VALIDADORES_DIRECCIONES
+from .models import Direccion, TarjetaCredito, Pais, Pago
+from .forms import DireccionForm, PaqueteSelectionForm, PlanSelectionForm, TarjetaCreditoForm
+from .services import PaymentService, SubscriptionService
 from ChibchaWeb.planes import PLANES_DISPONIBLES
-from datetime import timedelta
-from django.utils import timezone
-from ChibchaWeb.decorators import cliente_required, distribuidor_required
+from ChibchaWeb.core.decorators import cliente_required, distribuidor_required
 
 
 @cliente_required
@@ -90,41 +88,25 @@ def registrar_direccion(request):
 
 @cliente_required
 def registrar_tarjeta(request):
-    cliente = request.cliente  # Disponible automáticamente
-    
+    cliente = request.cliente
+    form = TarjetaCreditoForm()
+
     if request.method == 'POST':
-        numero = request.POST.get('numero', '').replace(' ', '')  # Remover espacios
-        nombre_titular = request.POST.get('nombre_titular')
-        fecha_expiracion = request.POST.get('fecha_expiracion')
-        cvv = request.POST.get('cvv')
-        
-        if numero and nombre_titular and fecha_expiracion and cvv:
+        post_data = {
+            'numero': request.POST.get('numero', ''),
+            'nombre_titular': request.POST.get('nombre_titular') or request.POST.get('titular', ''),
+            'fecha_expiracion': request.POST.get('fecha_expiracion') or request.POST.get('expiracion', ''),
+            'cvv': request.POST.get('cvv', ''),
+        }
+        form = TarjetaCreditoForm(post_data)
+        if form.is_valid():
             try:
-                # Validar el número de tarjeta usando el validador
-                validar_tarjeta(numero)
-                
-                # Validar formato de fecha (MM/AA)
-                if not re.match(r'^\d{2}/\d{2}$', fecha_expiracion):
-                    messages.error(request, _("El formato de fecha debe ser MM/AA"))
-                    return render(request, 'registrar_tarjeta.html')
-                
-                # Validar CVV (3 o 4 dígitos)
-                if not re.match(r'^\d{3,4}$', cvv):
-                    messages.error(request, _("El CVV debe tener 3 o 4 dígitos"))
-                    return render(request, 'registrar_tarjeta.html')
-                
-                tarjeta = TarjetaCredito.objects.create(
-                    numero=numero,
-                    nombre_titular=nombre_titular.upper(),
-                    fecha_expiracion=fecha_expiracion,
-                    cvv=cvv,
-                    cliente=cliente
+                PaymentService.register_card(
+                    cliente,
+                    form.cleaned_data['numero'],
+                    form.cleaned_data['nombre_titular'],
+                    form.cleaned_data['fecha_expiracion'],
                 )
-                
-                # Actualizar que el cliente tiene método de pago
-                cliente.metodoPago = True
-                cliente.save()
-                
                 messages.success(request, _("Tarjeta de crédito registrada exitosamente."))
                 
                 # Si viene del flujo de pago, redirigir de vuelta a selección unificada
@@ -154,17 +136,15 @@ def registrar_tarjeta(request):
                 return redirect('clientes:detalle_cliente')
             except ValidationError as e:
                 messages.error(request, str(e))
-                return render(request, 'registrar_tarjeta.html')
             except Exception as e:
                 messages.error(request, _("Error al registrar la tarjeta: %(error)s") % {'error': str(e)})
         else:
             messages.error(request, _("Por favor completa todos los campos requeridos."))
-    
-    context = {
+
+    return render(request, 'registrar_tarjeta.html', {
         'from_payment': 'from_payment' in request.GET,
-    }
-    
-    return render(request, 'registrar_tarjeta.html', context)
+        'form': form,
+    })
 
 
 @cliente_required
@@ -188,10 +168,6 @@ def eliminar_tarjeta(request, tarjeta_id):
         tarjeta.delete()
         
         # Verificar si quedan tarjetas
-        if not cliente.tarjetas.exists():
-            cliente.metodoPago = False
-            cliente.save()
-        
         messages.success(request, _("Tarjeta eliminada exitosamente."))
     except Exception as e:
         messages.error(request, _("Error al eliminar la tarjeta: %(error)s") % {'error': str(e)})
@@ -294,7 +270,7 @@ def seleccionar_direccion_tarjeta(request):
                 
                 messages.success(request, _("Seleccionado: %(direccion)s y tarjeta terminada en %(tarjeta)s") % {
                     'direccion': direccion.ubicacion,
-                    'tarjeta': tarjeta.numero[-4:]
+                    'tarjeta': tarjeta.last4
                 })
                 
                 # Redirigir según el tipo de compra
@@ -363,37 +339,12 @@ def resumen_pago(request):
         return redirect("pagos:seleccionar_plan")
     
     if request.method == "POST":
-        # Verificar el monto
-        monto = PLANES_DISPONIBLES[plan][f"precio_{modalidad}"]
-
-        # Crear pago
-        pago = Pago.objects.create(
-            cliente=cliente,
-            direccion=direccion,
-            tarjeta_usada=tarjeta,
-            monto=monto
-        )
-
-        # Actualizar estado de suscripción
-        cliente.tiene_suscripcion = True
-        cliente.plan = plan
-        cliente.fecha_inicio_suscripcion = timezone.now()
-
-        # Calcular fecha de fin de suscripción
-        if modalidad == "mensual":
-            cliente.fecha_fin_suscripcion = timezone.now() + timedelta(days=30)
-        elif modalidad == "semestral":
-            cliente.fecha_fin_suscripcion = timezone.now() + timedelta(days=180)
-        elif modalidad == "anual":
-            cliente.fecha_fin_suscripcion = timezone.now() + timedelta(days=365)
-
-        cliente.save()
-
+        PaymentService.process_plan_payment(cliente, plan, modalidad, direccion, tarjeta)
         messages.success(request, _("¡Pago procesado exitosamente! Tu plan %(plan)s está activo.") % {'plan': plan})
         return redirect("pagos:confirmacion_pago")
 
     # Mostrar resumen
-    monto = PLANES_DISPONIBLES[plan][f"precio_{modalidad}"]
+    monto = SubscriptionService.get_plan_price(plan, modalidad)
 
     resumen = {
         "plan": plan,
@@ -460,35 +411,9 @@ def resumen_pago_paquetes(request):
 
     if request.method == "POST":
         cantidad_paquetes = int(cantidad_paquetes)
-        precio_unitario = settings.PRECIO_POR_PAGINA_DISTRIBUIDOR
-        monto = cantidad_paquetes * precio_unitario
-
-        # Crear el pago base
-        pago = Pago.objects.create(
-            cliente=cliente,
-            direccion=direccion,
-            tarjeta_usada=tarjeta,
-            monto=monto
+        PaymentService.process_distributor_package_payment(
+            cliente, cantidad_paquetes, direccion, tarjeta
         )
-
-        # Crear el registro extendido para distribuidores
-        PagoDistribuidor.objects.create(
-            cliente=cliente,
-            direccion=direccion,
-            tarjeta_usada=tarjeta,
-            monto=monto,
-            cantidad_paginas=cantidad_paquetes,
-            descripcion=_("Compra de %(cantidad)s páginas para reventa") % {'cantidad': cantidad_paquetes}
-        )
-
-        # Actualizar el perfil del distribuidor
-        try:
-            distribuidor_perfil = cliente.perfil_distribuidor
-            distribuidor_perfil.cantidad_dominios += cantidad_paquetes
-            distribuidor_perfil.save()
-        except:
-            messages.warning(request, _("No se pudo actualizar el perfil de distribuidor."))
-
         messages.success(request, _("¡Pago procesado exitosamente! Se agregaron %(cantidad)s páginas a tu cuenta.") % {'cantidad': cantidad_paquetes})
         return redirect("pagos:confirmacion_pago_paquetes")
 

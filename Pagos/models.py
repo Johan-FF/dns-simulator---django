@@ -36,16 +36,33 @@ class Direccion(models.Model):
         return f"{self.ubicacion}, {self.codigoPostal}, {self.pais}"
 
 class TarjetaCredito(models.Model):
-    numero = models.CharField(max_length=16, validators=[validar_tarjeta])
+    """Stores only tokenized/mock payment reference — never full PAN or CVV."""
+
+    last4 = models.CharField(max_length=4)
+    payment_token = models.CharField(max_length=64, unique=True)
+    card_brand = models.CharField(max_length=20, blank=True)
     nombre_titular = models.CharField(max_length=50)
-    fecha_expiracion = models.CharField(max_length=5)  # formato MM/AA
-    cvv = models.CharField(max_length=4)
-    
-    # Relación con el cliente dueño de la tarjeta
+    fecha_expiracion = models.CharField(max_length=5)  # MM/YY format
+
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='tarjetas')
 
+    @staticmethod
+    def detect_brand(card_number: str) -> str:
+        digits = ''.join(c for c in card_number if c.isdigit())
+        if digits.startswith('4'):
+            return 'VISA'
+        if digits.startswith(('51', '52', '53', '54', '55')) or digits[:2] in {f'{i}' for i in range(22, 28)}:
+            return 'MasterCard'
+        if digits.startswith(('300', '301', '302', '303', '304', '305')) or digits[:2] in ('36', '38', '39'):
+            return 'Diners Club'
+        return 'Unknown'
+
     def __str__(self):
-        return f"**** **** **** {self.numero[-4:]}"
+        return f"**** **** **** {self.last4}"
+
+    @property
+    def masked_display(self):
+        return f"**** **** **** {self.last4}"
     
 
 class Pago(models.Model):
