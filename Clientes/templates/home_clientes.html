@@ -170,7 +170,7 @@
             </div>
             {% if cliente.suscripcion_activa %}
             <div class="col-auto">
-                <a href="{% url 'verificar-url' %}" class="quick-action-btn">
+                <a href="{% url 'dominios:verificar_url' %}" class="quick-action-btn">
                     <i class="fas fa-search"></i>
                     <span>{% trans "Verificar Dominio" %}</span>
                 </a>
