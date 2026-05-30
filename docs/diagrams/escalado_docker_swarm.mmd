@@ -1,0 +1,106 @@
+%% Arquitectura de Escalado Horizontal - Docker Swarm
+%% Propuesta de despliegue para ChibchaWeb
+
+flowchart TB
+    subgraph Internet["🌐 Internet"]
+        Users["Usuarios<br/>(Navegadores Web)"]
+    end
+
+    subgraph LoadBalancer["⚖️ Balanceador de Carga"]
+        LB["Nginx / Traefik<br/>─────────────────<br/>• Terminación SSL/TLS<br/>• Distribución Round-Robin<br/>• Health Checks<br/>• Rate Limiting"]
+    end
+
+    subgraph SwarmCluster["🐳 Docker Swarm Cluster"]
+        subgraph ManagerNode["Nodo Manager"]
+            SwarmMgr["Swarm Manager<br/>─────────────────<br/>• Orquestación<br/>• Scheduling<br/>• Service Discovery<br/>• Gestión de secretos"]
+        end
+
+        subgraph WorkerNode1["Nodo Worker 1"]
+            Web1["Réplica Web 1<br/>─────────────────<br/>Gunicorn + Django<br/>Workers: 4<br/>Puerto: 8000"]
+            Celery1["Celery Worker 1<br/>(Tareas asíncronas)"]
+        end
+
+        subgraph WorkerNode2["Nodo Worker 2"]
+            Web2["Réplica Web 2<br/>─────────────────<br/>Gunicorn + Django<br/>Workers: 4<br/>Puerto: 8000"]
+            Celery2["Celery Worker 2<br/>(Tareas asíncronas)"]
+        end
+
+        subgraph WorkerNode3["Nodo Worker 3"]
+            Web3["Réplica Web 3<br/>─────────────────<br/>Gunicorn + Django<br/>Workers: 4<br/>Puerto: 8000"]
+        end
+
+        subgraph OverlayNetwork["Red Overlay (chibchaweb_network)"]
+            VIP["Virtual IP<br/>Service Discovery DNS"]
+        end
+    end
+
+    subgraph DataLayer["💾 Capa de Datos"]
+        subgraph DBCluster["Cluster PostgreSQL"]
+            PGPrimary["PostgreSQL Primary<br/>─────────────────<br/>• Escrituras<br/>• WAL Streaming"]
+            PGReplica["PostgreSQL Replica<br/>─────────────────<br/>• Lecturas<br/>• Hot Standby"]
+        end
+
+        subgraph Cache["Cache Distribuido"]
+            Redis["Redis Cluster<br/>─────────────────<br/>• Cache de sesiones<br/>• Cache de queries<br/>• Broker de Celery"]
+        end
+    end
+
+    subgraph SharedStorage["📁 Almacenamiento Compartido"]
+        StaticVol["Volumen Compartido<br/>─────────────────<br/>• /static/ (collectstatic)<br/>• WhiteNoise<br/>• Assets compilados"]
+        MediaVol["Volumen Compartido<br/>─────────────────<br/>• /media/<br/>• Uploads de usuarios"]
+    end
+
+    subgraph Monitoring["📊 Monitoreo"]
+        Prometheus["Prometheus<br/>Métricas"]
+        Grafana["Grafana<br/>Dashboards"]
+    end
+
+    subgraph ExternalServices["📧 Servicios Externos"]
+        SMTP["SMTP Gmail<br/>(Email TLS)"]
+    end
+
+    %% Conexiones de red
+    Users -->|"HTTPS :443"| LB
+    LB -->|"HTTP :8000<br/>Round Robin"| Web1 & Web2 & Web3
+
+    %% Overlay network
+    Web1 & Web2 & Web3 <-->|"Overlay Network"| VIP
+    SwarmMgr -->|"Orquesta"| WorkerNode1 & WorkerNode2 & WorkerNode3
+
+    %% Base de datos
+    Web1 & Web2 & Web3 -->|"Lecturas"| PGReplica
+    Web1 & Web2 & Web3 -->|"Escrituras"| PGPrimary
+    PGPrimary -->|"WAL Replication"| PGReplica
+
+    %% Cache
+    Web1 & Web2 & Web3 -->|"Sesiones + Cache"| Redis
+    Celery1 & Celery2 -->|"Broker"| Redis
+
+    %% Almacenamiento
+    Web1 & Web2 & Web3 -.->|"NFS / GlusterFS"| StaticVol & MediaVol
+
+    %% Tareas asíncronas
+    Web1 -.->|"Encola tareas"| Celery1
+    Web2 -.->|"Encola tareas"| Celery2
+    Celery1 & Celery2 -->|"Envío emails"| SMTP
+
+    %% Monitoreo
+    Web1 & Web2 & Web3 -.->|"Métricas"| Prometheus
+    Prometheus --> Grafana
+
+    %% Estilos
+    classDef lbStyle fill:#E3F2FD,stroke:#0D47A1,stroke-width:2px
+    classDef webStyle fill:#E8F5E9,stroke:#1B5E20,stroke-width:2px
+    classDef dbStyle fill:#FFF3E0,stroke:#E65100,stroke-width:2px
+    classDef cacheStyle fill:#FCE4EC,stroke:#880E4F,stroke-width:2px
+    classDef storageStyle fill:#F3E5F5,stroke:#4A148C,stroke-width:1px
+    classDef monitorStyle fill:#E0F7FA,stroke:#006064,stroke-width:1px
+    classDef managerStyle fill:#FFF9C4,stroke:#F57F17,stroke-width:2px
+
+    class LB lbStyle
+    class Web1,Web2,Web3 webStyle
+    class PGPrimary,PGReplica dbStyle
+    class Redis cacheStyle
+    class StaticVol,MediaVol storageStyle
+    class Prometheus,Grafana monitorStyle
+    class SwarmMgr managerStyle

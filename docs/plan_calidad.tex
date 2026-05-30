@@ -1,0 +1,335 @@
+% ============================================================================
+%  PLAN DE CALIDAD DE SOFTWARE — ChibchaWeb
+%  Documento compilable con pdflatex o lualatex
+% ============================================================================
+\documentclass[12pt,a4paper]{article}
+
+% — Codificación y tipografía ------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}
+
+% — Diseño de página ---------------------------------------------------------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{parskip}
+
+% — Tablas y figuras ----------------------------------------------------------
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{array}
+
+% — Colores y resaltado -------------------------------------------------------
+\usepackage[table,dvipsnames]{xcolor}
+\definecolor{secbg}{HTML}{EBF5FB}
+
+% — Hipervínculos y metadatos -------------------------------------------------
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=MidnightBlue,
+  urlcolor=MidnightBlue,
+  pdfauthor={Equipo ChibchaWeb},
+  pdftitle={Plan de Calidad de Software — ChibchaWeb},
+}
+
+% — Encabezados y pies de página ----------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{ChibchaWeb}}
+\fancyhead[R]{\small Plan de Calidad de Software}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% — Enumeración personalizada -------------------------------------------------
+\usepackage{enumitem}
+
+% ============================================================================
+\begin{document}
+
+% — Portada -------------------------------------------------------------------
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\Huge\bfseries Plan de Calidad de Software\\[0.4em]
+Proyecto ChibchaWeb\par}
+\vspace{1.5cm}
+{\Large\itshape Definición de procesos, métricas, responsabilidades\\y herramientas de aseguramiento de calidad\par}
+\vspace{2cm}
+{\large
+\begin{tabular}{rl}
+\textbf{Proyecto:}   & ChibchaWeb \\
+\textbf{Fecha:}      & 26 de mayo de 2026 \\
+\end{tabular}\par}
+\vspace{1.5cm}
+
+{\large\textbf{Integrantes del equipo}\par}
+\vspace{0.5cm}
+\begin{tabular}{lll}
+\toprule
+\textbf{Nombre y apellidos} & \textbf{Código} & \textbf{Rol en el proyecto} \\
+\midrule
+Juan Carlos Duarte Sandoval & 20212020149 & Desarrollador \\
+Sebastián Alejandro Bernate Guzmán & 20211020121 & Desarrollador \\
+Laura Carina Álvarez Campos & 20212020006 & Product Owner \\
+Johan Andrés Tamara Flautero & 20211020039 & Desarrollador \\
+Laura Daniela Cubillos Escobar & 20211020045 & Product Manager \\
+David Santiago Torres Mendieta & 20211020144 & Analista QA \\
+\bottomrule
+\end{tabular}
+
+\vfill
+{\small Universidad Distrital Francisco José de Caldas}
+\end{titlepage}
+
+% — Índice --------------------------------------------------------------------
+\tableofcontents
+\newpage
+
+% ============================================================================
+\section{Introducción}
+% ============================================================================
+
+ChibchaWeb es una plataforma profesional de hosting web con presencia destacada en
+Colombia. Ofrece servidores SSD NVMe de alto rendimiento, disponibilidad garantizada del
+99,9\,\%, certificados SSL gratuitos, respaldos automáticos y soporte técnico especializado
+disponible las 24 horas del día.
+
+Este documento, el Plan de Calidad de Software para ChibchaWeb, tiene por objetivo
+definir los procesos, métricas, responsabilidades y herramientas que aseguren la calidad
+continua del sistema durante todas sus fases: desarrollo, implementación y operación. Está
+diseñado para:
+
+\begin{itemize}
+  \item Garantizar la confiabilidad y disponibilidad del servicio, conforme al estándar del
+        99,9\,\% de uptime ofrecido.
+  \item Asegurar la integridad y protección de los datos mediante la correcta gestión de
+        certificados SSL y respaldos automáticos.
+  \item Mantener altos niveles de soporte y satisfacción al usuario, alineados con la
+        experiencia técnica 24/7 proporcionada.
+\end{itemize}
+
+Este plan se aplicará a todas las áreas del sistema ChibchaWeb, incluyendo gestión de
+dominios, administración de planes, facturación, interfaces de usuario multilingües (español,
+inglés, portugués) y canales de soporte (centro de ayuda, tickets, soporte vía email o teléfono).
+
+% ============================================================================
+\section{Objetivos de calidad}
+% ============================================================================
+
+El presente plan de calidad tiene como propósito asegurar que ChibchaWeb cumpla con los
+más altos estándares de calidad en todos los aspectos relevantes del sistema. A continuación,
+se describen los objetivos específicos:
+
+\subsection{Seguridad}
+
+\begin{itemize}
+  \item Garantizar la protección de los datos del cliente mediante el uso de certificados SSL,
+        mecanismos de autenticación y control de acceso.
+  \item Prevenir accesos no autorizados y asegurar la integridad de los respaldos automáticos.
+\end{itemize}
+
+\subsection{Rendimiento y calidad}
+
+\begin{itemize}
+  \item Asegurar tiempos de respuesta rápidos para las interfaces del usuario ($< 2$ segundos
+        en operaciones comunes).
+  \item Mantener una disponibilidad mínima del 99,9\,\%, tal como se promociona en la
+        plataforma, incluso durante tareas de mantenimiento.
+\end{itemize}
+
+\subsection{Mantenibilidad}
+
+\begin{itemize}
+  \item Facilitar la incorporación de nuevas funcionalidades sin afectar la estabilidad
+        existente.
+  \item Asegurar que el código esté documentado, modularizado y probado adecuadamente
+        para permitir su evolución futura.
+\end{itemize}
+
+\subsection{Usabilidad}
+
+\begin{itemize}
+  \item Ofrecer una experiencia de usuario fluida, clara y accesible, adaptable a distintos
+        dispositivos.
+  \item Mantener consistencia en la navegación entre módulos, como el panel de control,
+        gestión de planes, dominios y soporte.
+\end{itemize}
+
+\subsection{Confiabilidad}
+
+\begin{itemize}
+  \item Asegurar que todas las funcionalidades del sistema se ejecuten correctamente, sin
+        errores en condiciones normales.
+  \item Disminuir la tasa de fallos críticos mediante un sistema robusto de pruebas
+        automatizadas y revisiones de calidad.
+\end{itemize}
+
+% ============================================================================
+\section{Estándares, métricas y normas aplicadas}
+% ============================================================================
+
+Esta sección define los estándares de desarrollo, normas de calidad y métricas que se han
+usado y se emplearán para evaluar y controlar la calidad del sistema ChibchaWeb a lo largo
+de su ciclo de vida.
+
+\subsection{Estándares de desarrollo}
+
+Para asegurar la coherencia, mantenibilidad y seguridad del código fuente de ChibchaWeb, se
+aplican los siguientes estándares:
+
+\begin{itemize}
+  \item \textbf{PEP8} (Python Enhancement Proposal 8): para el formateo y estilo del código Python.
+  \item \textbf{HTML5 y CSS3}: para garantizar accesibilidad, compatibilidad entre navegadores y
+        estándares actuales del frontend.
+  \item \textbf{Control de versiones con Git}: uso de ramas (branching), commits semánticos y
+        revisión de código por pares.
+\end{itemize}
+
+\subsection{Normas y referencias de calidad}
+
+\begin{itemize}
+  \item \textbf{ISO/IEC 25010}: para la evaluación de la calidad del software con base en atributos
+        como funcionalidad, confiabilidad, usabilidad, eficiencia, mantenibilidad y
+        portabilidad.
+  \item \textbf{IEEE 829 / ISO 29119}: para la planificación y documentación estructurada de
+        pruebas.
+  \item \textbf{ISO/IEC 27001}: lineamientos generales para la seguridad de la información,
+        aplicados a nivel de hosting, respaldos y cifrado de datos.
+\end{itemize}
+
+\subsection{Métricas de calidad}
+
+Estas métricas permitirán cuantificar y supervisar el nivel de calidad alcanzado durante y
+después del desarrollo:
+
+\begin{center}
+\rowcolors{2}{white}{secbg}
+\begin{tabularx}{\textwidth}{>{\raggedright}p{3.5cm} X >{\centering\arraybackslash}p{2.5cm}}
+\toprule
+\textbf{Métrica} & \textbf{Descripción} & \textbf{Umbral aceptable} \\
+\midrule
+Cobertura de pruebas unitarias
+  & Porcentaje del código cubierto por pruebas automáticas
+  & $\geq$ 80\,\% \\
+Tasa de errores por módulo
+  & Número de errores encontrados en cada módulo
+  & $\leq$ 3 por módulo \\
+Tiempo medio de resolución de errores
+  & Tiempo promedio en corregir bugs desde su detección
+  & $<$ 24 horas (críticos) \\
+Tiempo de respuesta del servidor
+  & Promedio de latencia por solicitud HTTP
+  & $\leq$ 2 segundos \\
+Porcentaje de disponibilidad
+  & Tiempo activo de servicio / tiempo total
+  & $\geq$ 99,9\,\% \\
+Satisfacción del usuario (encuestas)
+  & Valoración promedio en encuestas post-uso
+  & $\geq$ 4.0 / 5.0 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+% ============================================================================
+\section{Herramientas y procedimientos de evaluación}
+% ============================================================================
+
+Para asegurar la medición y evaluación efectiva de la calidad del proyecto ChibchaWeb, se
+utilizarán diversas herramientas y procedimientos:
+
+\subsection{Herramientas de evaluación}
+
+\begin{enumerate}
+  \item \textbf{Google PageSpeed:} Para la medición de tiempo de respuesta.
+  \item \textbf{Auditorías de Seguridad:} Se realizan a intervalos semestrales utilizando
+        herramientas especializadas para garantizar la integridad y confidencialidad de los
+        datos como HostedScan. Una vez lanzada la aplicación se comenzará con la primera
+        medición.
+  \item \textbf{Encuestas Anónimas:} Para medir y evaluar la satisfacción del usuario una vez
+        realizado el lanzamiento del sistema.
+\end{enumerate}
+
+\subsection{Procedimientos de evaluación}
+
+\begin{enumerate}
+  \item \textbf{Monitoreo Continuo:} Las métricas de tiempo de respuesta y disponibilidad se
+        medirán y registrarán de forma continua, con informes diarios y semanales
+        respectivamente.
+  \item \textbf{Auditorías de Seguridad:} Se llevarán a cabo auditorías exhaustivas cada seis meses
+        para evaluar y mejorar la seguridad de los datos.
+  \item \textbf{Encuestas de Satisfacción:} Trimestralmente, se realizarán encuestas anónimas a los
+        usuarios para evaluar su satisfacción con el sistema.
+\end{enumerate}
+
+% ============================================================================
+\section{Roles y responsabilidades}
+% ============================================================================
+
+Para garantizar la calidad del software durante el ciclo de vida del proyecto ChibchaWeb, se
+han definido los siguientes roles, cada uno con responsabilidades específicas relacionadas con
+la validación, aseguramiento y mejora continua de la calidad del sistema:
+
+\subsection{Gerente del proyecto / Líder técnico}
+
+\begin{itemize}
+  \item Define y supervisa la ejecución del plan de calidad.
+  \item Asegura que los recursos y tiempos destinados al aseguramiento de calidad sean
+        respetados.
+  \item Evalúa el cumplimiento de los estándares de desarrollo y los objetivos de calidad
+        definidos.
+\end{itemize}
+
+\subsection{Desarrolladores}
+
+\begin{itemize}
+  \item Implementan las funcionalidades del sistema cumpliendo con las buenas prácticas de
+        programación (PEP8, modularidad, control de versiones).
+  \item Ejecutan pruebas unitarias y depuran errores identificados durante el desarrollo.
+  \item Documentan el código y colaboran en la revisión de código entre pares.
+\end{itemize}
+
+\subsection{Desarrollador Tester / Analista de calidad}
+
+\begin{itemize}
+  \item Diseña y ejecuta casos de prueba para validar la funcionalidad, rendimiento y
+        seguridad del sistema.
+  \item Reporta errores encontrados y hace seguimiento hasta su resolución.
+  \item Evalúa la experiencia de usuario y propone mejoras de usabilidad.
+\end{itemize}
+
+\subsection{Desarrollador responsable de soporte y atención al cliente}
+
+\begin{itemize}
+  \item Recibe retroalimentación de los usuarios finales en relación con problemas o
+        sugerencias.
+  \item Clasifica y canaliza los incidentes técnicos al equipo correspondiente.
+  \item Participa en el análisis de satisfacción del cliente, contribuyendo a la mejora continua.
+\end{itemize}
+
+% ============================================================================
+\section{Plan de acción correctiva}
+% ============================================================================
+
+En caso de identificar desviaciones o problemas en las métricas de calidad, se implementará
+un plan de acción correctiva. Este plan incluirá:
+
+\begin{enumerate}
+  \item \textbf{Identificación y Análisis:}
+        El equipo de desarrollo y los responsables de la seguridad y atención al cliente
+        identificarán y analizarán las causas raíz de las desviaciones.
+
+  \item \textbf{Implementación de soluciones:}
+        Una vez identificadas las causas, se implementarán acciones correctivas específicas
+        para abordar y resolver los problemas.
+
+  \item \textbf{Monitoreo y Evaluación Continua:}
+        Se llevará a cabo un seguimiento constante para asegurar que las acciones correctivas
+        hayan solucionado los problemas detectados. Se realizarán ajustes según sea necesario
+        para mantener los estándares de calidad establecidos.
+\end{enumerate}
+
+\end{document}

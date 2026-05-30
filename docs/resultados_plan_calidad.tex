@@ -1,0 +1,292 @@
+% ============================================================================
+%  RESULTADOS DEL PLAN DE CALIDAD — ChibchaWeb
+%  Documento compilable con pdflatex o lualatex
+% ============================================================================
+\documentclass[12pt,a4paper]{article}
+
+% — Codificación y tipografía ------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}
+
+% — Diseño de página ---------------------------------------------------------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{parskip}
+
+% — Tablas y figuras ----------------------------------------------------------
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{array}
+
+% — Colores y resaltado -------------------------------------------------------
+\usepackage[table,dvipsnames]{xcolor}
+\definecolor{secbg}{HTML}{EBF5FB}
+
+% — Hipervínculos y metadatos -------------------------------------------------
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=MidnightBlue,
+  urlcolor=MidnightBlue,
+  pdfauthor={Equipo ChibchaWeb},
+  pdftitle={Resultados del Plan de Calidad — ChibchaWeb},
+}
+
+% — Encabezados y pies de página ----------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{ChibchaWeb}}
+\fancyhead[R]{\small Resultados del Plan de Calidad}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% — Enumeración personalizada -------------------------------------------------
+\usepackage{enumitem}
+
+% ============================================================================
+\begin{document}
+
+% — Portada -------------------------------------------------------------------
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+{\Huge\bfseries Resultados del Plan de Calidad\\[0.4em]
+Proyecto ChibchaWeb\par}
+\vspace{1.5cm}
+{\Large\itshape Medición inicial de métricas de calidad\\tras el despliegue de la aplicación\par}
+\vspace{2cm}
+{\large
+\begin{tabular}{rl}
+\textbf{Proyecto:}   & ChibchaWeb \\
+\textbf{Fecha:}      & 26 de mayo de 2026 \\
+\end{tabular}\par}
+\vspace{1.5cm}
+
+{\large\textbf{Integrantes del equipo}\par}
+\vspace{0.5cm}
+\begin{tabular}{lll}
+\toprule
+\textbf{Nombre y apellidos} & \textbf{Código} & \textbf{Rol en el proyecto} \\
+\midrule
+Juan Carlos Duarte Sandoval & 20212020149 & Desarrollador \\
+Sebastián Alejandro Bernate Guzmán & 20211020121 & Desarrollador \\
+Laura Carina Álvarez Campos & 20212020006 & Product Owner \\
+Johan Andrés Tamara Flautero & 20211020039 & Desarrollador \\
+Laura Daniela Cubillos Escobar & 20211020045 & Product Manager \\
+David Santiago Torres Mendieta & 20211020144 & Analista QA \\
+\bottomrule
+\end{tabular}
+
+\vfill
+{\small Universidad Distrital Francisco José de Caldas}
+\end{titlepage}
+
+% — Índice --------------------------------------------------------------------
+\tableofcontents
+\newpage
+
+% ============================================================================
+\section{Introducción}
+% ============================================================================
+
+Este documento tiene como propósito principal documentar los resultados iniciales del
+proyecto ChibchaWeb, una aplicación integral de gestión de dominios. En un contexto
+amplio, este proyecto se enmarca en la administración de perfiles de clientes, empleados,
+distribuidores, procesamiento de pagos, registros de dominios y brindar soporte técnico.
+
+ChibchaWeb es una plataforma esencial para la gestión y operatividad efectiva de los
+servicios de dominio. Dado su alcance e impacto en las operaciones comerciales, la calidad
+en su desarrollo, mantenimiento y operación es un aspecto crítico para el éxito global del
+proyecto. El entorno de gestión de dominios es intrínsecamente complejo, abarcando desde la
+interacción con usuarios finales hasta las complejidades técnicas de la gestión de registros. La
+amplitud de esta aplicación abarca desde la autenticación y gestión de cuentas hasta la
+implementación de transacciones financieras seguras y confiables.
+
+A la fecha de publicación de este documento ya se ha realizado el despliegue de la aplicación,
+por lo que se realiza una medición inicial de las métricas de calidad establecidos previamente
+en el documento referente al Plan de Calidad en donde se presentan los siguientes objetivos de
+calidad:
+
+\begin{itemize}
+  \item \textbf{Eficiencia del Sistema:} Garantizar un desempeño óptimo para las transacciones y
+        consultas del sistema.
+  \item \textbf{Disponibilidad:} Mantener el sistema disponible en un alto porcentaje del tiempo.
+  \item \textbf{Seguridad de Datos:} Asegurar la integridad y confidencialidad de la información
+        de usuarios y transacciones.
+  \item \textbf{Satisfacción del Usuario:} Velar por una experiencia de usuario satisfactoria y
+        fluida.
+\end{itemize}
+
+Y se espera obtener los siguientes resultados:
+
+\begin{enumerate}
+  \item \textbf{Tiempo de respuesta del sistema:} Se considerará exitoso si se mantiene por debajo
+        de los 2 segundos para la mayoría de las operaciones.
+  \item \textbf{Disponibilidad del sistema:} Se establece un objetivo de disponibilidad del 99,5\,\% en
+        un período de un mes.
+  \item \textbf{Seguridad de los datos:} Se medirá mediante auditorías de seguridad regulares,
+        manteniendo un puntaje superior al 90\,\% en los estándares de seguridad.
+  \item \textbf{Satisfacción del usuario:} Se espera un puntaje promedio de satisfacción superior a
+        4,5 en una escala de 1 a 5.
+\end{enumerate}
+
+% ============================================================================
+\section{Tiempo de respuesta del sistema}
+% ============================================================================
+
+Para medir el tiempo de respuesta del sistema se hizo uso de la herramienta de Google
+PageSpeed (\url{https://pagespeed.web.dev}) y se obtuvieron los siguientes resultados.
+
+Es posible consultar estos resultados en el siguiente enlace:
+\url{https://pagespeed.web.dev/analysis/https-chibchaweb-pythonanywhere-com/1nwakfovb9?form_factor=desktop}
+
+\subsection{Diagnóstico de problemas de rendimiento}
+
+\begin{itemize}
+  \item \textbf{Actuación (Performance):} Este indicador mide la velocidad de carga y rendimiento general
+        del sitio web. Un puntaje alto en este ítem sugiere que el sitio web tiene una carga rápida y
+        eficiente, lo que mejora la experiencia del usuario al navegar por las páginas.
+  \item \textbf{Accesibilidad (Accessibility):} Evalúa la capacidad del sitio web para ser utilizado por
+        personas con discapacidades o dificultades de acceso. Un puntaje alto indica que el sitio
+        cumple con estándares de accesibilidad, facilitando su uso para una amplia gama de usuarios.
+  \item \textbf{Buenas Prácticas (Best Practices):} Este ítem revisa si el sitio sigue las mejores prácticas de
+        desarrollo web y seguridad en línea. Un puntaje perfecto sugiere que el sitio cumple con
+        estándares y normativas de seguridad, optimización y desarrollo web.
+  \item \textbf{SEO (Search Engine Optimization):} Evalúa la optimización del sitio para motores de
+        búsqueda. Un puntaje alto sugiere que el sitio está bien estructurado y optimizado para ser
+        encontrado fácilmente en los resultados de búsqueda.
+\end{itemize}
+
+Los puntajes altos en Actuación, Accesibilidad, Buenas Prácticas y SEO indican que el sitio
+web está bien optimizado en términos de velocidad, accesibilidad, cumplimiento de
+estándares de desarrollo y capacidad para ser indexado por los motores de búsqueda. Estos
+puntajes reflejan un sólido rendimiento del sitio en diferentes aspectos, mejorando la
+experiencia del usuario y la visibilidad en línea.
+
+\subsection{Métricas}
+
+\begin{itemize}
+  \item \textbf{First Contentful Paint:} Es el tiempo que tarda el navegador en mostrar el primer contenido
+        visual en la pantalla después de que se solicita la página. Un valor bajo indica que la página
+        comienza a ser percibida rápidamente por los usuarios.
+  \item \textbf{Renderizado del mayor elemento con contenido:} Mide el tiempo que tarda en cargar el
+        elemento más grande o significativo de la página. Generalmente, se refiere a imágenes,
+        videos o bloques de texto. Un valor bajo aquí indica que la mayor parte del contenido
+        relevante se carga rápidamente.
+  \item \textbf{Total Blocking Time:} Se refiere al tiempo total durante el cual la interactividad de la página
+        está bloqueada para los usuarios debido a tareas de procesamiento de JavaScript. Un valor
+        bajo es deseable ya que minimiza las interrupciones en la interacción del usuario.
+  \item \textbf{Cambios de Diseño Acumulados:} Evalúa la estabilidad visual de la página durante la carga.
+        Indica si los elementos de la página se mueven o cambian de posición mientras se carga, lo
+        cual puede ser molesto para los usuarios. Un valor bajo significa menos cambios inesperados
+        en el diseño.
+  \item \textbf{Speed Index:} Es una métrica que cuantifica qué tan rápido se muestra el contenido visible
+        durante la carga de la página. Un valor bajo indica que el contenido relevante se presenta
+        rápidamente a los usuarios.
+\end{itemize}
+
+Los resultados reflejan una buena velocidad de carga inicial, una interacción sin bloqueos y
+una estabilidad visual adecuada. Sin embargo, mejorar el tiempo de carga del elemento más
+grande puede contribuir a una mejor experiencia de usuario al presentar más rápidamente el
+contenido principal de la página.
+
+\subsection{Diagnósticos}
+
+Estos datos representan las oportunidades identificadas para mejorar el rendimiento y la
+eficiencia de la página web. Cada diagnóstico está acompañado por una estimación del
+ahorro potencial en tiempo de carga, medido en milisegundos, y una estimación de los bytes
+consumidos por actividad medidos en KiB.
+
+\begin{itemize}
+  \item \textbf{Recursos que bloquean el renderizado de la página:} Se recomienda que se muestren los
+        elementos de JavaScript y CSS críticos insertados y se pospongan todos los que no sean
+        esenciales.
+  \item \textbf{Reducir JavaScript no utilizado:} Optimizar el código JavaScript para eliminar el código que
+        no se utiliza puede contribuir a una reducción de 62~KiB en la carga, eliminando recursos
+        innecesarios.
+  \item \textbf{Reducir CSS no utilizado:} Eliminar el código CSS que no se
+        utiliza puede contribuir a ahorrar 58~KiB de carga, mejorando la eficiencia de la página.
+\end{itemize}
+
+Estas oportunidades de mejora, entre otras, ofrecen un potencial significativo para optimizar
+el rendimiento de la página web, reduciendo considerablemente los tiempos de carga y
+mejorando la experiencia general del usuario al acceder al sitio.
+
+% ============================================================================
+\section{Disponibilidad del sistema}
+% ============================================================================
+
+Para medir la disponibilidad del sistema se utilizó UptimeRobot, indicando una
+disponibilidad del 100\,\%, también debido al poco tiempo de monitoreo y al host donde se
+encuentra ubicada la página web, por lo que es necesario realizar más mediciones a futuro.
+
+% ============================================================================
+\section{Seguridad de los datos}
+% ============================================================================
+
+Para medir la seguridad de los datos se utilizó una herramienta gratuita llamada HostedScan.
+Esta plataforma proporciona una evaluación detallada de diversas vulnerabilidades
+potenciales presentes en el entorno del sitio web.
+
+Los resultados obtenidos reflejan un entorno seguro, sin vulnerabilidades críticas ni de alto
+riesgo. En total se detectaron 9 riesgos clasificados de la siguiente manera:
+
+\begin{itemize}
+  \item \textbf{Riesgos Críticos:} 0
+  \item \textbf{Riesgos Altos:} 0
+  \item \textbf{Riesgos Medios:} 2
+  \item \textbf{Riesgos Bajos:} 7
+  \item \textbf{Riesgos Aceptados o Cerrados:} 0
+\end{itemize}
+
+Entre las observaciones destacadas se encuentran configuraciones de seguridad HTTP no
+establecidas, tales como la ausencia de la cabecera ``Strict-Transport-Security'' y la cabecera
+``Content Security Policy (CSP)'', así como cookies sin el atributo ``SameSite''. Si bien estas
+observaciones no representan una amenaza inmediata, deben ser tratadas con prioridad para
+fortalecer la protección ante ataques del tipo \textit{man-in-the-middle}, \textit{cross-site scripting} (XSS)
+o CSRF (\textit{Cross-Site Request Forgery}).
+
+Este resultado evidencia que, si bien la plataforma no presenta vulnerabilidades severas, es
+necesario continuar con la implementación de políticas de seguridad, actualización de
+configuraciones de cabeceras HTTP, y fortalecimiento de las buenas prácticas de desarrollo
+seguro.
+
+% ============================================================================
+\section{Satisfacción del usuario}
+% ============================================================================
+
+Para medir la satisfacción de los usuarios se realizó una encuesta en línea con 5 preguntas y se
+les solicitó que indicaran en una escala del 1 al 5 qué tan satisfechos se encontraban con cada
+uno de los ítems mencionados. Las preguntas realizadas y sus resultados son:
+
+\begin{enumerate}
+  \item \textbf{Experiencia de Navegación y Usabilidad:} Facilidad de uso para acceder y navegar
+        por la plataforma. \textbf{Promedio: 5,0}
+  \item \textbf{Rendimiento y Velocidad:} Rapidez en el acceso a las funcionalidades. \textbf{Promedio: 4,6}
+  \item \textbf{Atención al Cliente:} Eficacia y calidad de la asistencia brindada por el equipo.
+        \textbf{Promedio: 4,6}
+  \item \textbf{Seguridad y Confidencialidad:} Percepción sobre la seguridad de los datos
+        proporcionados. \textbf{Promedio: 4,8}
+  \item \textbf{Cumplimiento de Expectativas:} En qué medida ChibchaWeb ha cumplido con las
+        expectativas del usuario. \textbf{Promedio: 4,8}
+\end{enumerate}
+
+% ============================================================================
+\section{Conclusiones}
+% ============================================================================
+
+\begin{itemize}
+  \item Se obtuvo un tiempo de respuesta de 98/100, lo que indica una buena respuesta.
+  \item En cuanto a la seguridad de los datos, no se tienen riesgos críticos o altos, por lo que se
+        cumple con la métrica de calidad; sin embargo, hay que tener en cuenta los riesgos bajos y
+        medios obtenidos para mejorar la seguridad de la plataforma.
+  \item Se obtuvo una puntuación total promedio de 4,76 en cuanto a la satisfacción del usuario, lo
+        que cumple con las métricas de calidad planteadas en un inicio.
+  \item La disponibilidad es del 100\,\%, cumpliendo con lo esperado.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,145 @@
+%% Arquitectura Frontend - ChibchaWeb
+%% Diagrama de templates, herencia, portales y archivos estáticos
+
+flowchart TB
+    subgraph TemplateEngine["Motor de Templates Django"]
+        direction TB
+        BaseTemplate["base.html<br/>─────────────────<br/>• Bootstrap 5.1.3<br/>• Bootstrap Icons<br/>• Font Awesome 6<br/>• Chart.js<br/>• chibcha-theme.css<br/>• Modo oscuro<br/>• Selector de idioma<br/>• Bloque: content"]
+    end
+
+    subgraph Portales["Portales de Usuario"]
+        subgraph PortalCliente["Portal Cliente"]
+            PC1["home_clientes.html"]
+            PC2["perfil.html"]
+            PC3["registro.html"]
+            PC4["editar.html"]
+            PC5["mis_hosts.html"]
+            PC6["quiero_ser_distribuidor.html"]
+            PC7["activacion_exitosa.html"]
+            PC8["activacion_fallida.html"]
+            PC9["base_clientes.html"]
+        end
+
+        subgraph PortalEmpleado["Portal Empleado"]
+            PE1["logEmpleados.html"]
+            PE2["supervisor_dashboard.html"]
+            PE3["agente_dashboard.html"]
+            PE4["mis_tickets.html"]
+        end
+
+        subgraph PortalAdmin["Portal Administrador"]
+            PA0["administradores/base.html"]
+            PA1["administradores/login.html"]
+            PA2["administradores/dashboard.html"]
+            PA3["administradores/gestionar_usuarios.html"]
+            PA4["administradores/crear_usuario.html"]
+            PA5["administradores/editar_usuario.html"]
+            PA6["administradores/estadisticas_pagos.html"]
+            PA7["administradores/estadisticas_usuarios.html"]
+            PA8["administradores/confirmar_eliminacion.html"]
+        end
+
+        subgraph PortalDistribuidor["Portal Distribuidor"]
+            PD1["distribuidores/dashboard.html"]
+            PD2["distribuidores/mis_paquetes.html"]
+        end
+    end
+
+    subgraph PaginasPago["Páginas de Pago"]
+        PP1["seleccionar_plan.html"]
+        PP2["seleccionar_direccion_tarjeta.html"]
+        PP3["registrar_direccion.html"]
+        PP4["registrar_tarjeta.html"]
+        PP5["resumen_pago.html"]
+        PP6["confirmacion_pago.html"]
+        PP7["seleccionar_paquete.html"]
+        PP8["resumen_pago_paquetes.html"]
+        PP9["confirmacion_pago_paquetes.html"]
+    end
+
+    subgraph PaginasTickets["Páginas de Tickets"]
+        PT1["crear_ticket.html"]
+        PT2["tickets_cliente.html"]
+    end
+
+    subgraph PaginasDominios["Páginas de Dominios"]
+        PDomin1["agregar_dominio.html"]
+        PDomin2["verificar_url.html"]
+    end
+
+    subgraph PaginasGlobales["Páginas Globales"]
+        PG1["login.html"]
+        PG2["exitologin.html"]
+        PG3["informacion.html<br/>(Landing Page)"]
+        PG4["components/language_selector.html"]
+    end
+
+    subgraph StaticFiles["Archivos Estáticos"]
+        subgraph CSSGlobal["CSS Global (ChibchaWeb/static/)"]
+            CSS1["styles/chibcha-theme.css"]
+            CSS2["styles/distributor-styles.css"]
+        end
+
+        subgraph CSSApps["CSS por App"]
+            CSS3["Administradores/static/styles/<br/>admin-chibcha.css"]
+            CSS4["Empleados/static/styles/<br/>supervisor_dashboard.css"]
+            CSS5["Empleados/static/styles/<br/>agente_dashboard.css"]
+            CSS6["Empleados/static/styles/<br/>logEmpleados.css"]
+            CSS7["Pagos/static/css/<br/>payment-system.css"]
+            CSS8["Pagos/static/css/<br/>distributor-styles.css"]
+        end
+
+        subgraph JSApps["JavaScript por App"]
+            JS1["Empleados/static/js/<br/>supervisor_dashboard.js"]
+            JS2["Empleados/static/js/<br/>agente_dashboard.js"]
+            JS3["Pagos/static/js/<br/>payment-system.js"]
+        end
+    end
+
+    subgraph CrispyForms["Crispy Forms"]
+        CF["crispy_forms +<br/>crispy_bootstrap5<br/>─────────────────<br/>Renderizado automático<br/>de formularios Django<br/>con estilos Bootstrap 5"]
+    end
+
+    subgraph Internacionalizacion["Internacionalización (i18n)"]
+        I18N["Idiomas: ES | EN | PT<br/>─────────────────<br/>locale/en/django.po<br/>locale/pt/django.po<br/>─────────────────<br/>{% load i18n %}<br/>{% trans 'texto' %}"]
+    end
+
+    %% Herencia de templates
+    BaseTemplate -->|"extends"| PC9
+    BaseTemplate -->|"extends"| PA0
+    BaseTemplate -->|"extends"| PG1 & PG2 & PG3
+    BaseTemplate -->|"extends"| PP1 & PP2 & PP3 & PP4 & PP5
+    BaseTemplate -->|"extends"| PE1 & PE2 & PE3 & PE4
+
+    PC9 -->|"extends"| PC1 & PC2 & PC3 & PC4 & PC5 & PC6
+    PA0 -->|"extends"| PA1 & PA2 & PA3 & PA4 & PA5 & PA6 & PA7
+
+    %% Archivos estáticos
+    BaseTemplate -.->|"incluye"| CSS1
+    PE2 -.-> CSS4 & JS1
+    PE3 -.-> CSS5 & JS2
+    PA0 -.-> CSS3
+    PP1 -.-> CSS7 & JS3
+
+    %% Crispy Forms
+    CF -.->|"renderiza forms"| PC3 & PP3 & PP4 & PA4
+
+    %% i18n
+    I18N -.->|"traducciones"| BaseTemplate
+    PG4 -.->|"include"| BaseTemplate
+
+    %% Estilos
+    classDef baseStyle fill:#E3F2FD,stroke:#0D47A1,stroke-width:2px
+    classDef portalStyle fill:#E8F5E9,stroke:#1B5E20,stroke-width:1px
+    classDef pagoStyle fill:#FFF3E0,stroke:#E65100,stroke-width:1px
+    classDef staticStyle fill:#F3E5F5,stroke:#4A148C,stroke-width:1px
+    classDef crispyStyle fill:#FFF9C4,stroke:#F57F17,stroke-width:1px
+
+    class BaseTemplate baseStyle
+    class PC1,PC2,PC3,PC4,PC5,PC6,PC7,PC8,PC9 portalStyle
+    class PE1,PE2,PE3,PE4 portalStyle
+    class PA0,PA1,PA2,PA3,PA4,PA5,PA6,PA7,PA8 portalStyle
+    class PD1,PD2 portalStyle
+    class PP1,PP2,PP3,PP4,PP5,PP6,PP7,PP8,PP9 pagoStyle
+    class CSS1,CSS2,CSS3,CSS4,CSS5,CSS6,CSS7,CSS8,JS1,JS2,JS3 staticStyle
+    class CF crispyStyle

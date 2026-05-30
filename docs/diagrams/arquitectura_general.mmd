@@ -1,0 +1,66 @@
+%% Arquitectura General del Sistema - ChibchaWeb
+%% Diagrama de componentes de alto nivel
+
+flowchart TB
+    subgraph Cliente["🌐 Cliente (Navegador)"]
+        Browser["Navegador Web<br/>HTML5 / Bootstrap 5"]
+    end
+
+    subgraph Servidor["🖥️ Servidor de Aplicación"]
+        subgraph DjangoApp["Aplicación Django 5.2"]
+            WSGI["WSGI Application<br/>(wsgi.py)"]
+            Middleware["Stack de Middleware<br/>Security | Session | Locale<br/>CSRF | Auth | Messages"]
+            URLRouter["URL Router<br/>(ChibchaWeb/urls.py)"]
+            Views["Vistas<br/>(Views/CBV/FBV)"]
+            Templates["Motor de Templates<br/>Django Template Engine"]
+            Models["Capa de Modelos<br/>(ORM Django)"]
+            Decorators["Capa de Permisos<br/>(decorators.py)"]
+            Signals["Señales Django<br/>(signals.py)"]
+            Forms["Formularios<br/>(Crispy Forms + Bootstrap5)"]
+        end
+
+        StaticFiles["Archivos Estáticos<br/>CSS / JS / Imágenes<br/>(staticfiles)"]
+    end
+
+    subgraph BaseDatos["💾 Base de Datos"]
+        SQLite["SQLite3<br/>(Desarrollo)"]
+        PostgreSQL["PostgreSQL<br/>(Producción)"]
+    end
+
+    subgraph Servicios["📧 Servicios Externos"]
+        Email["Servicio de Email<br/>SMTP Gmail<br/>(puerto 587 / TLS)"]
+    end
+
+    subgraph i18n["🌍 Internacionalización"]
+        Locale["Locale Files<br/>ES | EN | PT"]
+    end
+
+    %% Conexiones principales
+    Browser -->|"HTTP/HTTPS<br/>Requests"| WSGI
+    WSGI --> Middleware
+    Middleware --> URLRouter
+    URLRouter --> Decorators
+    Decorators --> Views
+    Views --> Templates
+    Views --> Models
+    Views --> Forms
+    Models --> SQLite
+    Models --> PostgreSQL
+    Templates --> StaticFiles
+    Views -->|"Envío de correos<br/>(activación, notificaciones)"| Email
+    Templates --> i18n
+    Locale --> i18n
+
+    %% Flujos internos
+    Signals -.->|"post_save<br/>Cliente → Distribuidor"| Models
+
+    %% Estilos
+    classDef clienteStyle fill:#E3F2FD,stroke:#1565C0,stroke-width:2px
+    classDef serverStyle fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px
+    classDef dbStyle fill:#FFF3E0,stroke:#E65100,stroke-width:2px
+    classDef serviceStyle fill:#FCE4EC,stroke:#C62828,stroke-width:2px
+
+    class Browser clienteStyle
+    class WSGI,Middleware,URLRouter,Views,Templates,Models,Decorators,Signals,Forms serverStyle
+    class SQLite,PostgreSQL dbStyle
+    class Email serviceStyle

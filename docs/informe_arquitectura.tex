@@ -1,0 +1,895 @@
+\documentclass[12pt, a4paper]{article}
+
+% ─── Paquetes ────────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{caption}
+
+% ─── Colores personalizados ──────────────────────────────────────────────────
+\definecolor{chibchablue}{RGB}{13, 71, 161}
+\definecolor{chibchagreen}{RGB}{27, 94, 32}
+\definecolor{chibchaorange}{RGB}{230, 81, 0}
+\definecolor{codebg}{RGB}{245, 245, 245}
+\definecolor{codeframe}{RGB}{200, 200, 200}
+\definecolor{keyword}{RGB}{0, 0, 180}
+\definecolor{string}{RGB}{0, 128, 0}
+\definecolor{comment}{RGB}{128, 128, 128}
+
+% ─── Configuración de hyperref ───────────────────────────────────────────────
+\hypersetup{
+    colorlinks=true,
+    linkcolor=chibchablue,
+    urlcolor=chibchablue,
+    citecolor=chibchablue,
+    pdftitle={Informe de Arquitectura y Buenas Prácticas - ChibchaWeb},
+    pdfauthor={Equipo ChibchaWeb}
+}
+
+% ─── Configuración de listings ───────────────────────────────────────────────
+\lstset{
+    backgroundcolor=\color{codebg},
+    frame=single,
+    rulecolor=\color{codeframe},
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{keyword}\bfseries,
+    stringstyle=\color{string},
+    commentstyle=\color{comment}\itshape,
+    breaklines=true,
+    breakatwhitespace=false,
+    numbers=left,
+    numberstyle=\tiny\color{comment},
+    numbersep=8pt,
+    tabsize=4,
+    showstringspaces=false,
+    captionpos=b,
+    aboveskip=1em,
+    belowskip=1em,
+    xleftmargin=1.5em,
+    framexleftmargin=1.5em,
+    literate=
+        {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+        {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+        {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1
+}
+
+\lstdefinelanguage{Python}{
+    keywords={def, class, return, if, elif, else, for, while, import, from, try, except, with, as, True, False, None, not, and, or, in, is, raise, pass, lambda, yield, assert, finally, global, nonlocal, del, break, continue},
+    morekeywords={self, request, models, objects, get, create, filter, all, exists, save, delete, redirect, render, messages, wraps},
+    morestring=[b]",
+    morestring=[b]',
+    morestring=[s]{"""}{"""},
+    morestring=[s]{'''}{'''},
+    morecomment=[l]{\#},
+    sensitive=true,
+}
+
+% ─── Encabezados y pies de página ────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{chibchablue}{ChibchaWeb --- Informe de Arquitectura}}
+\fancyhead[R]{\small\textcolor{chibchablue}{\thepage}}
+\fancyfoot[C]{\small\textcolor{comment}{Universidad Distrital Francisco José de Caldas}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ─── Formato de secciones ────────────────────────────────────────────────────
+\titleformat{\section}
+    {\Large\bfseries\color{chibchablue}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}
+    {\large\bfseries\color{chibchagreen}}{\thesubsection.}{0.5em}{}
+\titleformat{\subsubsection}
+    {\normalsize\bfseries\color{chibchaorange}}{\thesubsubsection.}{0.5em}{}
+
+% ═════════════════════════════════════════════════════════════════════════════
+% DOCUMENTO
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+% ─── PORTADA ─────────────────────────────────────────────────────────────────
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+
+    {\Huge\bfseries\textcolor{chibchablue}{Informe de Arquitectura y\\[0.3em] Buenas Prácticas}}\\[1.5em]
+    {\LARGE\textcolor{chibchagreen}{ChibchaWeb}}\\[0.5em]
+    {\large Plataforma de Web Hosting}\\[3em]
+
+    \rule{\textwidth}{1pt}\\[2em]
+
+    {\large\textbf{Equipo de Desarrollo}}\\[1.5em]
+
+    \begin{tabular}{l c l}
+        \toprule
+        \textbf{Nombre} & \textbf{Código} & \textbf{Rol} \\
+        \midrule
+        Juan Carlos Duarte Sandoval & 20212020149 & Desarrollador \\
+        Sebastián Alejandro Bernate Guzmán & 20211020121 & Desarrollador \\
+        Laura Carina Álvarez Campos & 20212020006 & Product Owner \\
+        Johan Andrés Tamara Flautero & 20211020039 & Desarrollador \\
+        Laura Daniela Cubillos Escobar & 20211020045 & Product Manager \\
+        David Santiago Torres Mendieta & 20211020144 & Analista QA \\
+        \bottomrule
+    \end{tabular}
+
+    \vfill
+
+    {\large 26 de mayo de 2026}\\[1em]
+    {\normalsize Universidad Distrital Francisco José de Caldas}
+
+\end{titlepage}
+
+% ─── TABLA DE CONTENIDOS ─────────────────────────────────────────────────────
+\newpage
+\tableofcontents
+\newpage
+
+% ═════════════════════════════════════════════════════════════════════════════
+% 1. INTRODUCCIÓN
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Introducción}
+
+\textbf{ChibchaWeb} es una plataforma de web hosting desarrollada con el framework \textbf{Django 5.2} que permite a clientes adquirir planes de alojamiento web, gestionar dominios, realizar pagos y recibir soporte técnico a través de un sistema de tickets. La plataforma soporta múltiples roles de usuario ---clientes, distribuidores, empleados (supervisores y agentes) y administradores--- cada uno con su propio portal y conjunto de permisos.
+
+El sistema se ha diseñado siguiendo principios de arquitectura limpia y buenas prácticas de desarrollo de software, incluyendo separación de responsabilidades a nivel de aplicaciones Django, un sistema robusto de autorización basado en decoradores, internacionalización en tres idiomas (español, inglés y portugués), y una propuesta de escalabilidad horizontal mediante Docker Swarm.
+
+El presente informe describe en detalle la arquitectura del sistema, sus componentes principales, las decisiones de diseño adoptadas y las buenas prácticas implementadas a lo largo del desarrollo del proyecto. Para cada sección se hace referencia a los diagramas Mermaid ubicados en el directorio \texttt{docs/diagrams/} del repositorio.
+
+% ═════════════════════════════════════════════════════════════════════════════
+% 2. ARQUITECTURA GENERAL DEL SISTEMA
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Arquitectura General del Sistema}
+\label{sec:arq-general}
+
+La arquitectura de ChibchaWeb sigue el patrón clásico de una aplicación web monolítica basada en Django, con una clara separación entre las capas de presentación, lógica de negocio y persistencia de datos. El diagrama completo puede consultarse en \texttt{docs/diagrams/arquitectura\_general.mmd}.
+
+\subsection{Componentes de Alto Nivel}
+
+El sistema se compone de los siguientes elementos fundamentales:
+
+\begin{description}[style=nextline]
+    \item[Cliente (Navegador Web)]
+    Los usuarios acceden a la plataforma mediante un navegador web estándar. La interfaz se construye con HTML5 y Bootstrap 5.1.3, proporcionando un diseño responsivo y accesible. Se incluyen además Bootstrap Icons, Font Awesome 6 y Chart.js para gráficos estadísticos.
+
+    \item[Aplicación Django 5.2]
+    El núcleo del sistema es una aplicación Django que procesa las solicitudes HTTP a través de un stack de middleware bien definido, un enrutador de URLs centralizado, una capa de permisos basada en decoradores, vistas (tanto FBV como CBV), el motor de templates de Django y la capa de modelos ORM.
+
+    \item[WSGI Application]
+    La interfaz entre el servidor web y Django se realiza a través del protocolo WSGI, definido en \texttt{ChibchaWeb/wsgi.py}. En producción se utiliza Gunicorn como servidor WSGI con múltiples workers.
+
+    \item[Base de Datos]
+    El sistema soporta dos motores de base de datos:
+    \begin{itemize}
+        \item \textbf{SQLite3} para el entorno de desarrollo local.
+        \item \textbf{PostgreSQL} para el entorno de producción, proporcionando rendimiento, concurrencia y fiabilidad superiores.
+    \end{itemize}
+
+    \item[Archivos Estáticos]
+    Los archivos CSS, JavaScript e imágenes se gestionan mediante el sistema \texttt{staticfiles} de Django. El finder \texttt{AppDirectoriesFinder} permite que cada aplicación mantenga sus propios recursos estáticos organizados localmente.
+
+    \item[Servicio de Email]
+    El sistema integra envío de correos electrónicos a través de SMTP Gmail (puerto 587 con TLS) para funcionalidades como activación de cuentas y notificaciones.
+
+    \item[Internacionalización]
+    Se implementa soporte completo para tres idiomas (español, inglés y portugués) mediante los archivos de localización ubicados en el directorio \texttt{locale/}.
+\end{description}
+
+\subsection{Flujo de una Solicitud HTTP}
+
+El recorrido de una solicitud HTTP a través del sistema sigue este orden:
+
+\begin{enumerate}
+    \item El navegador envía una solicitud HTTP/HTTPS al servidor.
+    \item La solicitud ingresa a la aplicación WSGI.
+    \item Atraviesa el \textbf{stack de middleware} (seguridad, sesión, locale, CSRF, autenticación, mensajes, X-Frame-Options).
+    \item El \textbf{URL Router} (\texttt{ChibchaWeb/urls.py}) determina la vista correspondiente.
+    \item La \textbf{capa de permisos} (decoradores) verifica la autorización del usuario.
+    \item La \textbf{vista} procesa la lógica de negocio, interactúa con los modelos y genera la respuesta.
+    \item El \textbf{motor de templates} renderiza el HTML con los datos contextuales.
+    \item La respuesta se envía de vuelta al navegador.
+\end{enumerate}
+
+% ═════════════════════════════════════════════════════════════════════════════
+% 3. ARQUITECTURA DEL BACKEND
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Arquitectura del Backend}
+\label{sec:arq-backend}
+
+La arquitectura del backend se organiza en múltiples aplicaciones Django independientes, cada una con responsabilidades claramente definidas. El diagrama detallado se encuentra en \texttt{docs/diagrams/arquitectura\_backend.mmd}.
+
+\subsection{Stack de Middleware}
+
+Django procesa cada solicitud a través de una cadena ordenada de middleware. El orden es crítico, ya que cada componente depende del procesamiento previo:
+
+\begin{enumerate}
+    \item \texttt{SecurityMiddleware} --- Cabeceras de seguridad HTTP (HSTS, Content-Type sniffing).
+    \item \texttt{SessionMiddleware} --- Gestión de sesiones de usuario.
+    \item \texttt{LocaleMiddleware} --- Detección y aplicación del idioma preferido.
+    \item \texttt{CommonMiddleware} --- Normalización de URLs (trailing slashes, redirects).
+    \item \texttt{CsrfViewMiddleware} --- Protección contra ataques Cross-Site Request Forgery.
+    \item \texttt{AuthenticationMiddleware} --- Asociación del usuario autenticado al request.
+    \item \texttt{MessageMiddleware} --- Sistema de mensajes flash entre vistas.
+    \item \texttt{XFrameOptionsMiddleware} --- Protección contra clickjacking.
+\end{enumerate}
+
+La configuración del middleware se define en \texttt{settings.py}:
+
+\begin{lstlisting}[language=Python, caption={Stack de Middleware en settings.py}]
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+\end{lstlisting}
+
+\subsection{Aplicaciones Django}
+
+El proyecto se estructura en siete aplicaciones principales, cada una encapsulando un dominio funcional del negocio:
+
+\begin{table}[h]
+\centering
+\caption{Aplicaciones Django y sus responsabilidades}
+\begin{tabularx}{\textwidth}{l X}
+    \toprule
+    \textbf{Aplicación} & \textbf{Responsabilidad} \\
+    \midrule
+    \texttt{Clientes} & Registro, autenticación, perfiles de usuario, activación de cuenta por email, gestión de datos personales. \\
+    \texttt{Pagos} & Selección de planes (Plata, Platino, Oro), registro de direcciones y tarjetas, procesamiento de pagos, compra de paquetes para distribuidores. \\
+    \texttt{Empleados} & Login de empleados, dashboards de supervisor y agente, gestión y escalamiento de tickets. \\
+    \texttt{Tickets} & Creación de tickets de soporte por clientes, visualización del historial. \\
+    \texttt{Distribuidor} & Dashboard de distribuidor, gestión de paquetes de páginas para reventa. \\
+    \texttt{Dominios} & Verificación de URL, agregar y eliminar dominios asociados al plan del cliente. \\
+    \texttt{Administradores} & Dashboard administrativo, gestión de usuarios, estadísticas, exportación de reportes (CSV, Excel, PDF), API de gráficos. \\
+    \bottomrule
+\end{tabularx}
+\end{table}
+
+La configuración de las aplicaciones instaladas refleja esta estructura:
+
+\begin{lstlisting}[language=Python, caption={INSTALLED\_APPS en settings.py}]
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'Clientes',
+    'Pagos',
+    'Administradores',
+    'Empleados',
+    'Tickets.apps.TicketsConfig',
+    'Distribuidor',
+    'Dominios',
+]
+\end{lstlisting}
+
+\subsection{Sistema de Autorización Basado en Decoradores}
+\label{subsec:decorators}
+
+Una de las decisiones arquitectónicas más relevantes del proyecto es la implementación de un sistema de autorización centralizado mediante \textbf{decoradores Python}. Estos decoradores se definen en \texttt{ChibchaWeb/decorators.py} y proporcionan control de acceso granular basado en roles.
+
+Se implementan los siguientes decoradores:
+
+\begin{description}
+    \item[\texttt{@cliente\_required}] Verifica que el usuario autenticado posea un perfil de \texttt{Cliente}. Inyecta el objeto \texttt{cliente} en el \texttt{request} para uso directo en la vista.
+    \item[\texttt{@distribuidor\_required}] Extiende la verificación de cliente para confirmar que además posee el rol de distribuidor (\texttt{es\_distribuidor=True}).
+    \item[\texttt{@empleado\_required}] Verifica que el usuario sea un \texttt{Empleado} activo.
+    \item[\texttt{@supervisor\_required}] Verifica que el empleado tenga el rol de ``supervisor''.
+    \item[\texttt{@agente\_required}] Verifica que el empleado tenga el rol de ``agente''.
+    \item[\texttt{@administrador\_required}] Verifica que el usuario sea un \texttt{Administrador} activo. Además, actualiza automáticamente el campo \texttt{ultimo\_acceso}.
+    \item[\texttt{@admin\_permission\_required(campo)}] Decorador parametrizado que verifica permisos granulares del administrador (e.g., \texttt{puede\_gestionar\_usuarios}, \texttt{puede\_ver\_estadisticas}).
+\end{description}
+
+A continuación se muestra un ejemplo representativo del patrón de implementación:
+
+\begin{lstlisting}[language=Python, caption={Decorador @cliente\_required (ChibchaWeb/decorators.py)}]
+def cliente_required(view_func):
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.warning(request,
+                "Debes iniciar sesión para acceder.")
+            return redirect('login')
+        try:
+            cliente = Cliente.objects.get(user=request.user)
+            request.cliente = cliente
+            return view_func(request, *args, **kwargs)
+        except Cliente.DoesNotExist:
+            messages.error(request,
+                "No tienes permisos de cliente.")
+            return redirect('login')
+    return wrapper
+\end{lstlisting}
+
+Este patrón ofrece varias ventajas:
+\begin{itemize}
+    \item \textbf{Reutilización}: un solo decorador protege múltiples vistas sin duplicar código.
+    \item \textbf{Inyección de contexto}: el objeto del perfil se adjunta al \texttt{request}, eliminando consultas redundantes en las vistas.
+    \item \textbf{Mensajes informativos}: cada fallo de autorización produce un mensaje claro para el usuario.
+    \item \textbf{Composición}: los decoradores pueden combinarse, por ejemplo \texttt{@login\_required} + \texttt{@distribuidor\_required}.
+\end{itemize}
+
+\subsection{Enrutamiento URL}
+\label{subsec:urls}
+
+El enrutamiento centralizado en \texttt{ChibchaWeb/urls.py} distribuye las solicitudes a cada aplicación mediante \texttt{include()}, siguiendo el principio de responsabilidad única:
+
+\begin{lstlisting}[language=Python, caption={Enrutamiento principal (ChibchaWeb/urls.py)}]
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('Clientes/', include('Clientes.urls')),
+    path('pagos/', include('Pagos.urls')),
+    path('empleados/', include('Empleados.urls')),
+    path('tickets/', include('Tickets.urls',
+        namespace='tickets')),
+    path('distribuidor/', include('Distribuidor.urls',
+        namespace='distribuidores')),
+    path('dominios/', include('Dominios.urls',
+        namespace='dominios')),
+    path('administradores/', include('Administradores.urls')),
+    path('i18n/', include('django.conf.urls.i18n')),
+]
+\end{lstlisting}
+
+Cada aplicación define su propio archivo \texttt{urls.py} con \texttt{app\_name} para namespacing, lo que evita colisiones de nombres y permite referencias inversas limpias como \texttt{pagos:seleccionar\_plan} o \texttt{tickets:crear\_ticket}.
+
+\subsection{Sistema de Señales (Signals)}
+\label{subsec:signals}
+
+Django Signals se utiliza para automatizar la creación de perfiles relacionados. Cuando un cliente marca la opción \texttt{es\_distribuidor}, una señal \texttt{post\_save} crea automáticamente el perfil de \texttt{Distribuidor} asociado:
+
+\begin{lstlisting}[language=Python, caption={Signal para creación automática de distribuidor (Clientes/signals.py)}]
+@receiver(post_save, sender=Cliente)
+def crear_distribuidor_si_corresponde(sender, instance,
+                                       created, **kwargs):
+    if instance.es_distribuidor:
+        if not hasattr(instance, 'perfil_distribuidor'):
+            Distribuidor.objects.create(cliente=instance)
+            if not instance.user.is_staff:
+                instance.user.is_staff = True
+                instance.user.save()
+\end{lstlisting}
+
+Este enfoque desacopla la lógica de creación del distribuidor de las vistas y formularios, garantizando la consistencia de los datos independientemente del punto de entrada (vista, admin, shell, migración).
+
+\subsection{Context Processors}
+
+El sistema implementa un context processor personalizado que inyecta automáticamente el objeto \texttt{Cliente} en todos los templates cuando el usuario está autenticado:
+
+\begin{lstlisting}[language=Python, caption={Context processor (Clientes/context\_processors.py)}]
+def cliente_context(request):
+    if request.user.is_authenticated:
+        try:
+            return {'cliente': request.user.cliente}
+        except:
+            return {}
+    return {}
+\end{lstlisting}
+
+Esto permite acceder a los datos del cliente en cualquier template sin necesidad de pasarlo explícitamente desde cada vista, reduciendo la duplicación de código.
+
+\subsection{Validación del Dominio de Negocio}
+\label{subsec:validators}
+
+El módulo \texttt{Pagos/validators.py} implementa validaciones específicas del dominio de negocio:
+
+\begin{itemize}
+    \item \textbf{Validación de tarjetas de crédito}: verifica que el número contenga solo dígitos, tenga entre 14 y 19 caracteres, y corresponda a una franquicia permitida (VISA, MasterCard o Diners Club) mediante análisis del prefijo BIN.
+    \item \textbf{Validación de direcciones por país}: un diccionario de funciones validadoras (\texttt{VALIDADORES\_DIRECCIONES}) aplica expresiones regulares específicas según el formato de dirección del país (Colombia, Ecuador, Perú).
+\end{itemize}
+
+\begin{lstlisting}[language=Python, caption={Validadores de direcciones por país}]
+VALIDADORES_DIRECCIONES = {
+    'colombia': validar_direccion_colombia,
+    'ecuador': validar_direccion_ecuador,
+    'peru': validar_direccion_peru,
+}
+\end{lstlisting}
+
+Este patrón de \textit{strategy} permite agregar nuevos países sin modificar el código existente, cumpliendo con el principio Open/Closed de SOLID.
+
+% ═════════════════════════════════════════════════════════════════════════════
+% 4. ARQUITECTURA DEL FRONTEND
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Arquitectura del Frontend}
+\label{sec:arq-frontend}
+
+El frontend de ChibchaWeb se basa en el motor de templates de Django con herencia jerárquica de plantillas y Bootstrap 5 como framework CSS. El diagrama completo se encuentra en \texttt{docs/diagrams/arquitectura\_frontend.mmd}.
+
+\subsection{Herencia de Templates}
+
+La arquitectura de templates sigue un patrón jerárquico de herencia que maximiza la reutilización:
+
+\begin{description}
+    \item[\texttt{base.html}] Template raíz que define la estructura global del sitio:
+    \begin{itemize}
+        \item Carga de Bootstrap 5.1.3, Bootstrap Icons, Font Awesome 6 y Chart.js.
+        \item Hoja de estilos global \texttt{chibcha-theme.css}.
+        \item Soporte para modo oscuro.
+        \item Selector de idioma integrado.
+        \item Bloque \texttt{content} que las páginas hijas sobreescriben.
+    \end{itemize}
+
+    \item[\texttt{base\_clientes.html}] Template intermedio para el portal de clientes que extiende \texttt{base.html} y agrega navegación específica para clientes.
+
+    \item[\texttt{administradores/base.html}] Template intermedio para el portal de administración con su propia estructura de navegación y estilos (\texttt{admin-chibcha.css}).
+\end{description}
+
+\subsection{Portales de Usuario}
+
+La plataforma implementa cuatro portales diferenciados, cada uno con su propio conjunto de templates y estilos:
+
+\subsubsection{Portal del Cliente}
+Incluye las siguientes páginas: \texttt{home\_clientes}, \texttt{perfil}, \texttt{registro}, \texttt{editar}, \texttt{mis\_hosts}, \texttt{quiero\_ser\_distribuidor}, \texttt{activacion\_exitosa} y \texttt{activacion\_fallida}. Todas extienden de \texttt{base\_clientes.html}.
+
+\subsubsection{Portal del Empleado}
+Cuenta con: \texttt{logEmpleados} (login), \texttt{supervisor\_dashboard}, \texttt{agente\_dashboard} y \texttt{mis\_tickets}. Cada dashboard incluye sus propios archivos CSS y JavaScript específicos para gráficos y tablas interactivas.
+
+\subsubsection{Portal del Administrador}
+Incluye: \texttt{login}, \texttt{dashboard}, \texttt{gestionar\_usuarios}, \texttt{crear\_usuario}, \texttt{editar\_usuario}, \texttt{estadisticas\_pagos}, \texttt{estadisticas\_usuarios} y \texttt{confirmar\_eliminacion}. Todas extienden de \texttt{administradores/base.html}.
+
+\subsubsection{Portal del Distribuidor}
+Compuesto por: \texttt{dashboard} y \texttt{mis\_paquetes}, con estilos dedicados para la gestión de paquetes de reventa.
+
+\subsection{Páginas de Proceso de Pago}
+
+El flujo de pago comprende una serie de páginas secuenciales:
+\begin{enumerate}
+    \item \texttt{seleccionar\_plan.html} --- Presentación de los planes disponibles.
+    \item \texttt{seleccionar\_direccion\_tarjeta.html} --- Selección de dirección y método de pago.
+    \item \texttt{registrar\_direccion.html} / \texttt{registrar\_tarjeta.html} --- Formularios de registro.
+    \item \texttt{resumen\_pago.html} --- Confirmación antes de procesar.
+    \item \texttt{confirmacion\_pago.html} --- Resultado del proceso.
+\end{enumerate}
+
+Para distribuidores, existe un flujo paralelo: \texttt{seleccionar\_paquete} $\rightarrow$ \texttt{resumen\_pago\_paquetes} $\rightarrow$ \texttt{confirmacion\_pago\_paquetes}.
+
+\subsection{Crispy Forms y Bootstrap 5}
+
+La integración de \texttt{crispy-forms} con \texttt{crispy-bootstrap5} permite renderizar formularios Django con estilos de Bootstrap 5 de forma automática:
+
+\begin{lstlisting}[language=Python, caption={Configuración de Crispy Forms}]
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+\end{lstlisting}
+
+Esto elimina la necesidad de escribir HTML repetitivo para formularios, manteniendo consistencia visual y validación del lado del cliente en todos los formularios de registro, pago y edición.
+
+\subsection{Archivos Estáticos por Aplicación}
+
+Los archivos estáticos se organizan por aplicación, siguiendo la convención de Django \texttt{AppDirectoriesFinder}:
+
+\begin{itemize}
+    \item \textbf{Globales} (\texttt{ChibchaWeb/static/}): \texttt{chibcha-theme.css}, \texttt{distributor-styles.css}.
+    \item \textbf{Administradores}: \texttt{admin-chibcha.css}.
+    \item \textbf{Empleados}: \texttt{supervisor\_dashboard.css/js}, \texttt{agente\_dashboard.css/js}, \texttt{logEmpleados.css}.
+    \item \textbf{Pagos}: \texttt{payment-system.css/js}, \texttt{distributor-styles.css}.
+\end{itemize}
+
+Esta separación permite que cada equipo de desarrollo trabaje en los assets de su aplicación sin conflictos.
+
+\subsection{Internacionalización (i18n)}
+\label{subsec:i18n}
+
+ChibchaWeb implementa soporte completo para tres idiomas:
+
+\begin{lstlisting}[language=Python, caption={Configuración de idiomas}]
+LANGUAGE_CODE = 'es'
+
+LANGUAGES = [
+    ('es', _('Español')),
+    ('en', _('English')),
+    ('pt', _('Português')),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
+USE_I18N = True
+USE_L10N = True
+\end{lstlisting}
+
+En los templates se utiliza el sistema de traducciones de Django:
+
+\begin{lstlisting}[language=Python, caption={Uso de traducciones en templates}]
+{% load i18n %}
+{% trans 'Texto a traducir' %}
+\end{lstlisting}
+
+El \texttt{LocaleMiddleware} detecta automáticamente el idioma preferido del usuario, y el selector de idioma integrado en \texttt{base.html} permite cambiar la preferencia en cualquier momento. La URL de internacionalización \texttt{/i18n/} se registra en el enrutador principal.
+
+% ═════════════════════════════════════════════════════════════════════════════
+% 5. MODELO DE BASE DE DATOS
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Modelo de Base de Datos}
+\label{sec:base-datos}
+
+El modelo de datos de ChibchaWeb refleja las entidades del dominio de negocio de una plataforma de web hosting. El diagrama entidad-relación completo se encuentra en \texttt{docs/diagrams/base\_datos.mmd}.
+
+\subsection{Entidades Principales}
+
+\subsubsection{User y Perfiles (Patrón OneToOne)}
+
+La decisión arquitectónica más significativa del modelo es el uso del patrón \textbf{OneToOneField} para extender el modelo \texttt{User} de Django Auth, en lugar de crear un modelo de usuario personalizado. Esto permite mantener compatibilidad con el sistema de autenticación de Django mientras se agregan campos específicos del negocio:
+
+\begin{itemize}
+    \item \texttt{User} $\longleftrightarrow$ \texttt{Cliente}: perfil del cliente con teléfono, estado de distribuidor, plan de suscripción y fechas.
+    \item \texttt{User} $\longleftrightarrow$ \texttt{Empleado}: perfil del empleado con rol (supervisor/agente), nivel de acceso (1-3) y estado activo.
+    \item \texttt{User} $\longleftrightarrow$ \texttt{Administrador}: perfil administrativo con permisos granulares y tracking de último acceso.
+\end{itemize}
+
+\begin{lstlisting}[language=Python, caption={Modelo Cliente con OneToOneField}]
+class Cliente(models.Model):
+    user = models.OneToOneField(User,
+                                on_delete=models.CASCADE)
+    telefono = models.IntegerField(blank=True)
+    es_distribuidor = models.BooleanField(default=False)
+    tiene_suscripcion = models.BooleanField(default=False)
+    plan = models.CharField(max_length=50,
+                            blank=True, null=True)
+    fecha_inicio_suscripcion = models.DateTimeField(
+                                blank=True, null=True)
+    fecha_fin_suscripcion = models.DateTimeField(
+                                blank=True, null=True)
+\end{lstlisting}
+
+\subsubsection{Cliente --- Distribuidor (Relación OneToOne)}
+
+Un cliente puede optar por convertirse en distribuidor, lo que crea una relación \texttt{OneToOne} entre \texttt{Cliente} y \texttt{Distribuidor}. El distribuidor tiene un tipo (BÁSICO o PREMIUM), cantidad de dominios disponibles para reventa y un contador de páginas vendidas.
+
+\subsubsection{Sistema de Pagos}
+
+El modelo de pagos implementa las siguientes relaciones:
+
+\begin{itemize}
+    \item \texttt{Cliente} $\rightarrow$ \texttt{Direccion}: un cliente puede tener múltiples direcciones de facturación, cada una asociada a un \texttt{Pais}.
+    \item \texttt{Cliente} $\rightarrow$ \texttt{TarjetaCredito}: un cliente puede registrar múltiples tarjetas.
+    \item \texttt{Pago}: registra cada transacción, vinculando cliente, dirección utilizada, tarjeta utilizada y monto.
+    \item \texttt{PagoDistribuidor}: extiende \texttt{Pago} mediante herencia de modelo para agregar campos específicos de compra de paquetes (cantidad de páginas, descripción).
+\end{itemize}
+
+\subsubsection{Sistema de Tickets}
+
+El sistema de soporte se compone de:
+
+\begin{itemize}
+    \item \texttt{Ticket}: creado por un cliente, con nombre, descripción y fecha.
+    \item \texttt{HistoriaTicket}: registro de cada cambio en el ticket, incluyendo el empleado responsable, el nuevo estado y una descripción de la modificación.
+    \item \texttt{Estado}: catálogo de estados posibles del ticket.
+\end{itemize}
+
+\subsubsection{Dominios}
+
+El modelo \texttt{Dominios} registra los nombres de dominio asociados a cada cliente, con un campo booleano \texttt{compraDistribuidor} que distingue entre dominios adquiridos directamente por plan o a través de un distribuidor.
+
+\subsection{Decisiones de Diseño Relevantes}
+
+\begin{enumerate}
+    \item \textbf{Perfiles OneToOne vs. AbstractUser}: se optó por perfiles separados para permitir que un \texttt{User} pueda tener diferentes roles simultáneamente y mantener compatibilidad con \texttt{django.contrib.auth}.
+
+    \item \textbf{Herencia de modelos en Pagos}: \texttt{PagoDistribuidor} hereda de \texttt{Pago} mediante multi-table inheritance, permitiendo consultas polimórficas y manteniendo la integridad referencial.
+
+    \item \textbf{SET\_NULL en referencias de pago}: las claves foráneas de \texttt{Pago} hacia \texttt{Direccion} y \texttt{TarjetaCredito} usan \texttt{on\_delete=models.SET\_NULL} para preservar el historial de pagos incluso cuando se elimina una dirección o tarjeta.
+
+    \item \textbf{Properties computadas}: el modelo \texttt{Cliente} incluye propiedades como \texttt{suscripcion\_activa}, \texttt{limite\_dominios}, \texttt{dominios\_count} y \texttt{puede\_agregar\_dominios} que encapsulan lógica de negocio directamente en el modelo.
+\end{enumerate}
+
+\begin{lstlisting}[language=Python, caption={Properties computadas del modelo Cliente}]
+@property
+def suscripcion_activa(self):
+    return (self.tiene_suscripcion and
+            (not self.fecha_fin_suscripcion or
+             self.fecha_fin_suscripcion > timezone.now()))
+
+@property
+def limite_dominios(self):
+    if not self.plan:
+        return 1
+    for nombre_plan, detalles in PLANES_DISPONIBLES.items():
+        if nombre_plan.lower() == self.plan.lower():
+            return detalles.get('webs', 1)
+    return 1
+
+@property
+def puede_agregar_dominios(self):
+    return self.dominios_count < self.limite_dominios
+\end{lstlisting}
+
+% ═════════════════════════════════════════════════════════════════════════════
+% 6. ESCALABILIDAD CON DOCKER SWARM
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Escalabilidad con Docker Swarm}
+\label{sec:escalado}
+
+El diagrama de la propuesta de escalado horizontal se encuentra en \texttt{docs/diagrams/escalado\_docker\_swarm.mmd}.
+
+\subsection{Arquitectura de Escalado Propuesta}
+
+La propuesta de escalabilidad horizontal para ChibchaWeb se basa en \textbf{Docker Swarm} como orquestador de contenedores, diseñada para soportar un crecimiento significativo de usuarios concurrentes. La arquitectura propuesta se compone de las siguientes capas:
+
+\subsubsection{Balanceador de Carga}
+
+En la capa más externa, un balanceador de carga (Nginx o Traefik) se encarga de:
+\begin{itemize}
+    \item \textbf{Terminación SSL/TLS}: descifra las conexiones HTTPS antes de enrutar al backend.
+    \item \textbf{Distribución Round-Robin}: reparte las solicitudes entre las réplicas de la aplicación.
+    \item \textbf{Health Checks}: monitorea la salud de cada réplica y retira las instancias no saludables del pool.
+    \item \textbf{Rate Limiting}: protección contra abuso y ataques de fuerza bruta.
+\end{itemize}
+
+\subsubsection{Cluster Docker Swarm}
+
+El cluster se organiza con un \textbf{nodo Manager} que se encarga de la orquestación, scheduling, service discovery y gestión de secretos, y múltiples \textbf{nodos Worker}:
+
+\begin{description}
+    \item[Worker 1--3] Cada nodo ejecuta una réplica de la aplicación web (Gunicorn + Django con 4 workers) en el puerto 8000.
+    \item[Celery Workers] Los nodos Worker 1 y 2 ejecutan además workers de Celery para procesamiento asíncrono de tareas como envío de emails.
+    \item[Red Overlay] Una red overlay (\texttt{chibchaweb\_network}) con Virtual IP y DNS de service discovery permite la comunicación entre servicios.
+\end{description}
+
+\subsubsection{Capa de Datos}
+
+\begin{description}
+    \item[Cluster PostgreSQL] Con un nodo Primary para escrituras y WAL streaming, y un nodo Replica en hot standby para lecturas, distribuyendo la carga de consultas.
+    \item[Redis Cluster] Cache distribuido para sesiones, caché de consultas y como broker de mensajes para Celery.
+\end{description}
+
+\subsubsection{Almacenamiento Compartido}
+
+Se propone el uso de volúmenes compartidos (NFS o GlusterFS) para:
+\begin{itemize}
+    \item \texttt{/static/}: archivos estáticos generados por \texttt{collectstatic} y servidos por WhiteNoise.
+    \item \texttt{/media/}: uploads de usuarios compartidos entre todas las réplicas.
+\end{itemize}
+
+\subsubsection{Monitoreo}
+
+La arquitectura incluye \textbf{Prometheus} para la recolección de métricas de las réplicas web y \textbf{Grafana} para la visualización mediante dashboards.
+
+\subsection{Ventajas de la Arquitectura Propuesta}
+
+\begin{enumerate}
+    \item \textbf{Escalado horizontal}: agregar nuevos workers es trivial con \texttt{docker service scale}.
+    \item \textbf{Alta disponibilidad}: si una réplica falla, Swarm la reemplaza automáticamente.
+    \item \textbf{Separación de lectura/escritura}: el cluster PostgreSQL con réplicas optimiza el rendimiento de consultas.
+    \item \textbf{Procesamiento asíncrono}: Celery desacopla tareas pesadas (emails, reportes) del ciclo request-response.
+    \item \textbf{Observabilidad}: Prometheus + Grafana proporcionan visibilidad en tiempo real.
+\end{enumerate}
+
+% ═════════════════════════════════════════════════════════════════════════════
+% 7. BUENAS PRÁCTICAS IMPLEMENTADAS
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Buenas Prácticas Implementadas}
+\label{sec:buenas-practicas}
+
+\subsection{Seguridad}
+
+\subsubsection{Gestión de Secretos}
+
+La configuración del proyecto contempla el uso de variables de entorno para la gestión de secretos sensibles. Los datos de configuración de email, credenciales de base de datos y la \texttt{SECRET\_KEY} de Django se gestionan de forma que puedan ser externalizados del código fuente en producción.
+
+\subsubsection{Protección CSRF}
+
+El middleware \texttt{CsrfViewMiddleware} está activo en toda la aplicación, protegiendo contra ataques Cross-Site Request Forgery. Todos los formularios POST incluyen automáticamente el token CSRF mediante el tag \texttt{\{% csrf\_token \%\}}.
+
+\subsubsection{Protección contra Clickjacking}
+
+El middleware \texttt{XFrameOptionsMiddleware} previene que la aplicación sea embebida en iframes maliciosos, mitigando ataques de clickjacking.
+
+\subsubsection{Almacenamiento de Datos de Tarjetas}
+
+El modelo \texttt{TarjetaCredito} almacena los datos de tarjeta con validación de franquicias permitidas. El método \texttt{\_\_str\_\_} del modelo muestra solo los últimos 4 dígitos (\texttt{**** **** **** XXXX}), siguiendo la práctica de enmascaramiento de datos sensibles en logs y vistas:
+
+\begin{lstlisting}[language=Python, caption={Enmascaramiento de número de tarjeta}]
+def __str__(self):
+    return f"**** **** **** {self.numero[-4:]}"
+\end{lstlisting}
+
+\subsubsection{Endpoints Protegidos}
+
+Todas las vistas que requieren autenticación están protegidas mediante los decoradores descritos en la sección~\ref{subsec:decorators}. No existen endpoints con datos sensibles accesibles sin autenticación previa. La separación por roles garantiza que un cliente no pueda acceder a funcionalidades de administrador, y viceversa.
+
+\subsubsection{Validación de Contraseñas}
+
+Django 5.2 provee cuatro validadores de contraseña activados en el proyecto:
+\begin{itemize}
+    \item \texttt{UserAttributeSimilarityValidator}: rechaza contraseñas similares a atributos del usuario.
+    \item \texttt{MinimumLengthValidator}: longitud mínima requerida.
+    \item \texttt{CommonPasswordValidator}: rechaza contraseñas comunes.
+    \item \texttt{NumericPasswordValidator}: rechaza contraseñas puramente numéricas.
+\end{itemize}
+
+\subsection{Arquitectura y Diseño}
+
+\subsubsection{Separación por Aplicaciones Django}
+
+Cada dominio funcional del negocio se encapsula en una aplicación Django independiente con sus propios modelos, vistas, templates, URLs, formularios y archivos estáticos. Esta modularidad facilita:
+\begin{itemize}
+    \item Desarrollo paralelo por equipos.
+    \item Pruebas unitarias aisladas por componente.
+    \item Potencial extracción de microservicios en el futuro.
+\end{itemize}
+
+\subsubsection{Decoradores Centralizados}
+
+Como se describió en la sección~\ref{subsec:decorators}, todos los decoradores de autorización se centralizan en \texttt{ChibchaWeb/decorators.py}, evitando la dispersión de lógica de permisos a través de múltiples aplicaciones.
+
+\subsubsection{Patrón Strategy en Validadores}
+
+El diccionario \texttt{VALIDADORES\_DIRECCIONES} implementa el patrón Strategy, permitiendo seleccionar dinámicamente la función de validación según el país. Agregar soporte para un nuevo país requiere únicamente agregar una entrada al diccionario y su función validadora.
+
+\subsubsection{Context Processors para Datos Globales}
+
+El context processor \texttt{cliente\_context} inyecta el perfil del cliente en todos los templates automáticamente, eliminando la necesidad de incluir esta lógica en cada vista y garantizando que la información del usuario esté disponible para la barra de navegación, menús y elementos de personalización.
+
+\subsubsection{Namespacing de URLs}
+
+El uso de \texttt{namespace} en los \texttt{include()} de URLs y \texttt{app\_name} en cada aplicación proporciona:
+\begin{itemize}
+    \item Reversión de URLs sin ambigüedad: \texttt{reverse('pagos:resumen\_pago')}.
+    \item Organización lógica del enrutamiento.
+    \item Prevención de colisiones de nombres entre aplicaciones.
+\end{itemize}
+
+\subsection{Rendimiento}
+
+\subsubsection{Properties Computadas en Modelos}
+
+Las propiedades \texttt{@property} del modelo \texttt{Cliente} (como \texttt{suscripcion\_activa}, \texttt{limite\_dominios}, \texttt{puede\_agregar\_dominios}) encapsulan cálculos frecuentes directamente en la capa de modelo, evitando la duplicación de lógica de negocio en múltiples vistas.
+
+\subsubsection{Consultas Optimizadas con Related Managers}
+
+El uso de \texttt{related\_name} en las relaciones ForeignKey (por ejemplo, \texttt{related\_name='direcciones'}, \texttt{related\_name='tarjetas'}, \texttt{related\_name='pagos'}) permite acceder a las relaciones inversas de forma eficiente y legible:
+
+\begin{lstlisting}[language=Python, caption={Uso de related\_name para consultas eficientes}]
+tiene_direccion = cliente.direcciones.exists()
+tiene_tarjeta = cliente.tarjetas.exists()
+direcciones = cliente.direcciones.all()
+tarjetas = cliente.tarjetas.all()
+\end{lstlisting}
+
+Estas consultas aprovechan los índices de la base de datos sobre las claves foráneas y evitan consultas adicionales innecesarias.
+
+\subsubsection{Uso de \texttt{exists()} sobre \texttt{count()}}
+
+En el flujo de pagos, se utiliza \texttt{.exists()} en lugar de \texttt{.count() > 0} para verificar la existencia de registros, lo cual es más eficiente ya que la consulta SQL se detiene al encontrar el primer resultado.
+
+\subsubsection{Paginación en Base de Datos}
+
+Las consultas que retornan grandes conjuntos de datos implementan paginación a nivel de base de datos para evitar cargar todos los registros en memoria.
+
+\subsection{Calidad de Código}
+
+\subsubsection{Validación de Formularios}
+
+Los validadores definidos en \texttt{Pagos/validators.py} centralizan las reglas de validación del negocio. El validador de tarjetas, por ejemplo, verifica el formato, longitud y franquicia mediante análisis del prefijo BIN:
+
+\begin{lstlisting}[language=Python, caption={Validador de tarjeta de crédito}]
+def validar_tarjeta(value):
+    if not value.isdigit():
+        raise ValidationError(
+            "El número debe contener solo dígitos.")
+    if len(value) < 14 or len(value) > 19:
+        raise ValidationError(
+            "Debe tener entre 14 y 19 dígitos.")
+    if value.startswith("4"):
+        return  # VISA
+    elif value[:2] in [str(i) for i in range(51, 56)]:
+        return  # MasterCard 51-55
+    elif 2221 <= int(value[:4]) <= 2720:
+        return  # MasterCard rango extendido
+    elif value.startswith(("36", "38", "39")):
+        return  # Diners Club
+    else:
+        raise ValidationError(
+            "Solo se permiten VISA, MasterCard o Diners.")
+\end{lstlisting}
+
+\subsubsection{Automatización con Señales}
+
+El uso de \texttt{post\_save} signals para la creación automática de perfiles de distribuidor garantiza la consistencia de datos sin importar el punto de entrada, eliminando la posibilidad de estados inconsistentes.
+
+\subsubsection{Mensajes Flash para UX}
+
+Todas las operaciones del usuario (registro, pagos, errores de validación) producen mensajes flash informativos mediante el framework de mensajes de Django, proporcionando retroalimentación inmediata y clara.
+
+\subsubsection{Uso de \texttt{get\_object\_or\_404}}
+
+Las vistas utilizan consistentemente \texttt{get\_object\_or\_404} para obtener objetos, retornando un HTTP 404 apropiado cuando el recurso no existe, en lugar de errores 500.
+
+\subsection{DevOps}
+
+\subsubsection{Propuesta de Contenedorización}
+
+La arquitectura propuesta incluye contenedorización con Docker para el despliegue de la aplicación:
+\begin{itemize}
+    \item \textbf{Gunicorn} como servidor WSGI de producción con múltiples workers.
+    \item \textbf{WhiteNoise} para servir archivos estáticos directamente desde la aplicación.
+    \item Propuesta de \textbf{Docker Swarm} para orquestación y escalado horizontal.
+    \item \textbf{Health checks} para monitoreo de la salud de las réplicas.
+\end{itemize}
+
+\subsubsection{Separación de Entornos}
+
+La configuración de base de datos refleja la separación de entornos:
+\begin{itemize}
+    \item \textbf{Desarrollo}: SQLite3 para simplicidad y rapidez.
+    \item \textbf{Producción}: PostgreSQL para rendimiento, concurrencia y fiabilidad.
+\end{itemize}
+
+\subsection{Internacionalización}
+
+\subsubsection{Soporte Multiidioma Completo}
+
+La implementación de i18n abarca:
+\begin{itemize}
+    \item \textbf{Tres idiomas}: español (predeterminado), inglés y portugués.
+    \item \textbf{Archivos \texttt{.po}}: traducciones en \texttt{locale/en/django.po} y \texttt{locale/pt/django.po}.
+    \item \textbf{Tags en templates}: uso de \texttt{\{% load i18n \%\}} y \texttt{\{% trans 'texto' \%\}}.
+    \item \textbf{Traducciones en vistas}: uso de \texttt{gettext} y \texttt{gettext\_lazy} en Python.
+    \item \textbf{Variables en traducciones}: soporte para interpolación con \texttt{\%(variable)s}.
+    \item \textbf{LocaleMiddleware}: detección automática del idioma del navegador.
+    \item \textbf{Selector visual}: componente \texttt{language\_selector.html} incluido en la plantilla base.
+    \item \textbf{URL de cambio de idioma}: endpoint \texttt{/i18n/} para cambiar la preferencia.
+\end{itemize}
+
+Ejemplo de traducción con variables en las vistas:
+
+\begin{lstlisting}[language=Python, caption={Traducciones con variables en vistas}]
+messages.success(request,
+    _("Plan %(plan)s en modalidad %(modalidad)s "
+      "seleccionado.") % {
+        'plan': plan,
+        'modalidad': modalidad
+    })
+\end{lstlisting}
+
+% ═════════════════════════════════════════════════════════════════════════════
+% 8. CONCLUSIONES
+% ═════════════════════════════════════════════════════════════════════════════
+\section{Conclusiones}
+
+El desarrollo de ChibchaWeb demuestra la aplicación exitosa de múltiples principios de ingeniería de software y buenas prácticas en un proyecto real de plataforma de web hosting. A continuación se resumen los principales logros arquitectónicos:
+
+\begin{enumerate}
+    \item \textbf{Modularidad}: la separación en siete aplicaciones Django independientes permite el desarrollo, pruebas y mantenimiento de cada componente de forma aislada, cumpliendo con el principio de responsabilidad única.
+
+    \item \textbf{Seguridad por capas}: la combinación de middleware de seguridad (CSRF, XFrame, Security), decoradores de autorización basados en roles y validación de datos en múltiples niveles proporciona una defensa en profundidad.
+
+    \item \textbf{Autorización granular}: el sistema de decoradores centralizados implementa control de acceso basado en roles (RBAC) con verificación de permisos específicos para administradores, ofreciendo flexibilidad sin complejidad excesiva.
+
+    \item \textbf{Extensibilidad}: patrones como Strategy (validadores por país), herencia de modelos (PagoDistribuidor), y señales automáticas permiten agregar funcionalidad sin modificar el código existente.
+
+    \item \textbf{Internacionalización}: el soporte completo para tres idiomas posiciona a la plataforma para operar en mercados de habla hispana, inglesa y portuguesa.
+
+    \item \textbf{Escalabilidad planificada}: la propuesta de arquitectura con Docker Swarm, replicación de base de datos, cache distribuido y procesamiento asíncrono demuestra la viabilidad de escalar el sistema horizontalmente.
+
+    \item \textbf{Experiencia de usuario}: la integración de Bootstrap 5, Crispy Forms, modo oscuro, selector de idiomas y mensajes flash contribuye a una interfaz moderna, accesible e intuitiva.
+\end{enumerate}
+
+El proyecto sienta las bases para una evolución continua, con una arquitectura que soporta la adición de nuevas funcionalidades, la migración a microservicios si fuera necesario, y el escalado horizontal para responder al crecimiento de la base de usuarios.
+
+\end{document}

@@ -1,0 +1,148 @@
+%% Arquitectura Backend - ChibchaWeb
+%% Diagrama de apps Django, capas y flujo de datos
+
+flowchart TB
+    subgraph HTTP["Capa HTTP"]
+        Request["Request HTTP"]
+    end
+
+    subgraph MiddlewareStack["Stack de Middleware"]
+        MW1["SecurityMiddleware"]
+        MW2["SessionMiddleware"]
+        MW3["LocaleMiddleware"]
+        MW4["CommonMiddleware"]
+        MW5["CsrfViewMiddleware"]
+        MW6["AuthenticationMiddleware"]
+        MW7["MessageMiddleware"]
+        MW8["XFrameOptionsMiddleware"]
+    end
+
+    subgraph URLRouting["Enrutamiento URL (ChibchaWeb/urls.py)"]
+        MainRouter["Router Principal"]
+        AdminURL["/admin/ → Django Admin"]
+        ClientesURL["/Clientes/ → clientes:*"]
+        PagosURL["/pagos/ → pagos:*"]
+        EmpleadosURL["/empleados/ → empleados:*"]
+        TicketsURL["/tickets/ → tickets:*"]
+        DistribuidorURL["/distribuidor/ → distribuidores:*"]
+        DominiosURL["/dominios/ → dominios:*"]
+        AdminsURL["/administradores/ → administradores:*"]
+        I18nURL["/i18n/ → Internacionalización"]
+    end
+
+    subgraph Decoradores["Capa de Permisos (ChibchaWeb/decorators.py)"]
+        D1["@cliente_required"]
+        D2["@distribuidor_required"]
+        D3["@empleado_required"]
+        D4["@supervisor_required"]
+        D5["@agente_required"]
+        D6["@administrador_required"]
+        D7["@admin_permission_required"]
+    end
+
+    subgraph Apps["Aplicaciones Django"]
+        subgraph AppClientes["App: Clientes"]
+            CV["Views: registrar, editar,<br/>borrar, perfil, home,<br/>activar_cuenta"]
+            CS["Signals: crear_distribuidor<br/>_si_corresponde"]
+            CCP["Context Processor:<br/>cliente_context"]
+        end
+
+        subgraph AppPagos["App: Pagos"]
+            PV["Views: seleccionar_plan,<br/>registrar_direccion/tarjeta,<br/>resumen_pago, confirmacion"]
+            PVal["Validators: validar_tarjeta,<br/>VALIDADORES_DIRECCIONES"]
+        end
+
+        subgraph AppEmpleados["App: Empleados"]
+            EV["Views: Login, Dashboard,<br/>Supervisor/Agente Dashboard,<br/>asignar/resolver/escalar ticket"]
+        end
+
+        subgraph AppTickets["App: Tickets"]
+            TV["Views: crear_ticket,<br/>tickets_cliente"]
+        end
+
+        subgraph AppDistribuidor["App: Distribuidor"]
+            DV["Views: dashboard,<br/>mis_paquetes"]
+        end
+
+        subgraph AppDominios["App: Dominios"]
+            DoV["Views: verificar_url,<br/>agregar/eliminar dominio"]
+        end
+
+        subgraph AppAdmins["App: Administradores"]
+            AV["Views: dashboard, gestionar<br/>usuarios, estadísticas,<br/>exportar (CSV/Excel/PDF),<br/>API gráficos"]
+        end
+    end
+
+    subgraph ModelLayer["Capa de Modelos (ORM)"]
+        UserModel["User (Django Auth)"]
+        ClienteModel["Cliente"]
+        EmpleadoModel["Empleado"]
+        AdminModel["Administrador"]
+        DistribuidorModel["Distribuidor"]
+        PagoModel["Pago / PagoDistribuidor"]
+        DireccionModel["Direccion"]
+        TarjetaModel["TarjetaCredito"]
+        PaisModel["Pais"]
+        TicketModel["Ticket"]
+        HistoriaModel["HistoriaTicket"]
+        EstadoModel["Estado"]
+        DominioModel["Dominios"]
+    end
+
+    subgraph Config["Configuración"]
+        Planes["planes.py<br/>Plata | Platino | Oro"]
+        Settings["settings.py<br/>INSTALLED_APPS, DB,<br/>EMAIL, i18n"]
+    end
+
+    %% Flujo principal
+    Request --> MW1
+    MW1 --> MW2 --> MW3 --> MW4 --> MW5 --> MW6 --> MW7 --> MW8
+    MW8 --> MainRouter
+
+    MainRouter --> ClientesURL & PagosURL & EmpleadosURL & TicketsURL & DistribuidorURL & DominiosURL & AdminsURL & AdminURL & I18nURL
+
+    %% URLs a Decoradores
+    ClientesURL --> D1
+    PagosURL --> D1 & D2
+    EmpleadosURL --> D3 & D4 & D5
+    DistribuidorURL --> D2
+    AdminsURL --> D6 & D7
+
+    %% Decoradores a Views
+    D1 --> CV & PV
+    D2 --> DV & PV
+    D3 --> EV
+    D4 --> EV
+    D5 --> EV
+    D6 --> AV
+    D7 --> AV
+
+    %% Views a Modelos
+    CV --> ClienteModel
+    PV --> PagoModel & DireccionModel & TarjetaModel
+    EV --> EmpleadoModel & TicketModel & HistoriaModel
+    TV --> TicketModel & HistoriaModel
+    DV --> DistribuidorModel
+    DoV --> DominioModel
+    AV --> AdminModel & UserModel & PagoModel
+
+    %% Signals
+    CS -.->|"post_save"| ClienteModel
+    CS -.->|"crea perfil"| DistribuidorModel
+
+    %% Configuración
+    PV -.-> Planes
+    Settings -.-> Apps
+
+    %% Estilos
+    classDef middlewareStyle fill:#E8EAF6,stroke:#283593,stroke-width:1px
+    classDef routeStyle fill:#E0F7FA,stroke:#00695C,stroke-width:1px
+    classDef decorStyle fill:#FFF9C4,stroke:#F57F17,stroke-width:1px
+    classDef appStyle fill:#E8F5E9,stroke:#1B5E20,stroke-width:1px
+    classDef modelStyle fill:#FCE4EC,stroke:#880E4F,stroke-width:1px
+
+    class MW1,MW2,MW3,MW4,MW5,MW6,MW7,MW8 middlewareStyle
+    class MainRouter,ClientesURL,PagosURL,EmpleadosURL,TicketsURL,DistribuidorURL,DominiosURL,AdminsURL,AdminURL,I18nURL routeStyle
+    class D1,D2,D3,D4,D5,D6,D7 decorStyle
+    class CV,CS,CCP,PV,PVal,EV,TV,DV,DoV,AV appStyle
+    class UserModel,ClienteModel,EmpleadoModel,AdminModel,DistribuidorModel,PagoModel,DireccionModel,TarjetaModel,PaisModel,TicketModel,HistoriaModel,EstadoModel,DominioModel modelStyle

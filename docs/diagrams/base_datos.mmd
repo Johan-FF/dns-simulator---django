@@ -1,0 +1,150 @@
+%% Diagrama Entidad-Relación - ChibchaWeb
+%% Todos los modelos con campos y relaciones
+
+erDiagram
+    User {
+        int id PK
+        string username
+        string first_name
+        string last_name
+        string email
+        string password
+        boolean is_staff
+        boolean is_active
+        datetime date_joined
+    }
+
+    Cliente {
+        int id PK
+        int user_id FK
+        int telefono
+        boolean es_distribuidor
+        boolean tiene_suscripcion
+        string plan
+        datetime fecha_inicio_suscripcion
+        datetime fecha_fin_suscripcion
+    }
+
+    Administrador {
+        int id PK
+        int user_id FK
+        boolean activo
+        datetime fecha_registro
+        datetime ultimo_acceso
+        boolean puede_gestionar_usuarios
+        boolean puede_ver_estadisticas
+        boolean puede_gestionar_pagos
+    }
+
+    Empleado {
+        int id PK
+        int user_id FK
+        int telefono
+        boolean activo
+        string rol "supervisor | agente"
+        int nivel "1 | 2 | 3"
+    }
+
+    Distribuidor {
+        int id PK
+        int cliente_id FK
+        string tipo "BASICO | PREMIUM"
+        int cantidad_dominios
+        int paginas_vendidas
+    }
+
+    Pais {
+        int paisId PK
+        string nombre
+    }
+
+    Direccion {
+        int direccionId PK
+        string ubicacion
+        string codigoPostal
+        int pais_id FK
+        int cliente_id FK
+    }
+
+    TarjetaCredito {
+        int id PK
+        string numero
+        string nombre_titular
+        string fecha_expiracion
+        string cvv
+        int cliente_id FK
+    }
+
+    Pago {
+        int pagoId PK
+        int cliente_id FK
+        int direccion_id FK
+        int tarjeta_usada_id FK
+        decimal monto
+        datetime fecha
+    }
+
+    PagoDistribuidor {
+        int pago_ptr_id PK, FK
+        int cantidad_paginas
+        string descripcion
+    }
+
+    Estado {
+        int idEstado PK
+        string nombreEstado
+    }
+
+    Ticket {
+        int idTicket PK
+        string nombreTicket
+        string descripcionTicket
+        date fechar_creacion
+        int cliente_id FK
+    }
+
+    HistoriaTicket {
+        int idCambioTicket PK
+        string modDescripcion
+        date fecha_modificacion
+        int empleado_id FK
+        int ticket_id FK
+        int estado_id FK
+    }
+
+    Dominios {
+        int id PK
+        int clienteId FK
+        string nombreDominio
+        boolean compraDistribuidor
+    }
+
+    %% Relaciones User -> Perfiles (OneToOne)
+    User ||--o| Cliente : "tiene perfil"
+    User ||--o| Administrador : "tiene perfil"
+    User ||--o| Empleado : "tiene perfil"
+
+    %% Cliente -> Distribuidor (OneToOne)
+    Cliente ||--o| Distribuidor : "es distribuidor"
+
+    %% Cliente -> Direccion, Tarjeta, Pago, Ticket, Dominios (OneToMany)
+    Cliente ||--o{ Direccion : "tiene direcciones"
+    Cliente ||--o{ TarjetaCredito : "tiene tarjetas"
+    Cliente ||--o{ Pago : "realiza pagos"
+    Cliente ||--o{ Ticket : "crea tickets"
+    Cliente ||--o{ Dominios : "posee dominios"
+
+    %% Pais -> Direccion
+    Pais ||--o{ Direccion : "tiene direcciones"
+
+    %% Pago relaciones
+    Direccion ||--o{ Pago : "usada en pagos"
+    TarjetaCredito ||--o{ Pago : "usada en pagos"
+
+    %% PagoDistribuidor hereda de Pago
+    Pago ||--o| PagoDistribuidor : "herencia"
+
+    %% Ticket relaciones
+    Ticket ||--o{ HistoriaTicket : "tiene historial"
+    Empleado ||--o{ HistoriaTicket : "gestiona cambios"
+    Estado ||--o{ HistoriaTicket : "estado en cambio"
