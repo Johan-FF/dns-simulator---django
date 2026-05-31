@@ -115,9 +115,10 @@ class RegistroClienteForm(UserCreationForm):
         user.is_active = False  # No activo hasta confirmar correo
         if commit:
             user.save()
+            telefono = self.cleaned_data.get('telefono') or None
             cliente = Cliente.objects.create(
                 user=user,
-                telefono=self.cleaned_data['telefono'],
+                telefono=telefono,
                 es_distribuidor=False 
             )
         return user

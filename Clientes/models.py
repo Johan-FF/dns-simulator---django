@@ -6,7 +6,7 @@ from ChibchaWeb.planes import PLANES_DISPONIBLES
 class Cliente(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    telefono = models.IntegerField(blank=True)
+    telefono = models.CharField(max_length=10, blank=True, null=True)
     es_distribuidor = models.BooleanField(default=False)
 
     # Campos de suscripción

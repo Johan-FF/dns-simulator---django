@@ -1,5 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+import logging
+from smtplib import SMTPException
+
+from django.conf import settings
 from .models import Cliente
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -13,11 +17,13 @@ from Clientes.querysets import attach_domain_counts, clientes_with_domain_counts
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-from django.core.mail import send_mail
+from django.core.mail import BadHeaderError, send_mail
+from django.db import transaction
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.utils.http import urlsafe_base64_decode
+logger = logging.getLogger(__name__)
 
 
 
@@ -31,23 +37,33 @@ def registrar_cliente(request):
     if request.method == 'POST':
         form = RegistroClienteForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            # Crear token
-            token = default_token_generator.make_token(user)
-            uid = urlsafe_base64_encode(force_bytes(user.pk))
-            # Construir URL de activación
-            activation_link = request.build_absolute_uri(
-                reverse('clientes:activar_cuenta', kwargs={'uidb64': uid, 'token': token})
-            )
-            # Enviar correo
-            send_mail(
-                subject='Activa tu cuenta',
-                message=f'Hola {user.first_name}, activa tu cuenta haciendo clic en el siguiente enlace: {activation_link}',
-                from_email='no-reply@tusitio.com',
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
-            return redirect('clientes:registro_exitoso')  # Puedes mostrar un mensaje tipo: "Revisa tu correo"
+            try:
+                with transaction.atomic():
+                    user = form.save()
+                    # Crear token
+                    token = default_token_generator.make_token(user)
+                    uid = urlsafe_base64_encode(force_bytes(user.pk))
+                    # Construir URL de activacion
+                    activation_link = request.build_absolute_uri(
+                        reverse('clientes:activar_cuenta', kwargs={'uidb64': uid, 'token': token})
+                    )
+                    # Enviar correo
+                    send_mail(
+                        subject='Activa tu cuenta',
+                        message=f'Hola {user.first_name}, activa tu cuenta haciendo clic en el siguiente enlace: {activation_link}',
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        recipient_list=[user.email],
+                        fail_silently=False,
+                    )
+            
+            except (BadHeaderError, OSError, SMTPException):
+                logger.exception('No se pudo enviar el correo de activacion para un nuevo cliente.')
+                messages.error(
+                    request,
+                    'No pudimos enviar el correo de activacion. Revisa la configuracion de email e intenta de nuevo.',
+                )
+            else:
+                return redirect('clientes:registro_exitoso')  # Puedes mostrar un mensaje tipo: "Revisa tu correo"
     else:
         form = RegistroClienteForm()
 
