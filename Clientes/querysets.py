@@ -21,7 +21,7 @@ def clientes_with_domain_counts():
     total_domains = Count('dominios', distinct=True)
     return Cliente.objects.select_related('user').annotate(
         dominios_plan_count=plan_domains,
-        dominios_distribuidor_count=distributor_domains,
+        _dominios_distribuidor_count=distributor_domains,
         dominios_total_count=total_domains,
     )
 
@@ -31,9 +31,9 @@ def attach_domain_counts(cliente):
     if hasattr(cliente, 'dominios_plan_count'):
         return cliente
     counts = Dominios.objects.filter(clienteId=cliente).aggregate(
-        dominios_plan_count=Count('dominioId', filter=Q(compraDistribuidor=False)),
-        dominios_distribuidor_count=Count('dominioId', filter=Q(compraDistribuidor=True)),
-        dominios_total_count=Count('dominioId'),
+        dominios_plan_count=Count('id', filter=Q(compraDistribuidor=False)),
+        _dominios_distribuidor_count=Count('id', filter=Q(compraDistribuidor=True)),
+        dominios_total_count=Count('id'),
     )
     for key, value in counts.items():
         setattr(cliente, key, value)
