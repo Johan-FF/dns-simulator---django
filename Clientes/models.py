@@ -8,6 +8,13 @@ class Cliente(models.Model):
 
     telefono = models.CharField(max_length=10, blank=True, null=True)
     es_distribuidor = models.BooleanField(default=False)
+    foto = models.ImageField(upload_to='profile_photos/', blank=True, null=True)
+    preferred_language = models.CharField(
+        max_length=5,
+        blank=True,
+        default='es',
+        choices=[('es', 'Español'), ('en', 'English'), ('pt', 'Português')],
+    )
 
     # Campos de suscripción
     tiene_suscripcion = models.BooleanField(default=False)
@@ -53,8 +60,8 @@ class Cliente(models.Model):
 
     @property
     def dominios_distribuidor_count(self):
-        if hasattr(self, 'dominios_distribuidor_count'):
-            return self.dominios_distribuidor_count
+        if hasattr(self, '_dominios_distribuidor_count'):
+            return self._dominios_distribuidor_count
         from Dominios.models import Dominios
         return Dominios.objects.filter(clienteId=self, compraDistribuidor=True).count()
     
@@ -62,3 +69,24 @@ class Cliente(models.Model):
     def puede_agregar_dominios(self):
         """Verifica si puede agregar más dominios según su plan (solo cuenta dominios del plan de hosting)"""
         return self.dominios_count < self.limite_dominios
+
+
+class HostSearchHistory(models.Model):
+    """Records domain/host availability checks performed by a client."""
+
+    cliente = models.ForeignKey(
+        Cliente,
+        on_delete=models.CASCADE,
+        related_name='host_search_history',
+    )
+    query = models.CharField(max_length=255)
+    available = models.BooleanField(default=False)
+    result_message = models.TextField(blank=True)
+    searched_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-searched_at']
+        verbose_name_plural = 'host search histories'
+
+    def __str__(self):
+        return f'{self.query} ({self.searched_at:%Y-%m-%d})'

@@ -37,33 +37,32 @@ def registrar_cliente(request):
     if request.method == 'POST':
         form = RegistroClienteForm(request.POST)
         if form.is_valid():
+            with transaction.atomic():
+                user = form.save()
+
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            activation_link = request.build_absolute_uri(
+                reverse('clientes:activar_cuenta', kwargs={'uidb64': uid, 'token': token})
+            )
             try:
-                with transaction.atomic():
-                    user = form.save()
-                    # Crear token
-                    token = default_token_generator.make_token(user)
-                    uid = urlsafe_base64_encode(force_bytes(user.pk))
-                    # Construir URL de activacion
-                    activation_link = request.build_absolute_uri(
-                        reverse('clientes:activar_cuenta', kwargs={'uidb64': uid, 'token': token})
-                    )
-                    # Enviar correo
-                    send_mail(
-                        subject='Activa tu cuenta',
-                        message=f'Hola {user.first_name}, activa tu cuenta haciendo clic en el siguiente enlace: {activation_link}',
-                        from_email=settings.DEFAULT_FROM_EMAIL,
-                        recipient_list=[user.email],
-                        fail_silently=False,
-                    )
-            
+                send_mail(
+                    subject='Activa tu cuenta',
+                    message=(
+                        f'Hola {user.first_name}, activa tu cuenta haciendo clic en el siguiente enlace: '
+                        f'{activation_link}'
+                    ),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[user.email],
+                    fail_silently=settings.DEBUG,
+                )
             except (BadHeaderError, OSError, SMTPException):
                 logger.exception('No se pudo enviar el correo de activacion para un nuevo cliente.')
-                messages.error(
+                messages.warning(
                     request,
-                    'No pudimos enviar el correo de activacion. Revisa la configuracion de email e intenta de nuevo.',
+                    'Cuenta creada, pero no pudimos enviar el correo de activacion. Contacta soporte si no lo recibes.',
                 )
-            else:
-                return redirect('clientes:registro_exitoso')  # Puedes mostrar un mensaje tipo: "Revisa tu correo"
+            return redirect('clientes:registro_exitoso')
     else:
         form = RegistroClienteForm()
 
@@ -128,6 +127,18 @@ def borrar_cliente(request):
             messages.error(request, f"Error al eliminar la cuenta: {str(e)}")
 
     return redirect('home')
+
+@cliente_required
+def historial_busquedas(request):
+    """Host/domain search history for the authenticated client."""
+    cliente = request.cliente
+    searches = cliente.host_search_history.all()[:50]
+    return render(
+        request,
+        'historial_busquedas.html',
+        {'cliente': cliente, 'searches': searches},
+    )
+
 
 @cliente_required
 def mis_hosts(request):
@@ -205,6 +216,11 @@ def editar_cliente(request, cliente_id):
             
             # Actualizar campos del Cliente
             cliente.telefono = request.POST.get('telefono', '').strip()
+
+            # Update profile photo if a new file was uploaded
+            if request.FILES.get('foto'):
+                cliente.foto = request.FILES['foto']
+
             cliente.save()
             
             messages.success(request, "¡Perfil actualizado exitosamente!")
