@@ -64,17 +64,17 @@ def empleado_required(view_func):
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
             messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
-            return redirect('empleados:login')
+            return redirect('empleados:log')
 
         try:
             empleado = Empleado.objects.select_related('user').get(user=request.user)
         except Empleado.DoesNotExist:
             messages.error(request, "No tienes permisos de empleado para acceder a esta página.")
-            return redirect('empleados:login')
+            return redirect('empleados:log')
 
         if not empleado.activo:
             messages.error(request, "Tu cuenta de empleado está desactivada.")
-            return redirect('empleados:login')
+            return redirect('empleados:log')
 
         request.empleado = empleado
         return view_func(request, *args, **kwargs)
@@ -89,17 +89,17 @@ def supervisor_required(view_func):
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
             messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
-            return redirect('empleados:login')
+            return redirect('empleados:log')
 
         try:
             empleado = Empleado.objects.select_related('user').get(user=request.user)
         except Empleado.DoesNotExist:
             messages.error(request, "No tienes permisos de empleado para acceder a esta página.")
-            return redirect('empleados:login')
+            return redirect('empleados:log')
 
         if not empleado.activo:
             messages.error(request, "Tu cuenta de empleado está desactivada.")
-            return redirect('empleados:login')
+            return redirect('empleados:log')
 
         if empleado.rol != 'supervisor':
             messages.error(request, "Solo supervisores pueden acceder a esta página.")
@@ -118,17 +118,17 @@ def agente_required(view_func):
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
             messages.warning(request, "Debes iniciar sesión para acceder a esta página.")
-            return redirect('empleados:login')
+            return redirect('empleados:log')
 
         try:
             empleado = Empleado.objects.select_related('user').get(user=request.user)
         except Empleado.DoesNotExist:
             messages.error(request, "No tienes permisos de empleado para acceder a esta página.")
-            return redirect('empleados:login')
+            return redirect('empleados:log')
 
         if not empleado.activo:
             messages.error(request, "Tu cuenta de empleado está desactivada.")
-            return redirect('empleados:login')
+            return redirect('empleados:log')
 
         if empleado.rol != 'agente':
             messages.error(request, "Solo agentes pueden acceder a esta página.")
