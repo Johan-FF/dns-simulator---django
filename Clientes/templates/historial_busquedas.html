@@ -1,0 +1,55 @@
+{% extends "base_clientes.html" %}
+{% load i18n %}
+{% block content %}
+<title>{% trans "Search History" %} - ChibchaWeb</title>
+
+<section class="bg-gradient-chibcha text-white py-4">
+    <div class="container">
+        <h1 class="h2 mb-1">{% trans "Host Search History" %}</h1>
+        <p class="mb-0 opacity-75">{% trans "Recent domain availability checks on your account" %}</p>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        {% if searches %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>{% trans "Date" %}</th>
+                        <th>{% trans "Query" %}</th>
+                        <th>{% trans "Result" %}</th>
+                        <th>{% trans "Available" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in searches %}
+                    <tr>
+                        <td>{{ item.searched_at|date:"d M Y H:i" }}</td>
+                        <td><code>{{ item.query }}</code></td>
+                        <td class="small">{{ item.result_message }}</td>
+                        <td>
+                            {% if item.available %}
+                            <span class="badge bg-success">{% trans "Yes" %}</span>
+                            {% else %}
+                            <span class="badge bg-danger">{% trans "No" %}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5 text-muted">
+            <i class="fas fa-search fs-1 mb-3"></i>
+            <p>{% trans "No searches yet. Use the domain checker to verify availability." %}</p>
+            <a href="{% url 'dominios:verificar_url' %}" class="btn btn-chibcha-primary">
+                {% trans "Verify a domain" %}
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -7,6 +7,7 @@ from .views import (
     lista_clientes_admin,
     perfil,
     mis_hosts,
+    historial_busquedas,
     registrar_cliente,
 )
 from django.shortcuts import render
@@ -22,6 +23,7 @@ urlpatterns = [
     path('editar/<int:cliente_id>/', editar_cliente, name='editar_cliente'),
     path('borrar/', borrar_cliente, name='borrar_cliente'),
     path('mis-hosts/', mis_hosts, name='mis_hosts'),
+    path('historial-busquedas/', historial_busquedas, name='historial_busquedas'),
     path('perfil/', perfil, name='perfil'),
     path('home/', views.home_cliente, name='home_clientes'),
     path('quiero-ser-distribuidor/', views.quiero_ser_distribuidor, name='quiero_ser_distribuidor'),

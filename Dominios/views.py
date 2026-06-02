@@ -59,6 +59,20 @@ def verificar_url(request):
                 else:
                     resultado = f"La URL {url} no está siendo ocupada y la puedes usar!."
                     valido = True
+
+            if request.user.is_authenticated and resultado:
+                try:
+                    from Clientes.models import Cliente, HostSearchHistory
+
+                    cliente = Cliente.objects.get(user=request.user)
+                    HostSearchHistory.objects.create(
+                        cliente=cliente,
+                        query=dominio,
+                        available=valido,
+                        result_message=resultado,
+                    )
+                except Cliente.DoesNotExist:
+                    pass
     else:
         form = VerificarURLForm()
 
