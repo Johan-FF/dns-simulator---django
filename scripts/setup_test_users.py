@@ -50,7 +50,7 @@ def main():
     supervisor = ensure_user("eo_supervisor", "eo_supervisor@test.com", first_name="EO", last_name="Supervisor")
     Empleado.objects.get_or_create(
         user=supervisor,
-        defaults={"rol": "supervisor", "nivel": 2, "activo": True, "telefono": 300123456},
+        defaults={"rol": "supervisor", "nivel": 1, "activo": True, "telefono": 300123456},
     )
 
     agent = ensure_user("eo_agent", "eo_agent@test.com", first_name="EO", last_name="Agent")
