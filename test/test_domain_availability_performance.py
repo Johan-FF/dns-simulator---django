@@ -1,19 +1,22 @@
 import pytest
-import requests
-import socket
 
+from Dominios.domain_availability import (
+    DomainAvailabilityResult,
+    DomainRegistrationStatus,
+)
 from .performance_helpers import SIMPLE_THRESHOLD_SECONDS, timed_call, url_name
 
 
 @pytest.mark.performance
 @pytest.mark.django_db
 def test_domain_availability_view_under_one_second(client, monkeypatch, performance_recorder):
-    monkeypatch.setattr(socket, "gethostbyname", lambda domain: (_ for _ in ()).throw(OSError()))
-
-    def raise_connection_error(*args, **kwargs):
-        raise requests.RequestException("red simulada para prueba local")
-
-    monkeypatch.setattr("Dominios.views.requests.get", raise_connection_error)
+    monkeypatch.setattr(
+        "Dominios.views.check_domain_registration",
+        lambda _domain: DomainAvailabilityResult(
+            DomainRegistrationStatus.AVAILABLE,
+            "available for test",
+        ),
+    )
     client.get(url_name("dominios:verificar_url"))
 
     response, elapsed = timed_call(

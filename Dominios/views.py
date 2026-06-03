@@ -1,17 +1,45 @@
-import requests
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 from ChibchaWeb import settings
 from ChibchaWeb.decorators import cliente_required
 from .forms import VerificarURLForm, AgregarDominioForm
 from .models import Dominios
+from .domain_availability import (
+    DomainRegistrationStatus,
+    check_domain_registration,
+)
 import xml.etree.ElementTree as ET
 from Pagos.models import PagoDistribuidor
 from django.core.mail import EmailMessage
 from django.conf import settings
+
+
+def _normalize_host_input(value: str) -> str:
+    host = value.strip()
+    if host.startswith("http://"):
+        host = host[7:]
+    if host.startswith("https://"):
+        host = host[8:]
+    if host.startswith("www."):
+        host = host[4:]
+    return host.split("/")[0].split("?")[0]
+
+
+def _spanish_registration_message(result) -> str:
+    if result.status == DomainRegistrationStatus.AVAILABLE:
+        return (
+            "La URL no está siendo ocupada y la puedes usar!."
+        )
+    if result.status == DomainRegistrationStatus.REGISTERED:
+        if result.web_active:
+            return f"El dominio ya está registrado y tiene un sitio web activo."
+        return f"El dominio ya está registrado (sin sitio web público activo detectado)."
+    return (
+        "No pudimos verificar la disponibilidad del dominio. "
+        "Intenta de nuevo en unos minutos."
+    )
+
 
 def verificar_url(request):
     resultado = None
@@ -21,44 +49,10 @@ def verificar_url(request):
         form = VerificarURLForm(request.POST)
         if form.is_valid():
             url = form.cleaned_data['url']
-            # Agregar https:// si el usuario no lo incluye
-            import socket
-            import re
-            # Extraer dominio para validación DNS
-            dominio = url.strip()
-            if dominio.startswith('http://'):
-                dominio = dominio[7:]
-            if dominio.startswith('https://'):
-                dominio = dominio[8:]
-            if dominio.startswith('www.'):
-                dominio = dominio[4:]
-            # Solo tomar el dominio (sin ruta ni parámetros)
-            dominio = dominio.split('/')[0].split('?')[0]
-            # Validar existencia DNS
-            try:
-                socket.gethostbyname(dominio)
-                dominio_existe = True
-            except Exception:
-                dominio_existe = False
-
-            if not url.startswith('http://') and not url.startswith('https://'):
-                url = 'https://' + url
-            try:
-                headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'}
-                response = requests.get(url, timeout=3, headers=headers)
-                if response.status_code == 200:
-                    resultado = f"La URL {url} está siendo utilizada."
-                    valido = False
-                else:
-                    resultado = f"La URL {url} respondió con código {response.status_code}."
-                    valido = False
-            except requests.RequestException:
-                if dominio_existe:
-                    resultado = f"El dominio {dominio} existe, pero no responde a peticiones web. Puede estar protegido o no tener sitio activo."
-                    valido = False
-                else:
-                    resultado = f"La URL {url} no está siendo ocupada y la puedes usar!."
-                    valido = True
+            dominio = _normalize_host_input(url)
+            availability = check_domain_registration(dominio)
+            resultado = _spanish_registration_message(availability)
+            valido = availability.is_available
 
             if request.user.is_authenticated and resultado:
                 try:
@@ -104,6 +98,8 @@ def agregar_dominio(request):
     dominio_validado = False
     dominio_disponible = False
     dominio_existe = False
+    dominio_estado = ""
+    dominio_web_activo = False
     dominio_valor = ""
     
     if request.method == 'POST':
@@ -125,52 +121,63 @@ def agregar_dominio(request):
                     'from_distribuidor': from_distribuidor
                 })
             if accion == 'validar':
-                # Validar existencia DNS
-                import socket
-                try:
-                    socket.gethostbyname(dominio)
-                    dominio_existe = True
-                except Exception:
-                    dominio_existe = False
-                # Intentar petición HTTP solo si existe
-                if dominio_existe:
-                    try:
-                        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'}
-                        response = requests.get(f"https://{dominio}", timeout=3, headers=headers)
-                        if response.status_code == 200:
-                            dominio_validado = True
-                            dominio_disponible = False
-                            messages.warning(request, f"El dominio '{dominio}' está actualmente en uso. Si este dominio te pertenece y quieres transferirlo a ChibchaWeb, contacta a nuestro soporte.")
-                        else:
-                            dominio_validado = True
-                            dominio_disponible = False
-                            messages.warning(request, f"El dominio '{dominio}' existe, pero no tiene web activa o está protegido.")
-                    except requests.RequestException:
-                        dominio_validado = True
-                        dominio_disponible = False
-                        messages.warning(request, f"El dominio '{dominio}' existe, pero no tiene web activa o está protegido.")
+                availability = check_domain_registration(dominio)
+                dominio_validado = True
+                dominio_disponible = availability.is_available
+                dominio_existe = availability.status == DomainRegistrationStatus.REGISTERED
+                dominio_estado = availability.status.value
+                dominio_web_activo = availability.web_active
+
+                if availability.status == DomainRegistrationStatus.AVAILABLE:
+                    messages.success(
+                        request,
+                        f"¡Perfecto! El dominio '{dominio}' está disponible y listo "
+                        f"para usar en tu hosting.",
+                    )
+                elif availability.status == DomainRegistrationStatus.REGISTERED:
+                    if availability.web_active:
+                        messages.warning(
+                            request,
+                            f"El dominio '{dominio}' ya está registrado y tiene un sitio "
+                            f"web activo. Si te pertenece y quieres transferirlo a "
+                            f"ChibchaWeb, contacta a soporte.",
+                        )
+                    else:
+                        messages.warning(
+                            request,
+                            f"El dominio '{dominio}' ya está registrado. Elige otro "
+                            f"dominio o contáctanos si este te pertenece.",
+                        )
                 else:
-                    dominio_validado = True
-                    dominio_disponible = True
-                    messages.success(request, f"¡Perfecto! El dominio '{dominio}' está disponible y listo para usar en tu hosting.")
-                    
+                    messages.error(request, _spanish_registration_message(availability))
+
             elif accion == 'agregar':
-                # Verificar disponibilidad antes de agregar
-                try:
-                    response = requests.get(f"http://{dominio}", timeout=3)
-                    if response.status_code == 200:
-                        messages.error(request, f"No se puede agregar el dominio '{dominio}' porque está siendo utilizado activamente. Por favor, elige un dominio diferente o contacta a soporte si este dominio te pertenece.")
-                        return render(request, 'agregar_dominio.html', {
-                            'form': form, 
-                            'cliente': cliente,
-                            'dominio_validado': True,
-                            'dominio_disponible': False,
-                            'dominio_valor': dominio_valor,
-                            'from_distribuidor': from_distribuidor
-                        })
-                except requests.RequestException:
-                    # Dominio no responde, se puede agregar
-                    pass
+                availability = check_domain_registration(dominio)
+                if not availability.is_available:
+                    if availability.status == DomainRegistrationStatus.ERROR:
+                        messages.error(
+                            request,
+                            _spanish_registration_message(availability),
+                        )
+                    else:
+                        messages.error(
+                            request,
+                            f"No se puede agregar el dominio '{dominio}' porque ya está "
+                            f"registrado. Elige otro dominio o contacta a soporte si "
+                            f"este te pertenece.",
+                        )
+                    return render(request, 'agregar_dominio.html', {
+                        'form': form,
+                        'cliente': cliente,
+                        'dominio_validado': True,
+                        'dominio_disponible': False,
+                        'dominio_existe': availability.status
+                        == DomainRegistrationStatus.REGISTERED,
+                        'dominio_estado': availability.status.value,
+                        'dominio_web_activo': availability.web_active,
+                        'dominio_valor': dominio_valor,
+                        'from_distribuidor': from_distribuidor,
+                    })
                 
                 # Crear el registro del dominio
                 nuevo_dominio = Dominios.objects.create(
@@ -222,6 +229,8 @@ def agregar_dominio(request):
         'dominio_validado': dominio_validado,
         'dominio_disponible': dominio_disponible,
         'dominio_existe': dominio_existe,
+        'dominio_estado': dominio_estado,
+        'dominio_web_activo': dominio_web_activo,
         'dominio_valor': dominio_valor,
         'from_distribuidor': from_distribuidor
     })
@@ -249,6 +258,38 @@ def generar_xml_interno(cliente, dominio):
     )
     email.attach('solicitud_dominio.xml', xml_string, 'application/xml')
     email.send()
+
+@cliente_required
+def configurar_dominio(request, dominio_id):
+    """Muestra datos del dominio y orientación DNS para el cliente."""
+    cliente = request.cliente
+    from_distribuidor = request.GET.get('from') == 'distribuidor'
+
+    if not from_distribuidor and not cliente.suscripcion_activa:
+        messages.warning(
+            request,
+            "Necesitas una suscripción activa para configurar dominios.",
+        )
+        return redirect('clientes:home_clientes')
+
+    try:
+        dominio = Dominios.objects.get(id=dominio_id, clienteId=cliente)
+    except Dominios.DoesNotExist:
+        messages.error(request, "El dominio no existe o no te pertenece.")
+        if from_distribuidor:
+            return redirect('distribuidores:mis_paquetes')
+        return redirect('clientes:mis_hosts')
+
+    return render(
+        request,
+        'configurar_dominio.html',
+        {
+            'dominio': dominio,
+            'cliente': cliente,
+            'from_distribuidor': from_distribuidor,
+        },
+    )
+
 
 @cliente_required
 def eliminar_dominio(request, dominio_id):

@@ -83,11 +83,12 @@
                                             <p class="card-text text-muted small">
                                                 {% trans "Configurado para hosting con ChibchaWeb" %}
                                             </p>
-                                            <div class="btn-group w-100" role="group">
-                                                <button type="button" class="btn btn-outline-primary btn-sm">
+                                            <div class="d-flex gap-2 w-100">
+                                                <a href="{% url 'dominios:configurar_dominio' dominio.id %}"
+                                                   class="btn btn-outline-primary btn-sm flex-fill">
                                                     <i class="fas fa-cog me-1"></i>{% trans "Configurar" %}
-                                                </button>
-                                                <form method="post" action="{% url 'dominios:eliminar_dominio' dominio.id %}" style="display: inline; width: 50%;">
+                                                </a>
+                                                <form method="post" action="{% url 'dominios:eliminar_dominio' dominio.id %}" class="flex-fill">
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-outline-danger btn-sm w-100" 
                                                             onclick="return confirm('¿Estás seguro de que deseas eliminar el dominio {{ dominio.nombreDominio }}? Esta acción no se puede deshacer.')">

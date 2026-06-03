@@ -1,6 +1,9 @@
 import pytest
-import requests
 
+from Dominios.domain_availability import (
+    DomainAvailabilityResult,
+    DomainRegistrationStatus,
+)
 from Dominios.models import Dominios
 
 from .performance_helpers import COMPLEX_THRESHOLD_SECONDS, timed_call, url_name
@@ -11,10 +14,13 @@ from .performance_helpers import COMPLEX_THRESHOLD_SECONDS, timed_call, url_name
 def test_domain_create_and_initial_configuration_under_three_seconds(
     cliente_logueado, cliente_activo, monkeypatch, performance_recorder
 ):
-    def raise_connection_error(*args, **kwargs):
-        raise requests.RequestException("red simulada para creación local")
-
-    monkeypatch.setattr("Dominios.views.requests.get", raise_connection_error)
+    monkeypatch.setattr(
+        "Dominios.views.check_domain_registration",
+        lambda _domain: DomainAvailabilityResult(
+            DomainRegistrationStatus.AVAILABLE,
+            "available for test",
+        ),
+    )
     monkeypatch.setattr("Dominios.views.EmailMessage.send", lambda self: 1)
 
     domain_name = "qa-create-config.test"
