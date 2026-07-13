@@ -32,32 +32,32 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="billing-options">
-                    <h5 class="text-center mb-4">{% trans "Elige tu modalidad de pago" %}</h5>
-                    <div class="billing-tabs">
-                        <div class="tab-option active" data-period="mensual">
+                    <h2 class="h5 text-center mb-4" id="billing-title">{% trans "Elige tu modalidad de pago" %}</h2>
+                    <div class="billing-tabs" role="radiogroup" aria-labelledby="billing-title">
+                        <div class="tab-option active" data-period="mensual" role="radio" tabindex="0" aria-checked="true">
                             <div class="tab-content">
                                 <div class="tab-icon">
                                     <i class="fas fa-calendar-alt"></i>
                                 </div>
-                                <h6>{% trans "Mensual" %}</h6>
+                                <span class="h6 d-block">{% trans "Mensual" %}</span>
                                 <p class="small text-muted">{% trans "Pago mes a mes" %}</p>
                             </div>
                         </div>
-                        <div class="tab-option" data-period="semestral">
+                        <div class="tab-option" data-period="semestral" role="radio" tabindex="0" aria-checked="false">
                             <div class="tab-content">
                                 <div class="tab-icon">
                                     <i class="fas fa-calendar-check"></i>
                                 </div>
-                                <h6>{% trans "Semestral" %}</h6>
+                                <span class="h6 d-block">{% trans "Semestral" %}</span>
                                 <p class="small text-muted">{% trans "Ahorra un" %} 10%</p>
                             </div>
                         </div>
-                        <div class="tab-option" data-period="anual">
+                        <div class="tab-option" data-period="anual" role="radio" tabindex="0" aria-checked="false">
                             <div class="tab-content">
                                 <div class="tab-icon">
                                     <i class="fas fa-trophy"></i>
                                 </div>
-                                <h6>{% trans "Anual" %}</h6>
+                                <span class="h6 d-block">{% trans "Anual" %}</span>
                                 <p class="small text-muted">
                                     <span class="save-badge">{% trans "Ahorra" %} 20%</span>
                                 </p>
@@ -77,10 +77,12 @@
             {% csrf_token %}
             <input type="hidden" name="modalidad" id="modalidad-input" value="mensual">
             
-            <div class="row g-4">
+            <div class="row g-4" role="radiogroup" aria-label="{% trans 'Planes de hosting disponibles' %}">
                 {% for clave, datos in planes.items %}
                 <div class="col-lg-4">
-                    <div class="plan-card {% if clave == 'Platino' %}popular{% endif %}" onclick="selectPlan('{{ clave }}', this)">
+                    <div class="plan-card {% if clave == 'Platino' %}popular{% endif %}"
+                         onclick="selectPlan('{{ clave }}', this)" role="radio" tabindex="0"
+                         aria-checked="false" aria-label="{% trans 'Seleccionar plan' %} {{ clave }}">
                         {% if clave == 'Platino' %}
                         <div class="popular-badge">
                             <i class="fas fa-star me-1"></i>{% trans "Más Popular" %}
@@ -214,10 +216,14 @@ document.querySelectorAll('.tab-option').forEach(tab => {
         const period = this.getAttribute('data-period');
         
         // Remover clase active de todos los tabs
-        document.querySelectorAll('.tab-option').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-option').forEach(t => {
+            t.classList.remove('active');
+            t.setAttribute('aria-checked', 'false');
+        });
         
         // Agregar clase active al tab seleccionado
         this.classList.add('active');
+        this.setAttribute('aria-checked', 'true');
         
         // Actualizar el input hidden
         document.getElementById('modalidad-input').value = period;
@@ -256,6 +262,13 @@ document.querySelectorAll('.tab-option').forEach(tab => {
             });
         }
     });
+
+    tab.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            this.click();
+        }
+    });
 });
 
 // Selección de plan
@@ -263,10 +276,12 @@ function selectPlan(planName, cardElement) {
     // Remover selección previa
     document.querySelectorAll('.plan-card').forEach(card => {
         card.classList.remove('selected');
+        card.setAttribute('aria-checked', 'false');
     });
     
     // Marcar como seleccionado
     cardElement.classList.add('selected');
+    cardElement.setAttribute('aria-checked', 'true');
     
     // Marcar el radio button
     document.getElementById('plan-' + planName).checked = true;
@@ -274,6 +289,15 @@ function selectPlan(planName, cardElement) {
     // Habilitar botón continuar
     document.getElementById('continue-btn').disabled = false;
 }
+
+document.querySelectorAll('.plan-card').forEach(card => {
+    card.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            this.click();
+        }
+    });
+});
 
 // Prevenir envío sin selección
 document.getElementById('plan-form').addEventListener('submit', function(e) {

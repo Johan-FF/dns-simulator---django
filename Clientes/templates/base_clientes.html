@@ -117,9 +117,12 @@
         </div>
 
         <!-- Botón de modo oscuro -->
-                        <button onclick="toggleDarkMode()" id="modoOscuroBtn" class="btn btn-sm btn-outline-secondary">
-                            🌙 / ☀️
-                        </button>
+        <button type="button" onclick="toggleDarkMode()" id="modoOscuroBtn" class="btn btn-sm btn-outline-light mt-2"
+                aria-label="{% trans 'Cambiar modo de color' %}"
+                aria-pressed="{% if request.COOKIES.modo_oscuro == '1' %}true{% else %}false{% endif %}">
+            <i class="bi bi-circle-half" aria-hidden="true"></i>
+            <span class="visually-hidden">{% trans "Cambiar modo de color" %}</span>
+        </button>
     </footer>
 
     <!-- Script de Bootstrap al final para mejor rendimiento -->
@@ -128,6 +131,7 @@
     function toggleDarkMode() {
         const body = document.body;
         const dark = body.classList.toggle('dark-mode');
+        document.getElementById('modoOscuroBtn').setAttribute('aria-pressed', dark.toString());
         document.cookie = `modo_oscuro=${dark ? 1 : 0}; path=/; max-age=31536000`;
     }
 </script>

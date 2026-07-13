@@ -10,9 +10,9 @@
         <div class="col-md-8">
             <div class="card shadow">
                 <div class="card-header bg-success text-white">
-                    <h4 class="mb-0">
-                        <i class="fas fa-credit-card me-2"></i>{% trans "Registrar Nueva Tarjeta de Crédito" %}
-                    </h4>
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-credit-card me-2" aria-hidden="true"></i>{% trans "Registrar Nueva Tarjeta de Crédito" %}
+                    </h2>
                 </div>
                 <div class="card-body">
                     {% if request.session.plan_pendiente %}
@@ -34,6 +34,9 @@
 
                     <form method="post">
                         {% csrf_token %}
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+                        {% endif %}
                         
                         <div class="col-md-12 mb-3 position-relative">
                             <label for="id_numero" class="form-label">
@@ -43,15 +46,23 @@
                                 class="form-control pe-5" 
                                 id="id_numero" 
                                 name="numero" 
+                                value="{{ form.numero.value|default:'' }}"
                                 placeholder="{% trans '1234 5678 9012 3456' %}"
                                 maxlength="19"
+                                inputmode="numeric"
+                                autocomplete="cc-number"
+                                aria-describedby="numero-tarjeta-ayuda{% if form.numero.errors %} numero-tarjeta-errors{% endif %}"
+                                {% if form.numero.errors %}aria-invalid="true"{% endif %}
                                 required
                                 oninput="formatCardNumber(this); actualizarLogo();">
                             <img id="logoTarjeta" 
                                 src="" 
                                 alt="{% trans 'Logo Tarjeta' %}" 
                                 style="height: 30px; position: absolute; right: 12px; top: 55%; transform: translateY(-50%); display: none;">
-                            <div class="form-text">{% trans "Ingresa los 14 a 16 dígitos de tu tarjeta" %}</div>
+                            <div class="form-text" id="numero-tarjeta-ayuda">{% trans "Ingresa los 14 a 16 dígitos de tu tarjeta" %}</div>
+                            {% if form.numero.errors %}
+                                <div class="invalid-feedback d-block" id="numero-tarjeta-errors">{{ form.numero.errors }}</div>
+                            {% endif %}
                         </div>
 
                         <div class="row">
@@ -63,11 +74,17 @@
                                        class="form-control text-uppercase" 
                                        id="id_nombre_titular" 
                                        name="nombre_titular" 
+                                       value="{{ form.nombre_titular.value|default:'' }}"
                                        placeholder="{% trans 'NOMBRE COMPLETO COMO APARECE EN LA TARJETA' %}"
                                        maxlength="50"
+                                       autocomplete="cc-name"
+                                       {% if form.nombre_titular.errors %}aria-invalid="true" aria-describedby="nombre-titular-errors"{% endif %}
                                        required
                                        style="text-transform: uppercase;">
                                 <div class="form-text">{% trans "Nombre exacto como aparece en tu tarjeta" %}</div>
+                                {% if form.nombre_titular.errors %}
+                                    <div class="invalid-feedback d-block" id="nombre-titular-errors">{{ form.nombre_titular.errors }}</div>
+                                {% endif %}
                             </div>
                         </div>
 
@@ -80,11 +97,19 @@
                                        class="form-control" 
                                        id="id_fecha_expiracion" 
                                        name="fecha_expiracion" 
+                                       value="{{ form.fecha_expiracion.value|default:'' }}"
                                        placeholder="{% trans 'MM/AA' %}"
                                        maxlength="5"
+                                       inputmode="numeric"
+                                       autocomplete="cc-exp"
+                                       aria-describedby="fecha-expiracion-ayuda{% if form.fecha_expiracion.errors %} fecha-expiracion-errors{% endif %}"
+                                       {% if form.fecha_expiracion.errors %}aria-invalid="true"{% endif %}
                                        required
                                        oninput="formatExpiryDate(this)">
-                                <div class="form-text">{% trans "Formato: MM/AA" %}</div>
+                                <div class="form-text" id="fecha-expiracion-ayuda">{% trans "Formato: MM/AA" %}</div>
+                                {% if form.fecha_expiracion.errors %}
+                                    <div class="invalid-feedback d-block" id="fecha-expiracion-errors">{{ form.fecha_expiracion.errors }}</div>
+                                {% endif %}
                             </div>
                             
                             <div class="col-md-6 mb-3">
@@ -97,8 +122,15 @@
                                        name="cvv" 
                                        placeholder="123"
                                        maxlength="4"
+                                       inputmode="numeric"
+                                       autocomplete="cc-csc"
+                                       aria-describedby="cvv-ayuda{% if form.cvv.errors %} cvv-errors{% endif %}"
+                                       {% if form.cvv.errors %}aria-invalid="true"{% endif %}
                                        required>
-                                <div class="form-text">{% trans "Código de 3 o 4 dígitos en el reverso" %}</div>
+                                <div class="form-text" id="cvv-ayuda">{% trans "Código de 3 o 4 dígitos en el reverso" %}</div>
+                                {% if form.cvv.errors %}
+                                    <div class="invalid-feedback d-block" id="cvv-errors">{{ form.cvv.errors }}</div>
+                                {% endif %}
                             </div>
                         </div>
 

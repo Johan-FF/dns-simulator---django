@@ -566,6 +566,116 @@
     }
 }
 
+/* Modo oscuro accesible para distribuidores y paquetes */
+body.dark-mode .profile-card,
+body.dark-mode .distributor-packages-card,
+body.dark-mode .packages-list-card,
+body.dark-mode .purchase-form-card,
+body.dark-mode .confirmation-card,
+body.dark-mode .next-steps-card,
+body.dark-mode .actions-card,
+body.dark-mode .info-card,
+body.dark-mode .quick-actions-card,
+body.dark-mode .additional-info-card,
+body.dark-mode .contact-info-card,
+body.dark-mode .stat-card-modern,
+body.dark-mode .action-card,
+body.dark-mode .benefit-card,
+body.dark-mode .action-button,
+body.dark-mode .summary-card,
+body.dark-mode .payment-info-card,
+body.dark-mode .benefits-card,
+body.dark-mode .confirmation-actions {
+    background: var(--cw-surface) !important;
+    color: var(--cw-text) !important;
+    border-color: var(--cw-border) !important;
+}
+
+body.dark-mode .benefit-card.premium-distributor,
+body.dark-mode .action-button.primary {
+    background: linear-gradient(135deg, #302613 0%, var(--cw-surface) 100%) !important;
+    border-color: var(--cw-accent) !important;
+}
+
+body.dark-mode .info-label,
+body.dark-mode .stat-number,
+body.dark-mode .action-content h6,
+body.dark-mode .benefit-title,
+body.dark-mode .step-content h6,
+body.dark-mode .package-details h5,
+body.dark-mode .detail-content h6,
+body.dark-mode .price-row.total {
+    color: var(--cw-text) !important;
+}
+
+body.dark-mode .info-value,
+body.dark-mode .stat-label,
+body.dark-mode .action-content p,
+body.dark-mode .commission-label,
+body.dark-mode .benefit-description,
+body.dark-mode .benefit-features li,
+body.dark-mode .action-button .action-text p,
+body.dark-mode .detail-content p,
+body.dark-mode .benefits-list li,
+body.dark-mode .price-row.taxes,
+body.dark-mode .quantity-label {
+    color: var(--cw-muted) !important;
+}
+
+body.dark-mode .step-item,
+body.dark-mode .package-summary,
+body.dark-mode .price-row,
+body.dark-mode .benefits-list li {
+    border-color: var(--cw-border) !important;
+}
+
+body.dark-mode .price-breakdown,
+body.dark-mode .package-quantity,
+body.dark-mode .security-notice,
+body.dark-mode .terms-notice .alert {
+    background: var(--cw-surface-raised) !important;
+    color: var(--cw-text) !important;
+    border-color: var(--cw-border) !important;
+}
+
+body.dark-mode .quantity-input {
+    background-color: var(--cw-surface-raised);
+    border-color: rgba(229, 211, 181, 0.34);
+    color: var(--cw-text);
+}
+
+body.dark-mode .action-card:hover,
+body.dark-mode .action-card:focus-visible,
+body.dark-mode .action-button:hover,
+body.dark-mode .action-button:focus-visible,
+body.dark-mode .benefit-card:hover {
+    background: var(--cw-surface-raised) !important;
+    border-color: var(--cw-accent) !important;
+}
+
+body.dark-mode .payment-step-number {
+    background-color: var(--cw-surface-raised);
+    color: var(--cw-muted);
+    border: 1px solid var(--cw-border);
+}
+
+body.dark-mode .payment-step.active .payment-step-number,
+body.dark-mode .payment-step.completed .payment-step-number {
+    background-color: var(--cw-accent);
+    color: #1b1215;
+    border-color: var(--cw-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .profile-card,
+    .stat-card-modern,
+    .action-card,
+    .benefit-card,
+    .action-button {
+        transition: none;
+    }
+}
+
 /* Estilos para Resumen de Pago */
 
 /* Payment Step Indicator */

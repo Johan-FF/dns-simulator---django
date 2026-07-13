@@ -24,17 +24,17 @@
         {% for message in messages %}
         <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
             {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{% trans 'Cerrar mensaje' %}"></button>
         </div>
         {% endfor %}
     </div>
     {% endif %}
 
     <!-- Navegación superior profesional -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-chibcha shadow-sm sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-chibcha shadow-sm sticky-top" aria-label="{% trans 'Navegación principal' %}">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="{% url 'home' %}">
-                <img src="{% static 'img/textoBlanco.svg' %}" alt="ChibchaWeb" style="height:40px;" class="me-2">
+            <a class="navbar-brand fw-bold" href="{% url 'home' %}" aria-label="{% trans 'ChibchaWeb - inicio' %}">
+                <img src="{% static 'img/textoBlanco.svg' %}" alt="" class="navbar-brand-logo me-2" aria-hidden="true">
                 <span class="d-none d-sm-inline">ChibchaWeb</span>
             </a>
             
@@ -46,22 +46,22 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link nav-link-chibcha" href="{% url 'home' %}">
-                            <i class="fas fa-home"></i> {% trans "Inicio"%}
+                            <i class="fas fa-home" aria-hidden="true"></i> {% trans "Inicio"%}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link nav-link-chibcha" href="{% url 'dominios:verificar_url' %}">
-                            <i class="bi bi-globe2"></i> {% trans "Dominios"%}
+                            <i class="bi bi-globe2" aria-hidden="true"></i> {% trans "Dominios"%}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link nav-link-chibcha" href="{% url 'home' %}#planes">
-                            <i class="bi bi-layers"></i> {% trans "Planes"%}
+                            <i class="bi bi-table" aria-hidden="true"></i> {% trans "Planes"%}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link nav-link-chibcha" href="#contacto">
-                            <i class="bi bi-envelope"></i> {% trans "Contacto"%}
+                            <i class="bi bi-envelope" aria-hidden="true"></i> {% trans "Contacto"%}
                         </a>
                     </li>
                 </ul>
@@ -73,22 +73,22 @@
                         {% include 'components/language_selector.html' %}
                     </div>
                     <span class="text-chibcha-light me-3 d-none d-md-block">
-                        <i class="fas fa-user-circle"></i> {{ user.get_full_name|default:user.username }}
+                        <i class="fas fa-user-circle" aria-hidden="true"></i> {{ user.get_full_name|default:user.username }}
                     </span>
                     <div class="dropdown">
                         <button class="btn btn-chibcha-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user-cog"></i> {% trans "Mi cuenta"%}
+                            <i class="fas fa-user-cog" aria-hidden="true"></i> {% trans "Mi cuenta"%}
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="{% url 'clientes:perfil' %}"><i class="fas fa-user"></i> {% trans "Perfil"%}</a></li>
-                            <li><a class="dropdown-item" href="{% url 'clientes:detalle_cliente' %}"><i class="fas fa-cog"></i> {% trans "Configuración"%}</a></li>
-                            <li><a class="dropdown-item" href="{% url 'tickets:crear_ticket' %}"><i class="fas fa-ticket-alt"></i> {% trans "Crear Ticket"%}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'clientes:perfil' %}"><i class="fas fa-user" aria-hidden="true"></i> {% trans "Perfil"%}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'clientes:detalle_cliente' %}"><i class="fas fa-cog" aria-hidden="true"></i> {% trans "Configuración"%}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'tickets:crear_ticket' %}"><i class="fas fa-ticket-alt" aria-hidden="true"></i> {% trans "Crear Ticket"%}</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                              <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                              <form method="post" action="{% url 'logout' %}" class="logout-form">
                                 {% csrf_token %}
-                                <button type="submit" class="dropdown-item text-danger" style="display:inline">
-                                    <i class="fas fa-sign-out-alt"></i> {% trans "Cerrar sesión"%}
+                                <button type="submit" class="dropdown-item text-danger">
+                                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> {% trans "Cerrar sesión"%}
                                 </button>
                               </form>
                             </li>
@@ -102,10 +102,10 @@
                         {% include 'components/language_selector.html' %}
                     </div>
                     <a class="btn btn-outline-light me-2" href="{% url 'login' %}">
-                        <i class="fas fa-sign-in-alt"></i> {% trans "Iniciar sesión"%}
+                        <i class="fas fa-sign-in-alt" aria-hidden="true"></i> {% trans "Iniciar sesión"%}
                     </a>
                     <a class="btn btn-chibcha-primary" href="{% url 'clientes:registrar_cliente' %}">
-                        <i class="fas fa-user-plus"></i> {% trans "Registrarse"%}
+                        <i class="fas fa-user-plus" aria-hidden="true"></i> {% trans "Registrarse"%}
                     </a>
                 </div>
                 {% endif %}
@@ -119,20 +119,20 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-8 text-center text-lg-start">
-                        <img src="{% static 'img/logocompleto.svg' %}" alt="Logo" class="img-fluid mb-4 d-lg-none" style="max-width: 250px;">
+                        <img src="{% static 'img/logocompleto.svg' %}" alt="" class="img-fluid mb-4 d-lg-none hero-logo-mobile" aria-hidden="true">
                         <h1 class="display-4 fw-bold mb-3">¡{% trans "Bienvenido a ChibchaWeb"%}!</h1>
                         <p class="lead mb-4">{% trans "Tu sitio #1 de hosting profesional en Colombia"%}</p>
                         <div class="d-grid gap-2 d-sm-flex justify-content-sm-center justify-content-lg-start">
                             <a href="{% url 'clientes:registrar_cliente' %}" class="btn btn-chibcha-primary btn-lg px-4 me-sm-3">
-                                <i class="fas fa-rocket"></i> {% trans "Empieza ahora"%}
+                                <i class="fas fa-rocket" aria-hidden="true"></i> {% trans "Empieza ahora"%}
                             </a>
                             <a href="#planes" class="btn btn-outline-light btn-lg px-4">
-                                <i class="fas fa-th-list"></i> {% trans "Ver planes"%}
+                                <i class="fas fa-th-list" aria-hidden="true"></i> {% trans "Ver planes"%}
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-4 d-none d-lg-block text-center">
-                        <img src="{% static 'img/logocompleto.svg' %}" alt="Logo" class="img-fluid" style="max-width: 350px;">
+                        <img src="{% static 'img/logocompleto.svg' %}" alt="" class="img-fluid hero-logo-desktop" aria-hidden="true">
                     </div>
                 </div>
             </div>
@@ -150,20 +150,20 @@
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
                     <div class="d-flex align-items-center mb-3">
-                        <i class="fas fa-server fa-2x me-3"></i>
-                        <h5 class="mb-0">ChibchaWeb</h5>
+                        <i class="fas fa-server fa-2x me-3" aria-hidden="true"></i>
+                        <p class="h5 mb-0">ChibchaWeb</p>
                     </div>
                     <p class="mb-3">{% trans "Soluciones de hosting profesional para empresas y emprendedores en Colombia. Más de 10 años de experiencia en el sector"%}.</p>
                     <div class="d-flex gap-3">
-                        <a href="#" class="text-chibcha-light fs-4"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-chibcha-light fs-4"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-chibcha-light fs-4"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-chibcha-light fs-4"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="text-chibcha-light fs-4" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="#" class="text-chibcha-light fs-4" aria-label="X / Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                        <a href="#" class="text-chibcha-light fs-4" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="#" class="text-chibcha-light fs-4" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
                     </div>
                 </div>
                 
                 <div class="col-lg-2 col-md-6">
-                    <h5 class="mb-3"><i class="fas fa-link me-2"></i>{% trans "Servicios"%}</h5>
+                    <h2 class="h5 mb-3"><i class="fas fa-link me-2" aria-hidden="true"></i>{% trans "Servicios"%}</h2>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="{% url 'home' %}" class="text-chibcha-light text-decoration-none">{% trans "Hosting Web"%}</a></li>
                         <li class="mb-2"><a href="#planes" class="text-chibcha-light text-decoration-none">{% trans "Planes"%}</a></li>
@@ -173,7 +173,7 @@
                 </div>
                 
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="mb-3"><i class="fas fa-headset me-2"></i>{% trans "Soporte"%}</h5>
+                    <h2 class="h5 mb-3"><i class="fas fa-headset me-2" aria-hidden="true"></i>{% trans "Soporte"%}</h2>
                     <ul class="list-unstyled">
                         <li class="mb-2"><a href="#" class="text-chibcha-light text-decoration-none">{% trans "Centro de Ayuda"%}</a></li>
                         <li class="mb-2"><a href="#" class="text-chibcha-light text-decoration-none">{% trans "Documentación"%}</a></li>
@@ -183,21 +183,21 @@
                 </div>
                 
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="mb-3"><i class="fas fa-map-marker-alt me-2"></i>{% trans "Contacto"%}</h5>
+                    <h2 class="h5 mb-3"><i class="fas fa-map-marker-alt me-2" aria-hidden="true"></i>{% trans "Contacto"%}</h2>
                     <div class="mb-2">
-                        <i class="fas fa-building me-2"></i>
+                        <i class="fas fa-building me-2" aria-hidden="true"></i>
                         <span>Bogotá, Colombia</span>
                     </div>
                     <div class="mb-2">
-                        <i class="fas fa-envelope me-2"></i>
+                        <i class="fas fa-envelope me-2" aria-hidden="true"></i>
                         <a href="mailto:info@chibchaweb.com" class="text-chibcha-light text-decoration-none">info@chibchaweb.com</a>
                     </div>
                     <div class="mb-2">
-                        <i class="fas fa-phone me-2"></i>
+                        <i class="fas fa-phone me-2" aria-hidden="true"></i>
                         <a href="tel:+576012345678" class="text-chibcha-light text-decoration-none">(+57) 601-234-5678</a>
                     </div>
                     <div>
-                        <i class="fas fa-clock me-2"></i>
+                        <i class="fas fa-clock me-2" aria-hidden="true"></i>
                         <span>24/7 {% trans "Soporte"%}</span>
                     </div>
                 </div>
@@ -219,8 +219,11 @@
                         <span class="text-chibcha-light">|</span>
 
                         <!-- Botón de modo oscuro -->
-                        <button onclick="toggleDarkMode()" id="modoOscuroBtn" class="btn btn-sm btn-outline-secondary">
-                            🌙 / ☀️
+                        <button type="button" onclick="toggleDarkMode()" id="modoOscuroBtn" class="btn btn-sm btn-outline-light"
+                                aria-label="{% trans 'Cambiar modo de color' %}"
+                                aria-pressed="{% if request.COOKIES.modo_oscuro == '1' %}true{% else %}false{% endif %}">
+                            <i class="bi bi-circle-half" aria-hidden="true"></i>
+                            <span class="visually-hidden">{% trans "Cambiar modo de color" %}</span>
                         </button>
                     </div>
                 </div>
@@ -234,9 +237,9 @@
     function toggleDarkMode() {
         const body = document.body;
         const dark = body.classList.toggle('dark-mode');
+        document.getElementById('modoOscuroBtn').setAttribute('aria-pressed', dark.toString());
         document.cookie = `modo_oscuro=${dark ? 1 : 0}; path=/; max-age=31536000`;
     }
 </script>
 </body>
 </html>
-

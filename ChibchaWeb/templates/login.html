@@ -8,18 +8,33 @@
 
 {% block content %}
 <div class="container mt-5 mb-5">
-    <div class="card card-chibcha mx-auto" style="width: 22rem;">
+    <div class="card card-chibcha mx-auto login-card">
         <div class="card-body">
-            <h5 class="card-title mb-4 text-chibcha-secondary">{% trans "Iniciar sesión" %}</h5>
+            <h2 class="h5 card-title mb-4 text-chibcha-secondary">{% trans "Iniciar sesión" %}</h2>
             <form method="post">
                 {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
                 <div class="mb-3">
                     <label for="id_username" class="form-label form-label-chibcha">{% trans "Nickname" %}</label>
-                    <input type="text" name="username" class="form-control" id="id_username" required>
+                    <input type="text" name="username" class="form-control" id="id_username"
+                           value="{{ form.username.value|default:'' }}" autocomplete="username" required
+                           {% if form.username.errors %}aria-invalid="true" aria-describedby="username-errors"{% endif %}>
+                    {% if form.username.errors %}
+                        <div id="username-errors" class="invalid-feedback d-block">{{ form.username.errors }}</div>
+                    {% endif %}
                 </div>
                 <div class="mb-3">
                     <label for="id_password" class="form-label form-label-chibcha">{% trans "Contraseña" %}</label>
-                    <input type="password" name="password" class="form-control" id="id_password" required>
+                    <input type="password" name="password" class="form-control" id="id_password"
+                           autocomplete="current-password" required
+                           {% if form.password.errors %}aria-invalid="true" aria-describedby="password-errors"{% endif %}>
+                    {% if form.password.errors %}
+                        <div id="password-errors" class="invalid-feedback d-block">{{ form.password.errors }}</div>
+                    {% endif %}
                 </div>
                 <button type="submit" class="btn btn-chibcha-primary w-100">{% trans "Ingresar" %}</button>
             </form>

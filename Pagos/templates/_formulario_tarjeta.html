@@ -10,14 +10,17 @@
            name="numero"
            placeholder="1234 5678 9012 3456"
            maxlength="19"
+           inputmode="numeric"
+           autocomplete="cc-number"
+           aria-describedby="numero-tarjeta-ayuda aviso-franquicia"
            required
            oninput="formatCardNumber(this); actualizarLogo(); validarFranquicia();">
     <img id="logoTarjeta"
          src=""
          alt="{% trans 'Logo Tarjeta' %}"
          style="height: 30px; position: absolute; right: 12px; top: 55%; transform: translateY(-50%); display: none;">
-    <div class="form-text">{% trans "Ingresa los 14 a 16 dígitos de tu tarjeta" %}</div>
-    <div id="aviso-franquicia" class="text-danger small mt-1" style="display: none;">
+    <div class="form-text" id="numero-tarjeta-ayuda">{% trans "Ingresa los 14 a 16 dígitos de tu tarjeta" %}</div>
+    <div id="aviso-franquicia" class="text-danger small mt-1 d-none" role="alert" aria-live="polite">
         {% trans "Solo se permiten tarjetas VISA, MasterCard o Diners Club." %}
     </div>
 </div>
@@ -34,6 +37,7 @@
                name="titular"
                placeholder="{% trans 'NOMBRE COMPLETO COMO APARECE EN LA TARJETA' %}"
                maxlength="50"
+               autocomplete="cc-name"
                required>
         <div class="form-text">{% trans "Nombre exacto como aparece en tu tarjeta" %}</div>
     </div>
@@ -51,9 +55,12 @@
                name="expiracion"
                placeholder="{% trans 'MM/AA' %}"
                maxlength="5"
+               inputmode="numeric"
+               autocomplete="cc-exp"
+               aria-describedby="fecha-expiracion-ayuda"
                required
                oninput="formatExpiryDate(this)">
-        <div class="form-text">{% trans "Formato: MM/AA" %}</div>
+        <div class="form-text" id="fecha-expiracion-ayuda">{% trans "Formato: MM/AA" %}</div>
     </div>
 
     <div class="col-md-6 mb-3">
@@ -66,8 +73,11 @@
                name="cvv"
                placeholder="123"
                maxlength="4"
+               inputmode="numeric"
+               autocomplete="cc-csc"
+               aria-describedby="cvv-ayuda"
                required>
-        <div class="form-text">Código de 3 o 4 dígitos en el reverso</div>
+        <div class="form-text" id="cvv-ayuda">Código de 3 o 4 dígitos en el reverso</div>
     </div>
 </div>
 
@@ -119,13 +129,16 @@ function validarFranquicia() {
     const numero = document.getElementById("id_numero").value;
     const franquicia = detectarFranquicia(numero);
     const aviso = document.getElementById("aviso-franquicia");
+    const input = document.getElementById("id_numero");
     const btns = document.querySelectorAll('button[type="submit"]');
 
     if (["VISA", "MasterCard", "Diners Club"].includes(franquicia)) {
-        aviso.style.display = "none";
+        aviso.classList.add("d-none");
+        input.removeAttribute("aria-invalid");
         btns.forEach(btn => btn.disabled = false);
     } else {
-        aviso.style.display = "block";
+        aviso.classList.remove("d-none");
+        input.setAttribute("aria-invalid", "true");
         btns.forEach(btn => btn.disabled = true);
     }
 }

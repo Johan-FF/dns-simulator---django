@@ -549,3 +549,99 @@
 footer.bg-gradient-chibcha {
     margin-top: 2.5rem !important;
 }
+
+/* ===== MODO OSCURO ACCESIBLE ===== */
+body.dark-mode .payment-step-indicator,
+body.dark-mode .payment-container,
+body.dark-mode .payment-item-card,
+body.dark-mode .payment-summary-card,
+body.dark-mode .confirmation-card {
+    background: var(--cw-surface) !important;
+    color: var(--cw-text) !important;
+    border-color: var(--cw-border) !important;
+}
+
+body.dark-mode .payment-section-title,
+body.dark-mode .payment-item-details h5,
+body.dark-mode .payment-no-items h5,
+body.dark-mode .payment-plan-summary h4,
+body.dark-mode .payment-cost-summary h4 {
+    color: var(--cw-text) !important;
+}
+
+body.dark-mode .payment-item-text,
+body.dark-mode .payment-card-number,
+body.dark-mode .payment-card-expiry,
+body.dark-mode .payment-item-meta,
+body.dark-mode .payment-no-items p {
+    color: var(--cw-muted) !important;
+}
+
+body.dark-mode .payment-item-card:hover,
+body.dark-mode .payment-item-card:focus-within {
+    background: var(--cw-surface-raised) !important;
+    border-color: var(--cw-accent) !important;
+}
+
+body.dark-mode .payment-item-card.selected {
+    background: linear-gradient(135deg, #302613 0%, var(--cw-surface-raised) 100%) !important;
+    border-color: var(--cw-accent) !important;
+    box-shadow: 0 0 0 3px rgba(234, 178, 27, 0.2) !important;
+}
+
+body.dark-mode .payment-item-meta,
+body.dark-mode .payment-section-title {
+    border-color: var(--cw-border) !important;
+}
+
+body.dark-mode .payment-card-type {
+    background: #3a2d1b;
+    color: #ffe7a0;
+    border: 1px solid rgba(234, 178, 27, 0.35);
+}
+
+body.dark-mode .payment-no-items,
+body.dark-mode .payment-cost-summary,
+body.dark-mode .payment-plan-summary {
+    background: var(--cw-surface-raised) !important;
+    color: var(--cw-text) !important;
+    border-color: var(--cw-border) !important;
+}
+
+body.dark-mode .payment-step-number {
+    background-color: var(--cw-surface-raised);
+    color: var(--cw-muted);
+    border: 1px solid var(--cw-border);
+}
+
+body.dark-mode .payment-step.active .payment-step-number,
+body.dark-mode .payment-step.completed .payment-step-number {
+    background-color: var(--cw-accent);
+    color: #1b1215;
+    border-color: var(--cw-accent);
+}
+
+body.dark-mode .payment-step-connector {
+    background-color: var(--cw-border);
+}
+
+body.dark-mode .payment-btn-secondary {
+    background: #3a2921 !important;
+    color: var(--cw-text) !important;
+    border: 1px solid var(--cw-border) !important;
+}
+
+body.dark-mode .payment-btn-secondary:hover,
+body.dark-mode .payment-btn-secondary:focus-visible {
+    background: #4a352a !important;
+    color: #fff !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .payment-item-card,
+    .payment-section-title::after,
+    .payment-btn-primary,
+    .payment-btn-secondary {
+        transition: none !important;
+    }
+}
