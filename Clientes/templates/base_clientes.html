@@ -14,7 +14,7 @@
     <script src="https://kit.fontawesome.com/7ec8b161d7.js" crossorigin="anonymous"></script>
 
     <!-- Estilo personalizado -->
-    <link rel="stylesheet" href="{% static 'styles/chibcha-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/chibcha-theme.css' %}?v=4.1">
     
     <!-- CSS adicional para páginas específicas -->
     {% block extra_css %}{% endblock %}
@@ -70,7 +70,7 @@
                 <!-- Indicador de estado de suscripción -->
                 {% if not cliente.suscripcion_activa %}
                 <div class="navbar-text me-3">
-                    <small class="text-warning">
+                    <small class="text-white">
                         <i class="fas fa-exclamation-triangle me-1"></i>{% trans "Sin plan activo" %}
                     </small>
                 </div>

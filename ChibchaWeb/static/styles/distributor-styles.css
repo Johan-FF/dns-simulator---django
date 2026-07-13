@@ -2,7 +2,7 @@
 
 /* Hero Sections */
 .distributor-header, .packages-header, .purchase-header, .success-header {
-    background: linear-gradient(135deg, #1b1215 0%, #69554b 50%, #6c371f 100%);
+    background: linear-gradient(135deg, #2B0A6B 0%, #6500A8 50%, #D0007F 100%);
     position: relative;
     overflow: hidden;
 }
@@ -16,8 +16,8 @@
     right: 0;
     bottom: 0;
     background: 
-        radial-gradient(circle at 25% 25%, rgba(234,178,27,0.2) 0%, transparent 50%),
-        radial-gradient(circle at 75% 75%, rgba(107,55,31,0.3) 0%, transparent 50%);
+        radial-gradient(circle at 25% 25%, rgba(255,212,59,0.2) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(208,0,127,0.3) 0%, transparent 50%);
     animation: heroGlow 8s ease-in-out infinite;
 }
 
@@ -98,7 +98,7 @@
 }
 
 .info-value {
-    color: #6c757d;
+    color: #62546E;
 }
 
 /* Estados Vacíos */
@@ -151,7 +151,7 @@
 }
 
 .stat-label {
-    color: #6c757d;
+    color: #62546E;
     font-size: 0.9rem;
 }
 
@@ -164,7 +164,7 @@
     padding: 1.5rem;
     box-shadow: var(--shadow-card);
     transition: all 0.3s ease;
-    border: 1px solid #e9ecef;
+    border: 1px solid #E7C6DE;
 }
 
 .action-card:hover {
@@ -193,7 +193,7 @@
 }
 
 .action-content p {
-    color: #6c757d;
+    color: #62546E;
     font-size: 0.9rem;
     margin-bottom: 0;
 }
@@ -222,10 +222,10 @@
 }
 
 .price-info {
-    background: rgba(234,178,27,0.1);
+    background: rgba(255,212,59,0.1);
     padding: 1.5rem;
     border-radius: 10px;
-    border: 1px solid rgba(234,178,27,0.2);
+    border: 1px solid rgba(255,212,59,0.2);
 }
 
 .price-display, .total-display {
@@ -248,7 +248,7 @@
     border-radius: 15px;
     padding: 2rem;
     box-shadow: var(--shadow-card);
-    border: 2px solid #e9ecef;
+    border: 2px solid #E7C6DE;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -256,7 +256,7 @@
 
 .benefit-card.premium-distributor {
     border-color: var(--chibcha-accent);
-    background: linear-gradient(135deg, white 0%, rgba(234,178,27,0.05) 100%);
+    background: linear-gradient(135deg, white 0%, rgba(255,212,59,0.05) 100%);
 }
 
 .benefit-card:hover {
@@ -308,12 +308,12 @@
 
 .commission-label {
     display: block;
-    color: #6c757d;
+    color: #62546E;
     font-size: 0.9rem;
 }
 
 .benefit-description {
-    color: #6c757d;
+    color: #62546E;
     margin-bottom: 1.5rem;
 }
 
@@ -324,7 +324,7 @@
 
 .benefit-features li {
     padding: 0.5rem 0;
-    color: #6c757d;
+    color: #62546E;
 }
 
 /* Información Adicional */
@@ -339,7 +339,7 @@
 .info-icon i {
     width: 60px;
     height: 60px;
-    background: rgba(234,178,27,0.1);
+    background: rgba(255,212,59,0.1);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -356,7 +356,7 @@
     align-items: flex-start;
     margin-bottom: 2rem;
     padding-bottom: 2rem;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid #E7C6DE;
 }
 
 .step-item:last-child {
@@ -389,7 +389,7 @@
     display: flex;
     align-items: center;
     background: white;
-    border: 2px solid #e9ecef;
+    border: 2px solid #E7C6DE;
     border-radius: 10px;
     padding: 1.5rem;
     text-decoration: none;
@@ -407,7 +407,7 @@
 
 .action-button.primary {
     border-color: var(--chibcha-accent);
-    background: rgba(234,178,27,0.05);
+    background: rgba(255,212,59,0.05);
 }
 
 .action-button.primary:hover {
@@ -416,8 +416,8 @@
 }
 
 .action-button.secondary:hover {
-    border-color: #6c757d;
-    background: #6c757d;
+    border-color: #62546E;
+    background: #62546E;
     color: white;
 }
 
@@ -458,12 +458,12 @@
 .action-button .action-text p {
     margin-bottom: 0;
     font-size: 0.9rem;
-    color: #6c757d;
+    color: #62546E;
 }
 
 .action-button .action-arrow {
     font-size: 1.2rem;
-    color: #6c757d;
+    color: #62546E;
 }
 
 /* Confirmación */
@@ -505,7 +505,7 @@
 }
 
 .success-message {
-    color: #6c757d;
+    color: #62546E;
     font-size: 1.1rem;
     line-height: 1.6;
 }
@@ -593,7 +593,7 @@ body.dark-mode .confirmation-actions {
 
 body.dark-mode .benefit-card.premium-distributor,
 body.dark-mode .action-button.primary {
-    background: linear-gradient(135deg, #302613 0%, var(--cw-surface) 100%) !important;
+    background: linear-gradient(135deg, rgba(255, 112, 196, 0.18) 0%, var(--cw-surface) 100%) !important;
     border-color: var(--cw-accent) !important;
 }
 
@@ -640,7 +640,7 @@ body.dark-mode .terms-notice .alert {
 
 body.dark-mode .quantity-input {
     background-color: var(--cw-surface-raised);
-    border-color: rgba(229, 211, 181, 0.34);
+    border-color: rgba(255, 240, 248, 0.34);
     color: var(--cw-text);
 }
 
@@ -662,7 +662,7 @@ body.dark-mode .payment-step-number {
 body.dark-mode .payment-step.active .payment-step-number,
 body.dark-mode .payment-step.completed .payment-step-number {
     background-color: var(--cw-accent);
-    color: #1b1215;
+    color: #2B0A6B;
     border-color: var(--cw-accent);
 }
 
@@ -704,7 +704,7 @@ body.dark-mode .payment-step.completed .payment-step-number {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #6c757d;
+    background: #62546E;
     color: white;
     display: flex;
     align-items: center;
@@ -727,7 +727,7 @@ body.dark-mode .payment-step.completed .payment-step-number {
 .payment-step-connector {
     width: 60px;
     height: 2px;
-    background: #6c757d;
+    background: #62546E;
     opacity: 0.3;
 }
 
@@ -754,7 +754,7 @@ body.dark-mode .payment-step.completed .payment-step-number {
 /* Package Summary */
 .package-summary {
     padding: 2rem 0;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid #E7C6DE;
     margin-bottom: 2rem;
 }
 
@@ -790,9 +790,9 @@ body.dark-mode .payment-step.completed .payment-step-number {
 .package-quantity {
     text-align: center;
     padding: 1rem;
-    background: rgba(234,178,27,0.1);
+    background: rgba(255,212,59,0.1);
     border-radius: 15px;
-    border: 2px solid rgba(234,178,27,0.2);
+    border: 2px solid rgba(255,212,59,0.2);
 }
 
 .quantity-number {
@@ -814,7 +814,7 @@ body.dark-mode .payment-step.completed .payment-step-number {
 
 /* Price Breakdown */
 .price-breakdown {
-    background: #f8f9fa;
+    background: #FFF7FC;
     border-radius: 10px;
     padding: 1.5rem;
 }
@@ -824,7 +824,7 @@ body.dark-mode .payment-step.completed .payment-step-number {
     justify-content: between;
     align-items: center;
     padding: 0.75rem 0;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid #E7C6DE;
 }
 
 .price-row:last-child {
@@ -833,13 +833,13 @@ body.dark-mode .payment-step.completed .payment-step-number {
 
 .price-row.subtotal {
     font-weight: 600;
-    border-top: 2px solid #e9ecef;
+    border-top: 2px solid #E7C6DE;
     margin-top: 1rem;
     padding-top: 1rem;
 }
 
 .price-row.taxes {
-    color: #6c757d;
+    color: #62546E;
     font-size: 0.9rem;
 }
 
@@ -847,7 +847,7 @@ body.dark-mode .payment-step.completed .payment-step-number {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--chibcha-dark);
-    background: rgba(234,178,27,0.1);
+    background: rgba(255,212,59,0.1);
     margin: 1rem -1.5rem -1.5rem;
     padding: 1.5rem;
     border-radius: 0 0 10px 10px;
@@ -885,7 +885,7 @@ body.dark-mode .payment-step.completed .payment-step-number {
 
 .detail-content p {
     margin-bottom: 0.25rem;
-    color: #6c757d;
+    color: #62546E;
     font-size: 0.9rem;
 }
 
@@ -898,8 +898,8 @@ body.dark-mode .payment-step.completed .payment-step-number {
 
 .benefits-list li {
     padding: 0.75rem 0;
-    border-bottom: 1px solid #e9ecef;
-    color: #6c757d;
+    border-bottom: 1px solid #E7C6DE;
+    color: #62546E;
     font-size: 0.9rem;
 }
 
@@ -913,7 +913,7 @@ body.dark-mode .payment-step.completed .payment-step-number {
     border-radius: 15px;
     padding: 3rem 2rem;
     box-shadow: var(--shadow-card);
-    border: 2px solid rgba(234,178,27,0.2);
+    border: 2px solid rgba(255,212,59,0.2);
 }
 
 .action-buttons {
@@ -930,7 +930,7 @@ body.dark-mode .payment-step.completed .payment-step-number {
 /* Terms Notice */
 .terms-notice .alert {
     border-radius: 15px;
-    border: 1px solid #dee2e6;
+    border: 1px solid #E7C6DE;
     background: rgba(248,249,250,0.8);
 }
 

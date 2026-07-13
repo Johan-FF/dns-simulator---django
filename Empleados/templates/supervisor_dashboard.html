@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Supervisor - ChibchaWeb</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles/chibcha-theme.css' %}?v=4.0">
     <link rel="stylesheet" href="{% static 'styles/supervisor_dashboard.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body data-csrf-token="{{ csrf_token }}" 
+<body class="{% if request.COOKIES.modo_oscuro == '1' %}dark-mode{% endif %}" data-csrf-token="{{ csrf_token }}"
       data-tickets-sin-asignar='[{% for ticket in tickets_sin_asignar %}{"id":"{{ ticket.idTicket }}","nombre":"{{ ticket.nombreTicket|escapejs }}","cliente":"{% if ticket.cliente.user.first_name %}{{ ticket.cliente.user.first_name|escapejs }} {{ ticket.cliente.user.last_name|escapejs }}{% else %}{{ ticket.cliente.user.username|escapejs }}{% endif %}","fecha":"{{ ticket.fechar_creacion|date:"Y-m-d" }}","fechaFormato":"{{ ticket.fechar_creacion|date:"d/m/Y" }}","estado":"En espera","agentes":[{% for agente in agentes %}{"id":"{{ agente.id }}","nombre":"{{ agente.user.first_name|escapejs }} {{ agente.user.last_name|escapejs }}"}{% if not forloop.last %},{% endif %}{% endfor %}]}{% if not forloop.last %},{% endif %}{% endfor %}]'
       data-tickets-asignados='[{% for item in tickets_asignados %}{"id":"{{ item.ticket.idTicket }}","nombre":"{{ item.ticket.nombreTicket|escapejs }}","cliente":"{% if item.ticket.cliente.user.first_name %}{{ item.ticket.cliente.user.first_name|escapejs }} {{ item.ticket.cliente.user.last_name|escapejs }}{% else %}{{ item.ticket.cliente.user.username|escapejs }}{% endif %}","fecha":"{{ item.fecha_asignacion|date:"Y-m-d" }}","fechaFormato":"{{ item.fecha_asignacion|date:"d/m/Y" }}","estado":"{{ item.estado.nombreEstado|escapejs }}","agente":"{{ item.agente_asignado.user.first_name|escapejs }} {{ item.agente_asignado.user.last_name|escapejs }}"}{% if not forloop.last %},{% endif %}{% endfor %}]'>
     <div class="container-fluid">
