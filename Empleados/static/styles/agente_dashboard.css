@@ -1,11 +1,11 @@
 .sidebar {
     min-height: 100vh;
-    background: linear-gradient(180deg, #1b1215 0%, #69554b 100%);
+    background: linear-gradient(180deg, #2B0A6B 0%, #6500A8 100%);
 }
 
 .agente-badge {
-    background: #eab21b;
-    color: #1b1215;
+    background: #FFD43B;
+    color: #2B0A6B;
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.9rem;
@@ -30,13 +30,13 @@
 }
 
 .nav-link:hover {
-    background-color: rgba(229, 211, 181, 0.2);
-    color: #e5d3b5;
+    background-color: rgba(255, 240, 248, 0.2);
+    color: #FFF0F8;
 }
 
 .nav-link.active {
-    background-color: #eab21b;
-    color: #1b1215;
+    background-color: #FFD43B;
+    color: #2B0A6B;
     font-weight: bold;
 }
 
@@ -46,21 +46,21 @@
 }
 
 .bg-primary {
-    background-color: #6c371f !important;
+    background-color: #D0007F !important;
 }
 
 .bg-success {
-    background-color: #69554b !important;
+    background-color: #28a745 !important;
 }
 
 .bg-warning {
-    background-color: #eab21b !important;
-    color: #1b1215 !important;
+    background-color: #FFD43B !important;
+    color: #2B0A6B !important;
 }
 
 .bg-info {
-    background-color: #e5d3b5 !important;
-    color: #1b1215 !important;
+    background-color: #FFF0F8 !important;
+    color: #2B0A6B !important;
 }
 
 /* Estados Activo/Inactivo con colores estándar */
@@ -75,11 +75,15 @@
 }
 
 .text-primary {
-    color: #6c371f !important;
+    color: #D0007F !important;
 }
 
 .text-warning {
-    color: #eab21b !important;
+    color: #7A5700 !important;
+}
+
+body.dark-mode .text-warning {
+    color: #FFD43B !important;
 }
 
 /* Estilos para la mini información del agente */
@@ -125,8 +129,8 @@
 }
 
 .agente-info .btn-warning {
-    background: linear-gradient(45deg, #eab21b, #f39c12);
-    color: #1b1215;
+    background: linear-gradient(45deg, #FFD43B, #f39c12);
+    color: #2B0A6B;
     font-weight: bold;
 }
 

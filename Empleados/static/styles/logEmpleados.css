@@ -1,20 +1,20 @@
 body {
-    background: linear-gradient(135deg, #1b1215 0%, #69554b 100%);
+    background: linear-gradient(135deg, #2B0A6B 0%, #6500A8 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
 }
 
 .login-card {
-    background: rgba(229, 211, 181, 0.95);
+    background: rgba(255, 240, 248, 0.95);
     border-radius: 15px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
 }
 
 .employee-badge {
-    background: #eab21b;
-    color: #1b1215;
+    background: #FFD43B;
+    color: #2B0A6B;
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.9rem;
@@ -25,29 +25,29 @@ body {
 }
 
 .text-primary {
-    color: #6c371f !important;
+    color: #D0007F !important;
     font-weight: 700;
     letter-spacing: 0.5px;
 }
 
 .text-muted {
-    color: #69554b !important;
+    color: #6500A8 !important;
     font-size: 0.9rem;
 }
 
 .btn-primary {
-    background-color: #6c371f;
-    border-color: #6c371f;
-    color: #e5d3b5;
+    background-color: #D0007F;
+    border-color: #D0007F;
+    color: #FFF0F8;
     font-weight: bold;
     padding: 0.75rem;
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: #eab21b;
-    border-color: #eab21b;
-    color: #1b1215;
+    background-color: #FFD43B;
+    border-color: #FFD43B;
+    color: #2B0A6B;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -57,7 +57,7 @@ body {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #6c371f;
+    color: #D0007F;
     letter-spacing: 0.5px;
 }
 
@@ -69,23 +69,23 @@ body {
 .form-control {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #69554b;
+    border: 1px solid #6500A8;
     border-radius: 0.375rem;
     background-color: rgba(255, 255, 255, 0.9);
-    color: #1b1215;
+    color: #2B0A6B;
     font-size: 1rem;
     transition: all 0.3s ease;
 }
 
 .form-control::placeholder {
-    color: #69554b;
+    color: #6500A8;
     opacity: 0.7;
 }
 
 .form-control:focus {
-    border-color: #eab21b;
+    border-color: #FFD43B;
     background-color: #fff;
-    box-shadow: 0 0 0 0.2rem rgba(234, 178, 27, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(255, 212, 59, 0.25);
 }
 
 /* Animaciones y efectos adicionales */
@@ -100,13 +100,13 @@ body {
 
 /* Enlaces y elementos interactivos */
 a {
-    color: #6c371f;
+    color: #D0007F;
     transition: color 0.2s ease;
     text-decoration: none;
 }
 
 a:hover {
-    color: #eab21b;
+    color: #FFD43B;
     text-decoration: none;
 }
 

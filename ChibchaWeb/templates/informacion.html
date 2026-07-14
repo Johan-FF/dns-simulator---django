@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
+{% block body_class %}landing-page{% endblock %}
 {% block title %}{% trans "Información - ChibchaWeb" %}{% endblock %}
 
 {% block hero %}
 <!-- Hero Section Reconstruido -->
-<section class="hero-new bg-dark">
+<section class="hero-new bg-dark" aria-label="{% trans 'Sección principal de presentación de ChibchaWeb' %}">
     <div class="container-fluid px-0">
         <div class="row g-0 min-vh-100">
             <!-- Columna Principal -->
@@ -37,8 +38,8 @@
                                 <!-- Métricas horizontales -->
                                 <div class="row g-4 mb-5">
                                     <div class="col-6 col-md-3">
-                                        <div class="metric-new text-center">
-                                            <div class="metric-new-icon">
+                                        <div class="metric-new text-center" aria-label="{% trans 'Clientes activos' %}">
+                                            <div class="metric-new-icon" aria-hidden="true">
                                                 <i class="bi bi-people-fill" aria-hidden="true"></i>
                                             </div>
                                             <div class="metric-new-number">{{ estadisticas.clientes }}+</div>
@@ -46,8 +47,8 @@
                                         </div>
                                     </div>
                                     <div class="col-6 col-md-3">
-                                        <div class="metric-new text-center">
-                                            <div class="metric-new-icon">
+                                        <div class="metric-new text-center" aria-label="{% trans 'Uptime 99.9 por ciento' %}">
+                                            <div class="metric-new-icon" aria-hidden="true">
                                                 <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
                                             </div>
                                             <div class="metric-new-number">99.9%</div>
@@ -55,8 +56,8 @@
                                         </div>
                                     </div>
                                     <div class="col-6 col-md-3">
-                                        <div class="metric-new text-center">
-                                            <div class="metric-new-icon">
+                                        <div class="metric-new text-center" aria-label="{% trans 'Tiempo de respuesta 100 milisegundos' %}">
+                                            <div class="metric-new-icon" aria-hidden="true">
                                                 <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
                                             </div>
                                             <div class="metric-new-number">100ms</div>
@@ -64,8 +65,8 @@
                                         </div>
                                     </div>
                                     <div class="col-6 col-md-3">
-                                        <div class="metric-new text-center">
-                                            <div class="metric-new-icon">
+                                        <div class="metric-new text-center" aria-label="{% trans 'SSL gratuito incluido' %}">
+                                            <div class="metric-new-icon" aria-hidden="true">
                                                 <i class="bi bi-shield-fill-check" aria-hidden="true"></i>
                                             </div>
                                             <div class="metric-new-number">SSL</div>
@@ -94,7 +95,9 @@
             <!-- Columna del Logo -->
             <div class="col-lg-4 bg-chibcha-light d-flex align-items-center justify-content-center">
                 <div class="hero-logo-section text-center p-4">
-                    <img src="{% static 'img/textoBlanco.svg' %}" alt="" class="hero-logo-new img-fluid" aria-hidden="true">
+                    <img src="{% static 'img/textoBlanco.svg' %}" 
+                         alt="{% trans 'ChibchaWeb - Logotipo en color blanco' %}" 
+                         class="hero-logo-new img-fluid">
                     <div class="hero-logo-text mt-4">
                         <p class="hero-logo-heading text-chibcha-dark mb-3">ChibchaWeb</p>
                         <p class="text-chibcha-medium mb-4 fw-bold">{% trans "Hosting Profesional Colombiano"%}</p>
@@ -102,7 +105,7 @@
                         <!-- Información convincente solo texto -->
                         <div class="company-info-text">
                             <p class="text-chibcha-dark mb-3">
-                                <strong>{% trans "Más de 5 años"%}</strong> {% trans "siendo líderes en hosting en Colombia con tecnología de vanguardia."%}
+                                <strong>{% trans "Más de 8 años"%}</strong> {% trans "siendo líderes en hosting en Colombia con tecnología de vanguardia."%}
                             </p>
                             
                             <p class="text-chibcha-medium mb-3">
@@ -133,7 +136,7 @@
 
 {% block content %}
 <!-- Servicios Simples -->
-<section class="services-simple py-5 bg-light">
+<section class="services-simple py-5 bg-light" aria-label="{% trans 'Nuestros servicios destacados' %}">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="section-title">{% trans "Nuestros Servicios"%}</h2>
@@ -143,7 +146,7 @@
         <div class="row g-4">
             <div class="col-md-6 col-lg-3">
                 <div class="service-card-simple text-center">
-                    <div class="service-icon-simple mb-3">
+                    <div class="service-icon-simple mb-3" aria-hidden="true">
                         <i class="bi bi-server" aria-hidden="true"></i>
                     </div>
                     <h3>{% trans "Hosting Premium"%}</h3>
@@ -153,7 +156,7 @@
             
             <div class="col-md-6 col-lg-3">
                 <div class="service-card-simple text-center">
-                    <div class="service-icon-simple mb-3">
+                    <div class="service-icon-simple mb-3" aria-hidden="true">
                         <i class="bi bi-shield-check" aria-hidden="true"></i>
                     </div>
                     <h3>{% trans "SSL Gratuito"%}</h3>
@@ -163,7 +166,7 @@
             
             <div class="col-md-6 col-lg-3">
                 <div class="service-card-simple text-center">
-                    <div class="service-icon-simple mb-3">
+                    <div class="service-icon-simple mb-3" aria-hidden="true">
                         <i class="bi bi-headset" aria-hidden="true"></i>
                     </div>
                     <h3>{% trans "Soporte 24/7"%}</h3>
@@ -173,7 +176,7 @@
             
             <div class="col-md-6 col-lg-3">
                 <div class="service-card-simple text-center">
-                    <div class="service-icon-simple mb-3">
+                    <div class="service-icon-simple mb-3" aria-hidden="true">
                         <i class="bi bi-cloud-upload" aria-hidden="true"></i>
                     </div>
                     <h3>{% trans "Backup Automático"%}</h3>
@@ -185,7 +188,7 @@
 </section>
 
 <!-- Planes de Hosting Simples -->
-<section id="planes" class="plans-simple py-5">
+<section id="planes" class="plans-simple py-5" aria-label="{% trans 'Planes de hosting disponibles' %}">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="section-title">{% trans "Planes de Hosting"%}</h2>
@@ -199,7 +202,7 @@
                     <div class="plan-header-simple">
                         <h3>{% trans "Plata"%}</h3>
                         <div class="plan-price-simple">
-                            <span class="currency">$</span>
+                            <span class="currency" aria-hidden="true">$</span>
                             <span class="amount">{{ planes.Plata.precio_mensual }}</span>
                             <span class="period">/{% trans "mes"%}</span>
                         </div>
@@ -218,12 +221,12 @@
             
             <!-- Plan Professional - Color Chibcha Accent -->
             <div class="col-lg-4 col-md-6">
-                <div class="plan-card-simple plan-professional featured">
+                <div class="plan-card-simple plan-professional featured" aria-label="{% trans 'Plan Platino - Más Popular' %}">
                     <div class="plan-badge pt-3">{% trans "Más Popular"%}</div>
                     <div class="plan-header-simple">
                         <h3>{% trans "Platino"%}</h3>
                         <div class="plan-price-simple">
-                            <span class="currency">$</span>
+                            <span class="currency" aria-hidden="true">$</span>
                             <span class="amount">{{ planes.Platino.precio_mensual }}</span>
                             <span class="period">/{% trans "mes"%}</span>
                         </div>
@@ -246,7 +249,7 @@
                     <div class="plan-header-simple">
                         <h3>{% trans "Oro"%}</h3>
                         <div class="plan-price-simple">
-                            <span class="currency">$</span>
+                            <span class="currency" aria-hidden="true">$</span>
                             <span class="amount">{{ planes.Oro.precio_mensual }}</span>
                             <span class="period">/{% trans "mes"%}</span>
                         </div>
@@ -267,7 +270,7 @@
 </section>
 
 <!-- CTA Simple -->
-<section class="cta-simple py-5 bg-dark text-white">
+<section class="cta-simple py-5 bg-dark text-white" aria-label="{% trans 'Llamada a la acción - Comienza ahora' %}">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">

@@ -1,15 +1,16 @@
 /* Sistema de Pagos ChibchaWeb - Estilos Optimizados */
 
 :root {
-    --chibcha-dark: #1b1215;
-    --chibcha-medium: #69554b;
-    --chibcha-light: #e5d3b5;
-    --chibcha-accent: #eab21b;
-    --chibcha-brown: #6c371f;
+    --chibcha-dark: #2B0A6B;
+    --chibcha-medium: #6500A8;
+    --chibcha-light: #FFF0F8;
+    --chibcha-accent: #FFD43B;
+    --chibcha-brown: #D0007F;
+    --chibcha-primary: #D0007F;
     
     --shadow-soft: 0 4px 20px rgba(0,0,0,0.08);
     --shadow-medium: 0 8px 30px rgba(0,0,0,0.12);
-    --shadow-accent: 0 6px 20px rgba(234, 178, 27, 0.3);
+    --shadow-accent: 0 6px 20px rgba(208, 0, 127, 0.3);
     
     --border-radius: 15px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -25,7 +26,7 @@
     background: rgba(255,255,255,0.98);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-soft);
-    border: 1px solid rgba(234, 178, 27, 0.1);
+    border: 1px solid rgba(255, 212, 59, 0.1);
 }
 
 .payment-step {
@@ -127,7 +128,7 @@
     box-shadow: var(--shadow-medium);
     padding: 3rem;
     margin-bottom: 3rem;
-    border: 1px solid rgba(234, 178, 27, 0.08);
+    border: 1px solid rgba(255, 212, 59, 0.08);
     position: relative;
 }
 
@@ -177,7 +178,7 @@
     color: var(--chibcha-accent);
     font-size: 1.6rem;
     padding: 0.5rem;
-    background: rgba(234, 178, 27, 0.1);
+    background: rgba(255, 212, 59, 0.1);
     border-radius: 10px;
 }
 
@@ -303,9 +304,9 @@
 .payment-no-items {
     text-align: center;
     padding: 4rem 2rem;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    background: linear-gradient(135deg, #FFF7FC, #E7C6DE);
     border-radius: var(--border-radius);
-    border: 3px dashed #dee2e6;
+    border: 3px dashed #E7C6DE;
 }
 
 .payment-no-items i {
@@ -330,9 +331,9 @@
 
 /* ===== BOTONES ===== */
 .payment-btn-primary {
-    background: linear-gradient(135deg, var(--chibcha-accent), #d4a017) !important;
+    background: linear-gradient(135deg, var(--chibcha-primary), var(--chibcha-medium)) !important;
     border: none !important;
-    color: var(--chibcha-dark) !important;
+    color: #fff !important;
     font-weight: 800 !important;
     padding: 1rem 2.5rem !important;
     border-radius: 35px !important;
@@ -347,12 +348,12 @@
 
 .payment-btn-primary:hover {
     transform: translateY(-4px) !important;
-    box-shadow: 0 10px 30px rgba(234, 178, 27, 0.5) !important;
-    color: var(--chibcha-dark) !important;
+    box-shadow: 0 10px 30px rgba(208, 0, 127, 0.38) !important;
+    color: #fff !important;
 }
 
 .payment-btn-secondary {
-    background: linear-gradient(135deg, var(--chibcha-medium), #5a4a40) !important;
+    background: linear-gradient(135deg, var(--chibcha-medium), var(--chibcha-dark)) !important;
     border: none !important;
     color: white !important;
     font-weight: 800 !important;
@@ -389,8 +390,8 @@
 
 /* ===== RESUMEN DE PLAN ===== */
 .payment-plan-summary {
-    background: linear-gradient(135deg, rgba(234, 178, 27, 0.08), rgba(234, 178, 27, 0.03));
-    border: 3px solid rgba(234, 178, 27, 0.2);
+    background: linear-gradient(135deg, rgba(255, 212, 59, 0.08), rgba(255, 212, 59, 0.03));
+    border: 3px solid rgba(255, 212, 59, 0.2);
     border-radius: var(--border-radius);
     padding: 2.5rem;
     margin-bottom: 2.5rem;
@@ -418,7 +419,7 @@
 /* ===== RESUMEN DE PAGO ===== */
 .payment-summary-card {
     background: white;
-    border: 2px solid rgba(234, 178, 27, 0.2);
+    border: 2px solid rgba(255, 212, 59, 0.2);
     border-radius: var(--border-radius);
     padding: 1.5rem;
     transition: var(--transition);
@@ -427,11 +428,11 @@
 
 .payment-summary-card:hover {
     box-shadow: var(--shadow-medium);
-    border-color: rgba(234, 178, 27, 0.4);
+    border-color: rgba(255, 212, 59, 0.4);
 }
 
 .payment-cost-summary {
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    background: linear-gradient(135deg, #FFF7FC, #E7C6DE);
     border: 2px solid rgba(40, 167, 69, 0.2);
     border-radius: var(--border-radius);
     padding: 2rem;
@@ -584,9 +585,9 @@ body.dark-mode .payment-item-card:focus-within {
 }
 
 body.dark-mode .payment-item-card.selected {
-    background: linear-gradient(135deg, #302613 0%, var(--cw-surface-raised) 100%) !important;
+    background: linear-gradient(135deg, rgba(255, 112, 196, 0.18) 0%, var(--cw-surface-raised) 100%) !important;
     border-color: var(--cw-accent) !important;
-    box-shadow: 0 0 0 3px rgba(234, 178, 27, 0.2) !important;
+    box-shadow: 0 0 0 3px rgba(255, 112, 196, 0.2) !important;
 }
 
 body.dark-mode .payment-item-meta,
@@ -595,9 +596,9 @@ body.dark-mode .payment-section-title {
 }
 
 body.dark-mode .payment-card-type {
-    background: #3a2d1b;
-    color: #ffe7a0;
-    border: 1px solid rgba(234, 178, 27, 0.35);
+    background: var(--cw-surface-raised);
+    color: var(--cw-link);
+    border: 1px solid var(--cw-border);
 }
 
 body.dark-mode .payment-no-items,
@@ -617,7 +618,7 @@ body.dark-mode .payment-step-number {
 body.dark-mode .payment-step.active .payment-step-number,
 body.dark-mode .payment-step.completed .payment-step-number {
     background-color: var(--cw-accent);
-    color: #1b1215;
+    color: var(--cw-on-primary);
     border-color: var(--cw-accent);
 }
 
@@ -626,14 +627,14 @@ body.dark-mode .payment-step-connector {
 }
 
 body.dark-mode .payment-btn-secondary {
-    background: #3a2921 !important;
+    background: var(--cw-surface-raised) !important;
     color: var(--cw-text) !important;
     border: 1px solid var(--cw-border) !important;
 }
 
 body.dark-mode .payment-btn-secondary:hover,
 body.dark-mode .payment-btn-secondary:focus-visible {
-    background: #4a352a !important;
+    background: #431A59 !important;
     color: #fff !important;
 }
 

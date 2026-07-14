@@ -8,18 +8,18 @@
         <div class="col-md-6">
             <div class="card shadow-lg">
                 <div class="card-body text-center p-5">
-                    <div class="mb-4">
-                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                    <div class="mb-4" role="img" aria-label="{% trans 'Icono de verificación - inicio de sesión exitoso' %}">
+                        <i class="fas fa-check-circle text-success" style="font-size: 4rem;" aria-hidden="true"></i>
                     </div>
                     <h2 class="text-success mb-3">¡{% trans "Inicio de sesión exitoso"%}!</h2>
                     <p class="lead mb-4">{% trans "Bienvenido"%}, <strong>{{ user.username }}</strong></p>
                     
                     <div class="d-grid gap-2">
                         <a href="{% url 'clientes:detalle_cliente' %}" class="btn btn-primary btn-lg">
-                            <i class="fas fa-user me-2"></i>{% trans "Ver Mi Perfil"%}
+                            <i class="fas fa-user me-2" aria-hidden="true"></i>{% trans "Ver Mi Perfil"%}
                         </a>
                         <a href="{% url 'home' %}" class="btn btn-outline-secondary">
-                            <i class="fas fa-home me-2"></i>{% trans "Ir al Inicio"%}
+                            <i class="fas fa-home me-2" aria-hidden="true"></i>{% trans "Ir al Inicio"%}
                         </a>
                     </div>
                 </div>
