@@ -8,44 +8,107 @@
 
 {% block content %}
 <div class="container mt-5 mb-5">
-    <div class="card card-chibcha mx-auto login-card">
+    <div class="card card-chibcha mx-auto login-card" 
+         role="main" 
+         aria-label="{% trans 'Formulario de inicio de sesión' %}">
         <div class="card-body">
-            <h2 class="h5 card-title mb-4 text-chibcha-secondary">{% trans "Iniciar sesión" %}</h2>
-            <form method="post">
+            <h2 class="h5 card-title mb-4 text-chibcha-secondary">
+                <i class="fas fa-sign-in-alt me-2" aria-hidden="true"></i>
+                {% trans "Iniciar sesión" %}
+            </h2>
+            
+            <form method="post" 
+                  aria-label="{% trans 'Formulario para iniciar sesión en ChibchaWeb' %}"
+                  novalidate>
                 {% csrf_token %}
+                
                 {% if form.non_field_errors %}
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-danger" role="alert" aria-live="polite">
+                        <i class="fas fa-exclamation-circle me-2" aria-hidden="true"></i>
                         {{ form.non_field_errors }}
                     </div>
                 {% endif %}
+                
+                <!-- Campo Usuario -->
                 <div class="mb-3">
-                    <label for="id_username" class="form-label form-label-chibcha">{% trans "Nickname" %}</label>
-                    <input type="text" name="username" class="form-control" id="id_username"
-                           value="{{ form.username.value|default:'' }}" autocomplete="username" required
+                    <label for="id_username" class="form-label form-label-chibcha">
+                        <i class="fas fa-user me-1" aria-hidden="true"></i>
+                        {% trans "Nickname" %}
+                    </label>
+                    <input type="text" 
+                           name="username" 
+                           class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
+                           id="id_username"
+                           value="{{ form.username.value|default:'' }}" 
+                           autocomplete="username" 
+                           required
+                           placeholder="{% trans 'Ingresa tu nombre de usuario' %}"
                            {% if form.username.errors %}aria-invalid="true" aria-describedby="username-errors"{% endif %}>
                     {% if form.username.errors %}
-                        <div id="username-errors" class="invalid-feedback d-block">{{ form.username.errors }}</div>
+                        <div id="username-errors" class="invalid-feedback d-block" role="alert">
+                            <i class="fas fa-exclamation-circle me-1" aria-hidden="true"></i>
+                            {{ form.username.errors }}
+                        </div>
                     {% endif %}
                 </div>
+                
+                <!-- Campo Contraseña -->
                 <div class="mb-3">
-                    <label for="id_password" class="form-label form-label-chibcha">{% trans "Contraseña" %}</label>
-                    <input type="password" name="password" class="form-control" id="id_password"
-                           autocomplete="current-password" required
+                    <label for="id_password" class="form-label form-label-chibcha">
+                        <i class="fas fa-lock me-1" aria-hidden="true"></i>
+                        {% trans "Contraseña" %}
+                    </label>
+                    <input type="password" 
+                           name="password" 
+                           class="form-control {% if form.password.errors %}is-invalid{% endif %}" 
+                           id="id_password"
+                           autocomplete="current-password" 
+                           required
+                           placeholder="{% trans 'Ingresa tu contraseña' %}"
                            {% if form.password.errors %}aria-invalid="true" aria-describedby="password-errors"{% endif %}>
                     {% if form.password.errors %}
-                        <div id="password-errors" class="invalid-feedback d-block">{{ form.password.errors }}</div>
+                        <div id="password-errors" class="invalid-feedback d-block" role="alert">
+                            <i class="fas fa-exclamation-circle me-1" aria-hidden="true"></i>
+                            {{ form.password.errors }}
+                        </div>
                     {% endif %}
                 </div>
-                <button type="submit" class="btn btn-chibcha-primary w-100">{% trans "Ingresar" %}</button>
+                
+                <!-- Botón Ingresar -->
+                <button type="submit" class="btn btn-chibcha-primary w-100">
+                    <i class="fas fa-sign-in-alt me-2" aria-hidden="true"></i>
+                    {% trans "Ingresar" %}
+                </button>
             </form>
-            <hr>
-            <div class="d-flex justify-content-between">
-                <a href="{% url 'clientes:registrar_cliente' %}" class="btn btn-link w-100 text-chibcha-secondary">{% trans "Registrarse" %}</a>
-                <a href="{% url 'empleados:log' %}" class="btn btn-link w-100 text-chibcha-secondary">{% trans "Portal Empleados" %}</a>
+            
+            <hr role="presentation" aria-hidden="true">
+            
+            <!-- Enlaces secundarios -->
+            <div class="d-flex justify-content-between" role="group" aria-label="{% trans 'Opciones de registro y acceso' %}">
+                <a href="{% url 'clientes:registrar_cliente' %}" 
+                   class="btn btn-link w-100 text-chibcha-secondary"
+                   aria-label="{% trans 'Registrarse como nuevo usuario' %}">
+                    <i class="fas fa-user-plus me-2" aria-hidden="true"></i>
+                    {% trans "Registrarse" %}
+                </a>
+                <a href="{% url 'empleados:log' %}" 
+                   class="btn btn-link w-100 text-chibcha-secondary"
+                   aria-label="{% trans 'Acceso al portal de empleados' %}">
+                    <i class="fas fa-user-tie me-2" aria-hidden="true"></i>
+                    {% trans "Portal Empleados" %}
+                </a>
             </div>
-            <hr>
+            
+            <hr role="presentation" aria-hidden="true">
+            
+            <!-- Enlace Administradores -->
             <div class="text-center">
-                <a href="{% url 'administradores:login' %}" class="btn btn-link w-100 text-chibcha-secondary">{% trans "Portal Administradores" %}</a>
+                <a href="{% url 'administradores:login' %}" 
+                   class="btn btn-link w-100 text-chibcha-secondary"
+                   aria-label="{% trans 'Acceso al portal de administradores' %}">
+                    <i class="fas fa-user-shield me-2" aria-hidden="true"></i>
+                    {% trans "Portal Administradores" %}
+                </a>
             </div>
         </div>
     </div>

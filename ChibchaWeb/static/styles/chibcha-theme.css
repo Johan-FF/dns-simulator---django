@@ -2,25 +2,25 @@
 :root {
     --chibcha-dark: #2B0A6B;
     --chibcha-medium: #6500A8;
-    --chibcha-light: #FFF0F8;
-    --chibcha-accent: #FFD43B;
-    --chibcha-brown: #D0007F;
-    --chibcha-primary: #D0007F;
+    --chibcha-light: #F0D6E8;
+    --chibcha-accent: #FCDC60;
+    --chibcha-brown: #EF26B2;
+    --chibcha-primary: #EF26B2;
     --chibcha-pink: #FF2FA8;
 
-    --cw-bg: #FFF7FC;
-    --cw-surface: #FFFFFF;
-    --cw-surface-raised: #FFF0F8;
+    --cw-bg: #EBE2E7;
+    --cw-surface: #EBE2E7;
+    --cw-surface-raised: #F0D6E8;
     --cw-text: #241133;
     --cw-muted: #62546E;
     --cw-border: #E7C6DE;
-    --cw-primary: #D0007F;
+    --cw-primary: #EF26B2;
     --cw-primary-hover: #6500A8;
-    --cw-on-primary: #FFFFFF;
-    --cw-highlight: #FFD43B;
+    --cw-on-primary: #EBE2E7;
+    --cw-highlight: #FCDC60;
     --cw-on-highlight: #241133;
     --cw-link: #8A005B;
-    --cw-focus: #FFD43B;
+    --cw-focus: #FCDC60;
     
     --primary: var(--chibcha-primary);
     --secondary: var(--chibcha-medium);
@@ -935,7 +935,7 @@
 
 /* Estadísticas en tiempo real */
 .stats-dashboard {
-    background: linear-gradient(135deg, #FFF7FC 0%, #E7C6DE 100%);
+    background: linear-gradient(135deg, #EBE2E7 0%, #E7C6DE 100%);
     position: relative;
 }
 
@@ -1407,7 +1407,7 @@ body {
     right: 0;
     width: 1px;
     height: 100%;
-    background: linear-gradient(180deg, transparent 0%, #FFF0F8 50%, transparent 100%);
+    background: linear-gradient(180deg, transparent 0%, #F0D6E8 50%, transparent 100%);
 }
 
 .sidebar-content {
@@ -1428,7 +1428,7 @@ body {
 }
 
 .brand-badge {
-    background: linear-gradient(45deg, #FFF0F8, #FFD43B);
+    background: linear-gradient(45deg, #F0D6E8, #FCDC60);
     color: #2B0A6B;
     padding: 6px 12px;
     border-radius: 15px;
@@ -1477,7 +1477,7 @@ body {
 }
 
 .status-info strong {
-    color: #FFF0F8;
+    color: #F0D6E8;
     font-size: 0.9rem;
     display: block;
 }
@@ -1510,7 +1510,7 @@ body {
 .metric-icon {
     width: 35px;
     height: 35px;
-    background: linear-gradient(45deg, #FFD43B, #FFF0F8);
+    background: linear-gradient(45deg, #FCDC60, #F0D6E8);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1526,7 +1526,7 @@ body {
 
 .metric-value {
     display: block;
-    color: #FFF0F8;
+    color: #F0D6E8;
     font-weight: bold;
     font-size: 1rem;
 }
@@ -1541,7 +1541,7 @@ body {
 
 /* Main Content */
 .main-content-chibcha {
-    background: linear-gradient(135deg, #FFF0F8 0%, rgba(255, 240, 248, 0.9) 100%);
+    background: linear-gradient(135deg, #F0D6E8 0%, rgba(255, 240, 248, 0.9) 100%);
     position: relative;
 }
 
@@ -1613,11 +1613,11 @@ body {
     left: 0;
     width: 4px;
     height: 100%;
-    background: linear-gradient(180deg, #FFD43B 0%, #FFF0F8 100%);
+    background: linear-gradient(180deg, #FCDC60 0%, #F0D6E8 100%);
 }
 
 .dashboard-card-chibcha.border-left-primary::before {
-    background: linear-gradient(180deg, #FFD43B 0%, #6500A8 100%);
+    background: linear-gradient(180deg, #FCDC60 0%, #6500A8 100%);
 }
 
 .dashboard-card-chibcha.border-left-success::before {
@@ -1642,7 +1642,7 @@ body {
 }
 
 .text-chibcha-accent {
-    color: #FFD43B !important;
+    color: #FCDC60 !important;
 }
 
 .text-chibcha-secondary {
@@ -1650,7 +1650,7 @@ body {
 }
 
 .text-chibcha-brown {
-    color: #D0007F !important;
+    color: #EF26B2 !important;
 }
 
 .text-chibcha-dark {
@@ -1663,7 +1663,7 @@ body {
 }
 
 .btn-chibcha-primary {
-    background: linear-gradient(45deg, #FFD43B, #D0007F) !important;
+    background: linear-gradient(45deg, #FCDC60, #EF26B2) !important;
     border: none !important;
     color: white !important;
     padding: 12px 30px !important;
@@ -1678,7 +1678,7 @@ body {
 .btn-chibcha-primary:hover {
     transform: translateY(-2px) !important;
     box-shadow: 0 6px 25px rgba(255, 212, 59, 0.4) !important;
-    background: linear-gradient(45deg, #D0007F, #FFD43B) !important;
+    background: linear-gradient(45deg, #EF26B2, #FCDC60) !important;
     color: white !important;
 }
 
@@ -1696,14 +1696,14 @@ body {
 
 .btn-outline-chibcha:hover {
     background: #2B0A6B !important;
-    color: #FFF0F8 !important;
+    color: #F0D6E8 !important;
     transform: translateY(-2px) !important;
     box-shadow: 0 6px 25px rgba(43, 10, 107, 0.2) !important;
 }
 
 /* Estilos para las secciones de servicios existentes - adaptados a Chibcha */
 .services-dashboard {
-    background: linear-gradient(135deg, #FFF0F8 0%, rgba(255, 240, 248, 0.95) 100%);
+    background: linear-gradient(135deg, #F0D6E8 0%, rgba(255, 240, 248, 0.95) 100%);
     position: relative;
 }
 
@@ -1784,7 +1784,7 @@ body {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #FFD43B 0%, #D0007F 100%);
+    background: linear-gradient(90deg, #FCDC60 0%, #EF26B2 100%);
 }
 
 .service-card.explosive:hover {
@@ -1811,7 +1811,7 @@ body {
 }
 
 .service-icon.bg-gradient-primary {
-    background: linear-gradient(45deg, #FFD43B, #D0007F);
+    background: linear-gradient(45deg, #FCDC60, #EF26B2);
 }
 
 .service-icon.bg-gradient-success {
@@ -1898,7 +1898,7 @@ body {
 
 .progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #FFD43B, #D0007F);
+    background: linear-gradient(90deg, #FCDC60, #EF26B2);
     border-radius: 3px;
     transition: width 2s ease-out;
     position: relative;
@@ -2043,7 +2043,7 @@ body {
 }
 
 .metric-new-icon {
-    color: #FFD43B;
+    color: #FCDC60;
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
 }
@@ -2051,7 +2051,7 @@ body {
 .metric-new-number {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #FFD43B;
+    color: #FCDC60;
     margin-bottom: 0.25rem;
 }
 
@@ -2066,7 +2066,7 @@ body {
 
 /* Estilos base para planes simples */
 .plans-simple {
-    background: #FFF7FC;
+    background: #EBE2E7;
 }
 
 .plan-card-simple {
@@ -2164,7 +2164,7 @@ body {
 
 .plan-starter .plan-header-simple h3,
 .plan-starter .plan-price-simple .amount {
-    color: #FFF0F8;
+    color: #F0D6E8;
 }
 
 .plan-starter .plan-price-simple .currency,
@@ -2177,22 +2177,22 @@ body {
 }
 
 .plan-starter:hover {
-    border-color: #FFF0F8;
+    border-color: #F0D6E8;
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(105, 85, 75, 0.3);
 }
 
 /* Plan Professional - Color Chibcha Accent */
 .plan-professional {
-    background: linear-gradient(135deg, #FFD43B 0%, #d4a018 100%);
+    background: linear-gradient(135deg, #FCDC60 0%, #d4a018 100%);
     color: #2B0A6B;
-    border: 2px solid #FFD43B;
+    border: 2px solid #FCDC60;
     transform: scale(1.05);
 }
 
 .plan-professional .plan-badge {
     background: #2B0A6B;
-    color: #FFD43B;
+    color: #FCDC60;
 }
 
 .plan-professional .plan-header-simple h3,
@@ -2218,14 +2218,14 @@ body {
 
 /* Plan Enterprise - Color Chibcha Brown */
 .plan-enterprise {
-    background: linear-gradient(135deg, #D0007F 0%, #5c2f1a 100%);
+    background: linear-gradient(135deg, #EF26B2 0%, #5c2f1a 100%);
     color: white;
-    border: 2px solid #D0007F;
+    border: 2px solid #EF26B2;
 }
 
 .plan-enterprise .plan-header-simple h3,
 .plan-enterprise .plan-price-simple .amount {
-    color: #FFD43B;
+    color: #FCDC60;
 }
 
 .plan-enterprise .plan-price-simple .currency,
@@ -2238,7 +2238,7 @@ body {
 }
 
 .plan-enterprise:hover {
-    border-color: #FFD43B;
+    border-color: #FCDC60;
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(108, 55, 31, 0.3);
 }
@@ -2261,7 +2261,7 @@ body {
 .service-icon-simple {
     width: 60px;
     height: 60px;
-    background: linear-gradient(45deg, #FFD43B, #FFF0F8);
+    background: linear-gradient(45deg, #FCDC60, #F0D6E8);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -2459,7 +2459,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="%23ffffff" opacity="0.03"/><circle cx="80" cy="80" r="1" fill="%23ffffff" opacity="0.03"/><circle cx="40" cy="60" r="1" fill="%23ffffff" opacity="0.03"/><circle cx="60" cy="40" r="1" fill="%23ffffff" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="%23EBE2E7" opacity="0.03"/><circle cx="80" cy="80" r="1" fill="%23EBE2E7" opacity="0.03"/><circle cx="40" cy="60" r="1" fill="%23EBE2E7" opacity="0.03"/><circle cx="60" cy="40" r="1" fill="%23EBE2E7" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
 }
 
 /* Feature cards */
@@ -2623,7 +2623,7 @@ body {
 /* Hero moderno */
 .hero-modern {
     min-height: 100vh;
-    background: linear-gradient(135deg, #2B0A6B 0%, #6500A8 50%, #D0007F 100%);
+    background: linear-gradient(135deg, #2B0A6B 0%, #6500A8 50%, #EF26B2 100%);
     position: relative;
     overflow: hidden;
     display: flex;
@@ -3004,7 +3004,7 @@ body {
 }
 
 .performance-chart {
-    background: #FFF7FC;
+    background: #EBE2E7;
     border-radius: 16px;
     padding: 2rem;
     text-align: center;
@@ -3107,7 +3107,7 @@ body {
     gap: 0.5rem;
     padding: 1rem;
     border-radius: 12px;
-    background: #FFF7FC;
+    background: #EBE2E7;
     min-width: 100px;
     transition: all 0.3s ease;
 }
@@ -3129,7 +3129,7 @@ body {
 }
 
 .tool-card {
-    background: #FFF7FC;
+    background: #EBE2E7;
     padding: 2rem 1rem;
     border-radius: 16px;
     text-align: center;
@@ -3297,7 +3297,7 @@ input:checked + .slider:before {
 .price-display {
     text-align: center;
     padding: 2rem;
-    background: #FFF7FC;
+    background: #EBE2E7;
 }
 
 .currency {
@@ -3508,7 +3508,7 @@ input:checked + .slider:before {
 
 /* Hero Dashboard Cliente */
 .hero-dashboard-cliente {
-    background: linear-gradient(135deg, #2B0A6B 0%, #6500A8 50%, #D0007F 100%);
+    background: linear-gradient(135deg, #2B0A6B 0%, #6500A8 50%, #EF26B2 100%);
     position: relative;
     overflow: hidden;
     min-height: 60vh;
@@ -3576,8 +3576,8 @@ input:checked + .slider:before {
 
 .hero-dashboard-cliente .btn-chibcha-accent:hover,
 .hero-dashboard-cliente .btn-chibcha-accent:focus-visible {
-    background: #FFF0F8;
-    border-color: #FFF0F8;
+    background: #F0D6E8;
+    border-color: #F0D6E8;
     color: #2B0A6B;
 }
 
@@ -3670,7 +3670,7 @@ input:checked + .slider:before {
 .dashboard-card .card-title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #ffffff;
+    color: #EBE2E7;
     margin-bottom: 1rem;
 }
 
@@ -3722,7 +3722,7 @@ input:checked + .slider:before {
 
 /* Quick Actions */
 .quick-actions {
-    background: linear-gradient(135deg, #FFF7FC 0%, #E7C6DE 100%);
+    background: linear-gradient(135deg, #EBE2E7 0%, #E7C6DE 100%);
 }
 
 .quick-action-btn {
@@ -3746,12 +3746,12 @@ input:checked + .slider:before {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     border-color: rgba(255, 212, 59, 0.3);
-    background: linear-gradient(135deg, #fff 0%, #FFF7FC 100%);
+    background: linear-gradient(135deg, #fff 0%, #EBE2E7 100%);
 }
 
 .quick-action-btn i {
     font-size: 1.5rem;
-    color: #FFD43B;
+    color: #FCDC60;
     margin-bottom: 0.5rem;
 }
 
@@ -3830,7 +3830,7 @@ input:checked + .slider:before {
 
 /* Header del Perfil */
 .profile-header {
-    background: linear-gradient(135deg, #2B0A6B 0%, #6500A8 50%, #D0007F 100%);
+    background: linear-gradient(135deg, #2B0A6B 0%, #6500A8 50%, #EF26B2 100%);
     position: relative;
     overflow: hidden;
 }
@@ -3872,7 +3872,7 @@ input:checked + .slider:before {
 
 .avatar-circle i {
     font-size: 4rem;
-    color: #FFD43B;
+    color: #FCDC60;
 }
 
 /* Profile Cards */
@@ -3892,7 +3892,7 @@ input:checked + .slider:before {
 }
 
 .card-header-custom {
-    background: linear-gradient(135deg, #FFF7FC 0%, #E7C6DE 100%);
+    background: linear-gradient(135deg, #EBE2E7 0%, #E7C6DE 100%);
     border-bottom: 2px solid rgba(255, 212, 59, 0.1);
     padding: 1.5rem;
 }
@@ -3930,7 +3930,7 @@ input:checked + .slider:before {
     padding: 0.75rem 1rem;
     background: linear-gradient(135deg, rgba(255,212,59,0.05) 0%, rgba(208,0,127,0.02) 100%);
     border-radius: 8px;
-    border-left: 4px solid #FFD43B;
+    border-left: 4px solid #FCDC60;
 }
 
 /* Account Status */
@@ -4020,7 +4020,7 @@ input:checked + .slider:before {
     justify-content: center;
     width: 140px;
     height: 110px;
-    background: linear-gradient(135deg, #fff 0%, #FFF7FC 100%);
+    background: linear-gradient(135deg, #fff 0%, #EBE2E7 100%);
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     text-decoration: none;
@@ -4034,12 +4034,12 @@ input:checked + .slider:before {
     transform: translateY(-8px);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
     border-color: rgba(255, 212, 59, 0.4);
-    background: linear-gradient(135deg, #fff 0%, #FFF7FC 100%);
+    background: linear-gradient(135deg, #fff 0%, #EBE2E7 100%);
 }
 
 .action-item i {
     font-size: 1.8rem;
-    color: #FFD43B;
+    color: #FCDC60;
     margin-bottom: 0.75rem;
     transition: transform 0.3s ease;
 }
@@ -4100,7 +4100,7 @@ input:checked + .slider:before {
 
 /* Header de Hosts */
 .hosts-header {
-    background: linear-gradient(135deg, #2B0A6B 0%, #6500A8 50%, #D0007F 100%);
+    background: linear-gradient(135deg, #2B0A6B 0%, #6500A8 50%, #EF26B2 100%);
     position: relative;
     overflow: hidden;
 }
@@ -4146,7 +4146,7 @@ input:checked + .slider:before {
 .stat-host-circle .stat-number {
     font-size: 2.5rem;
     font-weight: 800;
-    color: #FFD43B;
+    color: #FCDC60;
     line-height: 1;
 }
 
@@ -4181,7 +4181,7 @@ input:checked + .slider:before {
 
 .empty-icon i {
     font-size: 3rem;
-    color: #FFD43B;
+    color: #FCDC60;
 }
 
 .empty-hosts-state h3 {
@@ -4239,7 +4239,7 @@ input:checked + .slider:before {
 
 /* Steps Guide */
 .steps-guide {
-    background: linear-gradient(135deg, #FFF7FC 0%, #E7C6DE 100%);
+    background: linear-gradient(135deg, #EBE2E7 0%, #E7C6DE 100%);
     border-radius: 20px;
     padding: 3rem 2rem;
     margin-top: 3rem;
@@ -4270,7 +4270,7 @@ input:checked + .slider:before {
 .step-number {
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #FFD43B, #D0007F);
+    background: linear-gradient(135deg, #FCDC60, #EF26B2);
     color: white;
     border-radius: 50%;
     display: flex;
@@ -4354,7 +4354,7 @@ input:checked + .slider:before {
 
 /* Header de Planes */
 .plans-header {
-    background: linear-gradient(135deg, #2B0A6B 0%, #6500A8 50%, #D0007F 100%);
+    background: linear-gradient(135deg, #2B0A6B 0%, #6500A8 50%, #EF26B2 100%);
     position: relative;
     overflow: hidden;
 }
@@ -4400,7 +4400,7 @@ input:checked + .slider:before {
 .stat-plans-circle .stat-number {
     font-size: 2.5rem;
     font-weight: 800;
-    color: #FFD43B;
+    color: #FCDC60;
     line-height: 1;
 }
 
@@ -4413,7 +4413,7 @@ input:checked + .slider:before {
 
 /* Selector de Facturación */
 .billing-selector {
-    background: linear-gradient(135deg, #FFF7FC 0%, #E7C6DE 100%);
+    background: linear-gradient(135deg, #EBE2E7 0%, #E7C6DE 100%);
     border-bottom: 1px solid rgba(255, 212, 59, 0.1);
 }
 
@@ -4453,7 +4453,7 @@ input:checked + .slider:before {
 
 .tab-option.active {
     background: linear-gradient(135deg, rgba(255,212,59,0.1) 0%, rgba(208,0,127,0.05) 100%);
-    border-color: #FFD43B;
+    border-color: #FCDC60;
     box-shadow: 0 4px 15px rgba(255, 212, 59, 0.2);
 }
 
@@ -4475,7 +4475,7 @@ input:checked + .slider:before {
 }
 
 .tab-option.active .tab-icon i {
-    color: #FFD43B;
+    color: #FCDC60;
 }
 
 .tab-option h6,
@@ -4492,7 +4492,7 @@ input:checked + .slider:before {
 }
 
 .tab-option .save-badge {
-    background: linear-gradient(135deg, #FFD43B, #D0007F);
+    background: linear-gradient(135deg, #FCDC60, #EF26B2);
     color: white;
     padding: 0.2rem 0.5rem;
     border-radius: 8px;
@@ -4520,7 +4520,7 @@ input:checked + .slider:before {
 }
 
 .save-badge {
-    background: linear-gradient(135deg, #FFD43B, #D0007F);
+    background: linear-gradient(135deg, #FCDC60, #EF26B2);
     color: white;
     padding: 0.2rem 0.5rem;
     border-radius: 12px;
@@ -4568,7 +4568,7 @@ input:checked + .slider:before {
 }
 
 .toggle-input:checked + .toggle-label {
-    background: linear-gradient(135deg, #FFD43B, #D0007F);
+    background: linear-gradient(135deg, #FCDC60, #EF26B2);
 }
 
 .toggle-input:checked + .toggle-label:before {
@@ -4613,7 +4613,7 @@ input:checked + .slider:before {
 }
 
 .plan-card.selected {
-    border-color: #FFD43B;
+    border-color: #FCDC60;
     transform: translateY(-5px);
     box-shadow: 0 15px 35px rgba(255, 212, 59, 0.2);
 }
@@ -4623,7 +4623,7 @@ input:checked + .slider:before {
 }
 
 .plan-card.popular {
-    border-color: #FFD43B;
+    border-color: #FCDC60;
     transform: scale(1.05);
 }
 
@@ -4637,7 +4637,7 @@ input:checked + .slider:before {
     top: -1px;
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(135deg, #FFD43B, #D0007F);
+    background: linear-gradient(135deg, #FCDC60, #EF26B2);
     color: white;
     padding: 0.5rem 1.5rem;
     border-radius: 0 0 15px 15px;
@@ -4681,13 +4681,13 @@ input:checked + .slider:before {
 }
 
 .icon-background.platinum {
-    background: linear-gradient(135deg, #FF70C4 0%, #D0007F 50%, #8A005B 100%);
+    background: linear-gradient(135deg, #FF70C4 0%, #EF26B2 50%, #8A005B 100%);
     border: 3px solid #FF9BD7;
     box-shadow: 0 8px 25px rgba(208, 0, 127, 0.22);
 }
 
 .icon-background.gold {
-    background: linear-gradient(135deg, #FFD43B 0%, #E0A800 50%, #9A6A00 100%);
+    background: linear-gradient(135deg, #FCDC60 0%, #E0A800 50%, #9A6A00 100%);
     border: 3px solid #FFE08A;
 }
 
@@ -4716,7 +4716,7 @@ input:checked + .slider:before {
 .price-amount {
     font-size: 3rem;
     font-weight: 800;
-    color: #FFD43B;
+    color: #FCDC60;
     line-height: 1;
 }
 
@@ -4780,8 +4780,8 @@ input:checked + .slider:before {
 }
 
 .plan-card.selected .radio-check {
-    border-color: #FFD43B;
-    background: linear-gradient(135deg, #FFD43B, #D0007F);
+    border-color: #FCDC60;
+    background: linear-gradient(135deg, #FCDC60, #EF26B2);
     color: white;
 }
 
@@ -4798,13 +4798,13 @@ input:checked + .slider:before {
 }
 
 .plan-card.selected .icon-background.platinum {
-    background: linear-gradient(135deg, #FF9BD7 0%, #D0007F 50%, #8A005B 100%);
+    background: linear-gradient(135deg, #FF9BD7 0%, #EF26B2 50%, #8A005B 100%);
     transform: scale(1.1);
     box-shadow: 0 12px 30px rgba(208, 0, 127, 0.35);
 }
 
 .plan-card.selected .icon-background.gold {
-    background: linear-gradient(135deg, #FFE08A 0%, #FFD43B 50%, #9A6A00 100%);
+    background: linear-gradient(135deg, #FFE08A 0%, #FCDC60 50%, #9A6A00 100%);
     transform: scale(1.1);
     box-shadow: 0 12px 30px rgba(224, 168, 0, 0.35);
 }
@@ -4903,7 +4903,7 @@ input:checked + .slider:before {
 
 /* Clases de color Chibcha */
 .text-chibcha-primary {
-    color: #FFD43B !important;
+    color: #FCDC60 !important;
 }
 
 .text-chibcha-secondary {
@@ -4911,7 +4911,7 @@ input:checked + .slider:before {
 }
 
 .text-chibcha-accent {
-    color: #D0007F !important;
+    color: #EF26B2 !important;
 }
 
 /* Responsive */
@@ -5004,35 +5004,35 @@ input:checked + .slider:before {
 /* Información de Requisitos */
 .requirements-info .alert {
     background: linear-gradient(135deg, rgba(255,212,59,0.1) 0%, rgba(208,0,127,0.05) 100%);
-    border-left: 4px solid #FFD43B !important;
+    border-left: 4px solid #FCDC60 !important;
     color: #2B0A6B;
 }
 
 .requirements-info .alert i {
-    color: #FFD43B;
+    color: #FCDC60;
     font-size: 1.1rem;
 }
 
 .requirements-info .alert strong {
-    color: #D0007F;
+    color: #EF26B2;
 }
 
 
 body.dark-mode {
     /* Fondo general y texto */
     background-color: #13061F !important;
-    color: #FFF0F8 !important;
+    color: #F0D6E8 !important;
 
     /* Bootstrap */
     --bs-body-bg: #13061F;
-    --bs-body-color: #FFF0F8;
+    --bs-body-color: #F0D6E8;
     --bs-light-rgb: 30, 30, 30;
 
     /* Tus variables */
     --chibcha-dark: #13061F;
     --chibcha-medium: #311342;
     --chibcha-light: #21102F;
-    --chibcha-accent: #FFD43B;
+    --chibcha-accent: #FCDC60;
     --chibcha-brown: #311342;
        /* marrón más profundo */
 
@@ -5077,7 +5077,7 @@ body.dark-mode .quick-actions {
 
 body.dark-mode .quick-action-btn {
     background: #311342 !important;
-    color: #FFF0F8 !important;
+    color: #F0D6E8 !important;
     border-color: rgba(255,255,255,0.05) !important;
 }
 
@@ -5145,7 +5145,7 @@ body.dark-mode small {
 .dark-mode .plan-professional {
     background: linear-gradient(135deg, #311342 0%, #6500A8 100%) !important;
     color: #FFF4FC !important;
-    border: 2px solid #FFD43B !important;
+    border: 2px solid #FCDC60 !important;
     transform: scale(1.05);
 }
 
@@ -5156,7 +5156,7 @@ body.dark-mode small {
 }
 
 .dark-mode .profile-header {
-    background: linear-gradient(135deg, #2B0A6B 0%, #000000 50%, #D0007F 100%);
+    background: linear-gradient(135deg, #2B0A6B 0%, #000000 50%, #EF26B2 100%);
     position: relative;
     overflow: hidden;
     color: black;
@@ -5164,7 +5164,7 @@ body.dark-mode small {
 
 
 .dark-mode .profile-header {
-    background: linear-gradient(135deg, #2B0A6B 0%, #000000 50%, #D0007F 100%);
+    background: linear-gradient(135deg, #2B0A6B 0%, #000000 50%, #EF26B2 100%);
     position: relative;
     overflow: hidden;
     color: black;
@@ -5177,14 +5177,14 @@ body.dark-mode small {
 
 .dark-mode .detail-item div {
     font-weight: 600;
-    color: #FFF7FC;
+    color: #EBE2E7;
     background-color: black;
 }
 
 .dark-mode .plan-name {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #FFF7FC;
+    color: #EBE2E7;
     margin-bottom: 1rem;
     background-color: black;
 }
@@ -5274,7 +5274,7 @@ body.dark-mode {
     --chibcha-medium: #6500A8;
     --chibcha-light: #FFF4FC;
     --chibcha-accent: #FF70C4;
-    --chibcha-brown: #D0007F;
+    --chibcha-brown: #EF26B2;
     --chibcha-primary: #FF70C4;
     --cw-bg: #13061F;
     --cw-surface: #21102F;
@@ -5285,11 +5285,11 @@ body.dark-mode {
     --cw-primary: #FF70C4;
     --cw-primary-hover: #FF9BD7;
     --cw-on-primary: #13061F;
-    --cw-highlight: #FFD43B;
+    --cw-highlight: #FCDC60;
     --cw-on-highlight: #13061F;
     --cw-accent: #FF70C4;
     --cw-link: #FF9BD7;
-    --cw-focus: #FFD43B;
+    --cw-focus: #FCDC60;
     --bs-body-bg: var(--cw-bg);
     --bs-body-color: var(--cw-text);
     --bs-light-rgb: 49, 19, 66;
@@ -5584,7 +5584,7 @@ body.dark-mode .info-value {
 
 .language-selector .dropdown-item:hover,
 .language-selector .dropdown-item:focus-visible {
-    background-color: #FFF7FC;
+    background-color: #EBE2E7;
     color: #2B0A6B;
 }
 
@@ -5650,7 +5650,7 @@ body.dark-mode .info-value {
 }
 
 .hero-new .text-chibcha-accent {
-    color: #FFD43B !important;
+    color: #FCDC60 !important;
 }
 
 a:focus-visible,
